@@ -30,6 +30,7 @@ async function sendViaEmailJs(params: {
   const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
   const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
   const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+  const privateKey = process.env.NEXT_PUBLIC_EMAILJS_PRIVATE_KEY;
 
   if (!serviceId || !templateId || !publicKey) {
     throw new Error("EmailJS is not configured. Missing NEXT_PUBLIC_EMAILJS_* environment variables.");
@@ -39,6 +40,7 @@ async function sendViaEmailJs(params: {
     service_id: serviceId,
     template_id: templateId,
     user_id: publicKey,
+    ...(privateKey ? { accessToken: privateKey } : {}),
     template_params: {
       subject: `GMunchies: New service request from ${params.name}`,
       name: params.name,
