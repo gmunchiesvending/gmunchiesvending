@@ -15,7 +15,7 @@ const contactSchema = z.object({
 });
 
 async function verifyRecaptcha(token: string, remoteip?: string | null) {
-  // Skip verification in development when SKIP_RECAPTCHA=true
+  // Skip in local dev
   if (process.env.SKIP_RECAPTCHA === "true") return;
 
   const secret = process.env.RECAPTCHA_SECRET_KEY;
@@ -36,7 +36,6 @@ async function verifyRecaptcha(token: string, remoteip?: string | null) {
   const json = (await res.json().catch(() => null)) as null | {
     success?: boolean;
     "error-codes"?: string[];
-    hostname?: string;
   };
 
   if (!json?.success) {
@@ -45,8 +44,64 @@ async function verifyRecaptcha(token: string, remoteip?: string | null) {
   }
 }
 
-// Validates the form and verifies reCAPTCHA server-side.
-// Email is sent client-side via EmailJS (browser-only SDK requirement).
+// EmailJS requires browser Origin header — we forward it from the incoming request.
+// This lets us keep email sending server-side (avoids NEXT_PUBLIC_ build-time issues on client).
+async function sendViaEmailJs(
+  params: {
+    name: string;
+    company: string;
+    email: string;
+    phone: string;
+    service: string;
+    location: string;
+    description: string;
+  },
+  origin: string
+) {
+  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+  const privateKey = process.env.NEXT_PUBLIC_EMAILJS_PRIVATE_KEY;
+
+  if (!serviceId || !templateId || !publicKey) {
+    throw new Error("EmailJS is not configured (missing EMAILJS env vars on server)");
+  }
+
+  const payload = {
+    service_id: serviceId,
+    template_id: templateId,
+    user_id: publicKey,
+    ...(privateKey ? { accessToken: privateKey } : {}),
+    template_params: {
+      subject: `GMunchies: New service request from ${params.name}`,
+      name: params.name,
+      company: params.company || "-",
+      email: params.email,
+      phone: params.phone || "-",
+      service: params.service || "-",
+      location: params.location || "-",
+      message: params.description,
+      reply_to: params.email,
+    },
+  };
+
+  const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // Forward the browser's Origin so EmailJS accepts the request
+      "Origin": origin,
+    },
+    body: JSON.stringify(payload),
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`EmailJS failed (${res.status} ${res.statusText})${body ? `: ${body}` : ""}`);
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -57,6 +112,25 @@ export async function POST(req: Request) {
 
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
     await verifyRecaptcha(parsed.data.recaptchaToken, ip);
+
+    // Use the browser's Origin (or Referer-derived origin) so EmailJS accepts the server call
+    const origin =
+      req.headers.get("origin") ??
+      req.headers.get("referer")?.match(/^(https?:\/\/[^/]+)/)?.[1] ??
+      "";
+
+    await sendViaEmailJs(
+      {
+        name: parsed.data.name,
+        company: parsed.data.company,
+        email: parsed.data.email,
+        phone: parsed.data.phone,
+        service: parsed.data.service,
+        location: parsed.data.location,
+        description: parsed.data.description,
+      },
+      origin
+    );
 
     return NextResponse.json({ ok: true });
   } catch (e) {

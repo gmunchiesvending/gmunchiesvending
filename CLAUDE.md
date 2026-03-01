@@ -94,9 +94,10 @@ export default function Page() { return <FooPage />; }
 ```
 
 ### Email / Contact Form
-- **`/api/contact`** – validates form data (Zod) + verifies reCAPTCHA server-side only. Returns `{ ok: true }` on success.
-- **`Form.tsx`** – after API verification passes, sends email **directly from the browser** via EmailJS REST API (`https://api.emailjs.com/api/v1.0/email/send`).
-- EmailJS **must** be called from the browser (not server). This is why the email sending lives in the client component.
+- **`/api/contact`** – validates form data (Zod) + verifies reCAPTCHA + **sends email via EmailJS** — all server-side.
+- EmailJS normally rejects server-side calls (403). The fix: the API forwards the browser's `Origin` header to the EmailJS fetch, so EmailJS sees a valid browser origin.
+- **`Form.tsx`** – client component. Collects form data, gets reCAPTCHA token, POSTs to `/api/contact`. No EmailJS logic in the client.
+- `NEXT_PUBLIC_EMAILJS_*` vars are read **server-side** in the API route (no build-time replacement issue). Do NOT move EmailJS back to client — `NEXT_PUBLIC_` vars in client code are replaced at build time and will be `undefined` if not set during the build.
 
 ### Required Environment Variables
 ```
@@ -104,10 +105,16 @@ export default function Page() { return <FooPage />; }
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=   # client-side site key
 RECAPTCHA_SECRET_KEY=             # server-side secret (API route only)
 
-# EmailJS (all NEXT_PUBLIC because used in browser from Form.tsx)
+# EmailJS — read server-side in /api/contact (NEXT_PUBLIC_ prefix kept for backwards compat,
+# but these are only ever read on the server so build-time replacement doesn't apply)
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=
+NEXT_PUBLIC_EMAILJS_PRIVATE_KEY=   # optional accessToken for extra security
+
+# Local dev only (do NOT set on production)
+SKIP_RECAPTCHA=true                # skips server-side reCAPTCHA check
+NEXT_PUBLIC_SKIP_RECAPTCHA=true    # skips client-side reCAPTCHA widget
 
 # NextAuth
 NEXTAUTH_SECRET=

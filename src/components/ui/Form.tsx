@@ -18,60 +18,14 @@ declare global {
   }
 }
 
-async function sendViaEmailJs(params: {
-  name: string;
-  company: string;
-  email: string;
-  phone: string;
-  service: string;
-  location: string;
-  description: string;
-}) {
-  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
-  const privateKey = process.env.NEXT_PUBLIC_EMAILJS_PRIVATE_KEY;
-
-  if (!serviceId || !templateId || !publicKey) {
-    throw new Error("EmailJS is not configured. Missing NEXT_PUBLIC_EMAILJS_* environment variables.");
-  }
-
-  const payload = {
-    service_id: serviceId,
-    template_id: templateId,
-    user_id: publicKey,
-    ...(privateKey ? { accessToken: privateKey } : {}),
-    template_params: {
-      subject: `GMunchies: New service request from ${params.name}`,
-      name: params.name,
-      company: params.company || "-",
-      email: params.email,
-      phone: params.phone || "-",
-      service: params.service || "-",
-      location: params.location || "-",
-      message: params.description,
-      reply_to: params.email,
-    },
-  };
-
-  const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) {
-    const bodyText = await res.text().catch(() => "");
-    throw new Error(`EmailJS failed (${res.status} ${res.statusText})${bodyText ? `: ${bodyText}` : ""}`);
-  }
-}
-
 export default function Form({ services, locations }: FormProps) {
   const visibleServices = services.filter((s) => s.display);
   const formRef = useRef<HTMLFormElement | null>(null);
   const captchaHostRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<number | null>(null);
   const tokenResolverRef = useRef<null | ((t: string) => void)>(null);
+
+  const skipRecaptcha = process.env.NEXT_PUBLIC_SKIP_RECAPTCHA === "true";
 
   const siteKey = useMemo(() => {
     return process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? process.env.NEXT_PUBLIC_RECAPTCHA_SITEKEY ?? "";
@@ -127,7 +81,10 @@ export default function Form({ services, locations }: FormProps) {
     return id;
   };
 
-  const executeCaptcha = async () => {
+  const executeCaptcha = async (): Promise<string> => {
+    // Bypass reCAPTCHA in local dev (set NEXT_PUBLIC_SKIP_RECAPTCHA=true in .env.local)
+    if (skipRecaptcha) return "local-bypass";
+
     const widgetId = await ensureWidget();
     if (!window.grecaptcha) throw new Error("reCAPTCHA not available");
     const token = await new Promise<string>((resolve) => {
@@ -149,33 +106,30 @@ export default function Form({ services, locations }: FormProps) {
       const fd = new FormData(formRef.current);
       const token = await executeCaptcha();
 
-      const formData = {
-        name: String(fd.get("name") ?? ""),
-        company: String(fd.get("company") ?? ""),
-        email: String(fd.get("email") ?? ""),
-        phone: String(fd.get("phone") ?? ""),
-        service: String(fd.get("service") ?? ""),
-        location: String(fd.get("location") ?? ""),
-        description: String(fd.get("description") ?? ""),
-      };
-
-      // Step 1: Verify reCAPTCHA and validate form server-side
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, recaptchaToken: token }),
+        body: JSON.stringify({
+          name: String(fd.get("name") ?? ""),
+          company: String(fd.get("company") ?? ""),
+          email: String(fd.get("email") ?? ""),
+          phone: String(fd.get("phone") ?? ""),
+          service: String(fd.get("service") ?? ""),
+          location: String(fd.get("location") ?? ""),
+          description: String(fd.get("description") ?? ""),
+          recaptchaToken: token,
+        }),
       });
+
       const json = await res.json().catch(() => null);
       if (!res.ok) {
-        const err = json?.error ?? "Failed to submit";
-        throw new Error(err);
+        throw new Error(json?.error ?? "Failed to submit");
       }
 
-      // Step 2: Send email via EmailJS from the browser (required - EmailJS is browser-only)
-      await sendViaEmailJs(formData);
-
       formRef.current.reset();
-      if (window.grecaptcha && widgetIdRef.current !== null) window.grecaptcha.reset(widgetIdRef.current);
+      if (!skipRecaptcha && window.grecaptcha && widgetIdRef.current !== null) {
+        window.grecaptcha.reset(widgetIdRef.current);
+      }
       setMessage("Thanks! We received your request and will reach out soon.");
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Something went wrong. Please try again.");
