@@ -1,13 +1,6 @@
-import Locations from "@/components/sections/Locations";
-import { getCmsContent } from "@/lib/content";
+import LocationsPage from "@/components/sections/pages/LocationsPage";
 
-
-export default async function LocationsPage() {
-  const cms = await getCmsContent();
-  return (
-    <main>
-      <Locations intro={cms.home.locationsIntro} locations={cms.locations} enableLinks={cms.dynamicPages.locations} />
-    </main>
-  );
+export default function Page() {
+  return <LocationsPage />;
 }
 

@@ -1,79 +1,200 @@
+"use client";
+
 import "./Form.css";
+import { useMemo, useRef, useState } from "react";
 
 type FormProps = {
-  intro?: {
-    eyebrow?: string;
-    heading: string;
-    body?: string;
-  };
   services: { slug: string; title: string; display: boolean }[];
   locations: { slug: string; name: string }[];
 };
 
-export default function Form({ intro, services, locations }: FormProps) {
+declare global {
+  interface Window {
+    grecaptcha?: {
+      render: (container: HTMLElement, params: any) => number;
+      execute: (widgetId?: number) => void;
+      reset: (widgetId?: number) => void;
+    };
+  }
+}
+
+export default function Form({ services, locations }: FormProps) {
   const visibleServices = services.filter((s) => s.display);
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const captchaHostRef = useRef<HTMLDivElement | null>(null);
+  const widgetIdRef = useRef<number | null>(null);
+  const tokenResolverRef = useRef<null | ((t: string) => void)>(null);
+
+  const siteKey = useMemo(() => {
+    return process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? process.env.NEXT_PUBLIC_RECAPTCHA_SITEKEY ?? "";
+  }, []);
+
+  const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const loadRecaptcha = async () => {
+    if (typeof window === "undefined") return;
+    if (window.grecaptcha) return;
+    await new Promise<void>((resolve, reject) => {
+      const existing = document.querySelector('script[src^="https://www.google.com/recaptcha/api.js"]');
+      if (existing) {
+        const check = () => (window.grecaptcha ? resolve() : setTimeout(check, 50));
+        check();
+        return;
+      }
+      const s = document.createElement("script");
+      s.src = "https://www.google.com/recaptcha/api.js?render=explicit";
+      s.async = true;
+      s.defer = true;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error("Failed to load reCAPTCHA"));
+      document.head.appendChild(s);
+    });
+  };
+
+  const ensureWidget = async () => {
+    if (!siteKey) throw new Error("Missing NEXT_PUBLIC_RECAPTCHA_SITE_KEY");
+    await loadRecaptcha();
+    if (!captchaHostRef.current) throw new Error("Missing captcha host");
+    if (!window.grecaptcha) throw new Error("reCAPTCHA not available");
+    if (widgetIdRef.current !== null) return widgetIdRef.current;
+    const id = window.grecaptcha.render(captchaHostRef.current, {
+      sitekey: siteKey,
+      size: "invisible",
+      callback: (token: string) => {
+        tokenResolverRef.current?.(token);
+        tokenResolverRef.current = null;
+      },
+      "error-callback": () => {
+        tokenResolverRef.current?.("");
+        tokenResolverRef.current = null;
+      },
+      "expired-callback": () => {
+        tokenResolverRef.current?.("");
+        tokenResolverRef.current = null;
+      },
+    });
+    widgetIdRef.current = id;
+    return id;
+  };
+
+  const executeCaptcha = async () => {
+    const widgetId = await ensureWidget();
+    if (!window.grecaptcha) throw new Error("reCAPTCHA not available");
+    const token = await new Promise<string>((resolve) => {
+      tokenResolverRef.current = resolve;
+      window.grecaptcha!.execute(widgetId);
+    });
+    if (!token) throw new Error("reCAPTCHA failed");
+    return token;
+  };
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formRef.current) return;
+    if (submitting) return;
+    setSubmitting(true);
+    setMessage(null);
+
+    try {
+      const fd = new FormData(formRef.current);
+      const token = await executeCaptcha();
+
+      const payload = {
+        name: String(fd.get("name") ?? ""),
+        company: String(fd.get("company") ?? ""),
+        email: String(fd.get("email") ?? ""),
+        phone: String(fd.get("phone") ?? ""),
+        service: String(fd.get("service") ?? ""),
+        location: String(fd.get("location") ?? ""),
+        description: String(fd.get("description") ?? ""),
+        recaptchaToken: token,
+      };
+
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json().catch(() => null);
+      if (!res.ok) {
+        const err = json?.error ?? "Failed to submit";
+        throw new Error(err);
+      }
+
+      formRef.current.reset();
+      if (window.grecaptcha && widgetIdRef.current !== null) window.grecaptcha.reset(widgetIdRef.current);
+      setMessage("Thanks! We received your request and will reach out soon.");
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
-    <div id="request-services-form" className="section-full formSection">
-      <div className="section-regular">
-        <div className="headingWrapper">
-          {intro?.eyebrow ? <p className="beforeHeading">{intro.eyebrow}</p> : null}
-          <h2 className="h2">{intro?.heading ?? "Request Service Today"}</h2>
-          {intro?.body ? <p className="afterHeading">{intro.body}</p> : null}
+    <form ref={formRef} className="formWrapper" onSubmit={onSubmit}>
+      <div className="twoInputsWrapper">
+        <div className="oneInputWrapper">
+          <label htmlFor="request-name">Your Name</label>
+          <input id="request-name" type="text" name="name" placeholder="John Smith" required />
         </div>
-        <form className="formWrapper"> 
-        <div className="twoInputsWrapper">
-          <div className="oneInputWrapper">
-            <label htmlFor="request-name">Your Name</label>
-            <input id="request-name" type="text" name="name" placeholder="John Smith" />
-          </div>
-          <div className="oneInputWrapper">
-            <label htmlFor="request-company">Company Name</label>
-            <input id="request-company" type="text" name="company-name" placeholder="Skynet"/>
-          </div>
+        <div className="oneInputWrapper">
+          <label htmlFor="request-company">Company Name</label>
+          <input id="request-company" type="text" name="company" placeholder="Skynet" />
         </div>
-
-        <div className="twoInputsWrapper">
-          <div className="oneInputWrapper">
-            <label htmlFor="request-email">Email</label>
-            <input id="request-email" type="email" name="email" placeholder="john@skynet" />
-          </div>
-          <div className="oneInputWrapper">
-            <label htmlFor="request-phone">Phone</label>
-            <input id="request-phone" type="tel" name="phone" placeholder="(555) 123- 7654"/>
-          </div>
-        </div>
-
-        <div className="twoInputsWrapper">
-          <div className="oneInputWrapper">
-            <label htmlFor="request-service">Service interested in</label>
-            <select id="request-service" name="service">
-              <option>Select service</option>
-              {visibleServices.map((s) => (
-                <option key={s.slug} value={s.slug}>
-                  {s.title}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="oneInputWrapper">
-            <label htmlFor="request-location">Location type</label>
-            <select id="request-location" name="location">
-              <option>Select location</option>
-              {locations.map((l) => (
-                <option key={l.slug} value={l.slug}>
-                  {l.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <label htmlFor="request-description">Tell us about your needs</label>
-        <textarea id="request-description" name="description" placeholder="How many employees or residents? Any specific requirements?"/>
-          <button className="formButton">Request Service</button>
-          <p className="text-center text-gray-500">No obligation. We'll reach out to discuss your needs.</p>
-        </form>
       </div>
-    </div>
+
+      <div className="twoInputsWrapper">
+        <div className="oneInputWrapper">
+          <label htmlFor="request-email">Email</label>
+          <input id="request-email" type="email" name="email" placeholder="john@skynet" required />
+        </div>
+        <div className="oneInputWrapper">
+          <label htmlFor="request-phone">Phone</label>
+          <input id="request-phone" type="tel" name="phone" placeholder="(555) 123- 7654" />
+        </div>
+      </div>
+
+      <div className="twoInputsWrapper">
+        <div className="oneInputWrapper">
+          <label htmlFor="request-service">Service interested in</label>
+          <select id="request-service" name="service">
+            <option value="">Select service</option>
+            {visibleServices.map((s) => (
+              <option key={s.slug} value={s.slug}>
+                {s.title}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="oneInputWrapper">
+          <label htmlFor="request-location">Location type</label>
+          <select id="request-location" name="location">
+            <option value="">Select location</option>
+            {locations.map((l) => (
+              <option key={l.slug} value={l.slug}>
+                {l.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <label htmlFor="request-description">Tell us about your needs</label>
+      <textarea
+        id="request-description"
+        name="description"
+        placeholder="How many employees or residents? Any specific requirements?"
+        required
+      />
+
+      <div ref={captchaHostRef} style={{ display: "contents" }} />
+      <button className="formButton" disabled={submitting}>
+        {submitting ? "Sending..." : "Request Service"}
+      </button>
+      <p className="text-center text-gray-500">No obligation. We'll reach out to discuss your needs.</p>
+      {message ? <p className="text-center text-gray-500">{message}</p> : null}
+    </form>
   );
 }

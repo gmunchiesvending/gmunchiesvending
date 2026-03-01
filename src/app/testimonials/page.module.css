@@ -1,0 +1,11 @@
+.page {
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-12);
+}
+

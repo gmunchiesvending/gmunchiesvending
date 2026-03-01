@@ -27,7 +27,7 @@
   width: fit-content;
   animation: scrollTestimonials 50s linear infinite;
 }
-.clientName{
+.clientName {
   text-align: center;
 }
 
@@ -67,19 +67,12 @@
 /* Left gradient */
 .testimonialSlider::before {
   left: 0;
-  background: linear-gradient(
-    to right,
-    #f5f5f5 0%,
-    rgba(245, 245, 245, 0) 100%
-  );
+  background: linear-gradient(to right, #f5f5f5 0%, rgba(245, 245, 245, 0) 100%);
 }
 
 /* Right gradient */
 .testimonialSlider::after {
   right: 0;
-  background: linear-gradient(
-    to left,
-    #f5f5f5 0%,
-    rgba(245, 245, 245, 0) 100%
-  );
+  background: linear-gradient(to left, #f5f5f5 0%, rgba(245, 245, 245, 0) 100%);
 }
+

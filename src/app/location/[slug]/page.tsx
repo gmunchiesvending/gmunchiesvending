@@ -1,31 +1,7 @@
-import { notFound } from "next/navigation";
-import { getCmsContent } from "@/lib/content";
-import SAL from "@/featured/pages/SAL";
+import LocationSlugPage from "@/components/sections/pages/LocationSlugPage";
 
-export default async function LocationPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function LocationPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const cms = await getCmsContent();
-
-  const location = cms.locations.find((l) => l.slug === slug);
-  if (!location) return notFound();
-
-  const testimonials = cms.testimonials.filter((t) => t.locationSlug === slug);
-
-  return (
-    <SAL
-      kind="location"
-      slug={slug}
-      eyebrow="location"
-      title={location.name}
-      description={location.description}
-      heroImageSrc={location.heroImageSrc}
-      blocks={location.blocks}
-      testimonials={testimonials}
-    />
-  );
+  return <LocationSlugPage slug={slug} />;
 }
 

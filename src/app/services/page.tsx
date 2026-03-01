@@ -1,12 +1,6 @@
-import Services from "@/components/sections/Services";
-import { getCmsContent } from "@/lib/content";
+import ServicesPage from "@/components/sections/pages/ServicesPage";
 
-export default async function ServicesPage() {
-  const cms = await getCmsContent();
-  return (
-    <main>
-      <Services intro={cms.home.servicesIntro} services={cms.services} enableLinks={cms.dynamicPages.services} />
-    </main>
-  );
+export default function Page() {
+  return <ServicesPage />;
 }
 

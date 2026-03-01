@@ -1,0 +1,43 @@
+/* Layout wrapper around the existing UI form */
+.contactFormLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.contactFormFormCol {
+  flex: 1 1 620px;
+}
+
+/* Override the old centered/50% form width when used in the section layout */
+.contactFormFormCol .formWrapper {
+  width: 100% !important;
+  margin: 0 !important;
+}
+.contactFormFormCol{
+  width: 100%;
+}
+
+
+.contactFormMascot{
+ 
+  width: 350px;
+}
+
+@media (max-width: 1400px) {
+  .contactFormFormCol{
+    width: 90%;
+  }
+  .contactFormLayout {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .contactFormMascot {
+    max-width: 320px;
+  }
+}

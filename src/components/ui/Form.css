@@ -27,9 +27,11 @@
   gap: 1rem;
 }
 
-@media (max-width: 1300px){
+@media (max-width: 1000px){
   .formWrapper{
-    width: 80%;
+    width: 100%;
+    border-radius: 2rem;
+    margin-top: 1rem;
   }
   .twoInputsWrapper{
     flex-direction: column;

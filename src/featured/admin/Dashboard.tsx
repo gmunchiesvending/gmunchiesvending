@@ -7,7 +7,7 @@ import type { CmsContent } from "@/lib/content";
 import { FiArrowLeft } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react";
 
-type EditorMode = "locations" | "services";
+type EditorMode = "locations" | "services" | "testimonials" | "social";
 
 function deepClone<T>(value: T): T {
   // structuredClone isn't available in older iOS Safari
@@ -242,6 +242,42 @@ export default function Dashboard() {
     });
   }
 
+  function addTestimonial() {
+    if (!cms) return;
+    const id = `t-${Date.now()}`;
+    setCms({
+      ...cms,
+      testimonials: [
+        ...cms.testimonials,
+        {
+          id,
+          locationSlug: "other",
+          quote: "",
+          clientName: "",
+          locationLabel: "",
+          enabled: true,
+          showOnHome: true,
+          showOnTestimonialsPage: true,
+        } as any,
+      ],
+    });
+  }
+
+  function addSocialLink() {
+    if (!cms) return;
+    setCms({
+      ...cms,
+      socialLinks: [
+        ...(cms.socialLinks ?? []),
+        {
+          platform: "Instagram",
+          url: "https://instagram.com",
+          enabled: true,
+        },
+      ],
+    });
+  }
+
   if (!cms) {
     return (
       <main className="adminPage">
@@ -298,6 +334,20 @@ export default function Dashboard() {
             >
               Edit services
             </button>
+            <button
+              className={`adminButton ${mode === "testimonials" ? "adminButtonPrimary" : ""}`}
+              onClick={() => setMode("testimonials")}
+              disabled={loading}
+            >
+              Edit testimonials
+            </button>
+            <button
+              className={`adminButton ${mode === "social" ? "adminButtonPrimary" : ""}`}
+              onClick={() => setMode("social")}
+              disabled={loading}
+            >
+              Edit social media
+            </button>
           </div>
 
           <button className="adminButton adminButtonSave" onClick={save} disabled={loading}>
@@ -309,10 +359,24 @@ export default function Dashboard() {
           <div className="adminActions">
             <button
               className="adminButton"
-              onClick={mode === "locations" ? addLocation : addService}
+              onClick={
+                mode === "locations"
+                  ? addLocation
+                  : mode === "services"
+                    ? addService
+                    : mode === "testimonials"
+                      ? addTestimonial
+                      : addSocialLink
+              }
               disabled={loading}
             >
-              {mode === "locations" ? "Add location" : "Add service"}
+              {mode === "locations"
+                ? "Add location"
+                : mode === "services"
+                  ? "Add service"
+                  : mode === "testimonials"
+                    ? "Add testimonial"
+                    : "Add social link"}
             </button>
             <button className="adminButton" onClick={load} disabled={loading}>
               {loading ? "Loading..." : "Reload"}
@@ -722,7 +786,7 @@ export default function Dashboard() {
             </div>
           </div>
         </section>
-      ) : (
+      ) : mode === "services" ? (
         <section className="adminSection">
           {cms.services.map((srv, srvIdx) => (
             <details key={`srv-${srvIdx}`} className="adminCard">
@@ -1133,6 +1197,337 @@ export default function Dashboard() {
               </label>
             </div>
           </div>
+        </section>
+      ) : mode === "testimonials" ? (
+        <section className="adminSection">
+          {cms.testimonials.map((t, idx) => (
+            <details key={`t-${idx}`} className="adminCard">
+              <summary className="adminCardHeader">
+                <div>
+                  <h3>{t.clientName || "New testimonial"}</h3>
+                  <div style={{ opacity: 0.7, fontSize: 13 }}>{t.id}</div>
+                </div>
+              </summary>
+
+              <div className="adminCardBody">
+                <div className="adminSubheading">Hero section</div>
+
+                <div className="adminRow">
+                  <div className="adminField">
+                    <label>ID</label>
+                    <input
+                      value={t.id}
+                      onChange={(e) =>
+                        setCms((prev) => {
+                          if (!prev) return prev;
+                          const next = deepClone(prev);
+                          if (next.testimonials[idx]) next.testimonials[idx].id = e.target.value;
+                          return next;
+                        })
+                      }
+                      disabled={loading}
+                    />
+                  </div>
+                  <div className="adminField">
+                    <label>Location slug (for location pages)</label>
+                    <input
+                      value={t.locationSlug}
+                      onChange={(e) =>
+                        setCms((prev) => {
+                          if (!prev) return prev;
+                          const next = deepClone(prev);
+                          if (next.testimonials[idx]) next.testimonials[idx].locationSlug = e.target.value;
+                          return next;
+                        })
+                      }
+                      disabled={loading}
+                      placeholder="office-building"
+                    />
+                  </div>
+                </div>
+
+                <div className="adminRow">
+                  <div className="adminField">
+                    <label>Client name</label>
+                    <input
+                      value={t.clientName}
+                      onChange={(e) =>
+                        setCms((prev) => {
+                          if (!prev) return prev;
+                          const next = deepClone(prev);
+                          if (next.testimonials[idx]) next.testimonials[idx].clientName = e.target.value;
+                          return next;
+                        })
+                      }
+                      disabled={loading}
+                    />
+                  </div>
+                  <div className="adminField">
+                    <label>Location label</label>
+                    <input
+                      value={t.locationLabel ?? ""}
+                      onChange={(e) =>
+                        setCms((prev) => {
+                          if (!prev) return prev;
+                          const next = deepClone(prev);
+                          if (next.testimonials[idx]) next.testimonials[idx].locationLabel = e.target.value;
+                          return next;
+                        })
+                      }
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+
+                <div className="adminField">
+                  <label>Quote</label>
+                  <textarea
+                    value={t.quote}
+                    onChange={(e) =>
+                      setCms((prev) => {
+                        if (!prev) return prev;
+                        const next = deepClone(prev);
+                        if (next.testimonials[idx]) next.testimonials[idx].quote = e.target.value;
+                        return next;
+                      })
+                    }
+                    disabled={loading}
+                  />
+                </div>
+
+                <div className="adminRow">
+                  <div className="adminField">
+                    <label>Enabled</label>
+                    <select
+                      value={t.enabled ? "yes" : "no"}
+                      onChange={(e) =>
+                        setCms((prev) => {
+                          if (!prev) return prev;
+                          const next = deepClone(prev);
+                          if (next.testimonials[idx]) next.testimonials[idx].enabled = e.target.value === "yes";
+                          return next;
+                        })
+                      }
+                      disabled={loading}
+                    >
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
+                  <div className="adminField">
+                    <label>Show on home</label>
+                    <select
+                      value={t.showOnHome ? "yes" : "no"}
+                      onChange={(e) =>
+                        setCms((prev) => {
+                          if (!prev) return prev;
+                          const next = deepClone(prev);
+                          if (next.testimonials[idx]) next.testimonials[idx].showOnHome = e.target.value === "yes";
+                          return next;
+                        })
+                      }
+                      disabled={loading}
+                    >
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="adminRow">
+                  <div className="adminField">
+                    <label>Show on /testimonials</label>
+                    <select
+                      value={t.showOnTestimonialsPage ? "yes" : "no"}
+                      onChange={(e) =>
+                        setCms((prev) => {
+                          if (!prev) return prev;
+                          const next = deepClone(prev);
+                          if (next.testimonials[idx]) next.testimonials[idx].showOnTestimonialsPage = e.target.value === "yes";
+                          return next;
+                        })
+                      }
+                      disabled={loading}
+                    >
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
+                  <div className="adminField">
+                    <label>Rating (optional)</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={5}
+                      value={(t as any).rating ?? ""}
+                      onChange={(e) =>
+                        setCms((prev) => {
+                          if (!prev) return prev;
+                          const next = deepClone(prev);
+                          const v = e.target.value ? Number(e.target.value) : undefined;
+                          if (next.testimonials[idx]) (next.testimonials[idx] as any).rating = v;
+                          return next;
+                        })
+                      }
+                      disabled={loading}
+                      placeholder="5"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  className="adminButton adminButtonDeleteEntity"
+                  onClick={() => {
+                    if (!window.confirm(`Delete testimonial "${t.clientName || t.id}"?`)) return;
+                    setCms((prev) => {
+                      if (!prev) return prev;
+                      const next = deepClone(prev);
+                      next.testimonials.splice(idx, 1);
+                      return next;
+                    });
+                  }}
+                  disabled={loading}
+                >
+                  Delete testimonial
+                </button>
+              </div>
+            </details>
+          ))}
+        </section>
+      ) : (
+        <section className="adminSection">
+          <div className="adminSettingsCard">
+            <div style={{ fontWeight: 800 }}>Social media</div>
+            <div style={{ opacity: 0.75, marginTop: 6 }}>
+              These links are used in the footer. Add only the platforms you want visible.
+            </div>
+          </div>
+
+          {(cms.socialLinks ?? []).map((s, idx) => (
+            <div key={`${s.platform}-${idx}`} className="adminSettingsCard">
+              <div className="adminRow">
+                <div className="adminField">
+                  <label>Platform</label>
+                  <select
+                    value={s.platform}
+                    onChange={(e) =>
+                      setCms((prev) => {
+                        if (!prev) return prev;
+                        const next = deepClone(prev);
+                        if (!next.socialLinks) next.socialLinks = [];
+                        if (next.socialLinks[idx]) next.socialLinks[idx].platform = e.target.value;
+                        return next;
+                      })
+                    }
+                    disabled={loading}
+                  >
+                    <option value="Facebook">Facebook</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="LinkedIn">LinkedIn</option>
+                    <option value="YouTube">YouTube</option>
+                    <option value="Yelp">Yelp</option>
+                    <option value="Google">Google</option>
+                    <option value="X">X</option>
+                  </select>
+                </div>
+
+                <div className="adminField">
+                  <label>Enabled</label>
+                  <select
+                    value={s.enabled === false ? "no" : "yes"}
+                    onChange={(e) =>
+                      setCms((prev) => {
+                        if (!prev) return prev;
+                        const next = deepClone(prev);
+                        if (!next.socialLinks) next.socialLinks = [];
+                        if (next.socialLinks[idx]) next.socialLinks[idx].enabled = e.target.value === "yes";
+                        return next;
+                      })
+                    }
+                    disabled={loading}
+                  >
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="adminField">
+                <label>URL</label>
+                <input
+                  value={s.url}
+                  onChange={(e) =>
+                    setCms((prev) => {
+                      if (!prev) return prev;
+                      const next = deepClone(prev);
+                      if (!next.socialLinks) next.socialLinks = [];
+                      if (next.socialLinks[idx]) next.socialLinks[idx].url = e.target.value;
+                      return next;
+                    })
+                  }
+                  disabled={loading}
+                  placeholder="https://..."
+                />
+              </div>
+
+              <div className="adminActions">
+                <button
+                  className="adminButton"
+                  type="button"
+                  onClick={() =>
+                    setCms((prev) => {
+                      if (!prev) return prev;
+                      const next = deepClone(prev);
+                      if (!next.socialLinks) next.socialLinks = [];
+                      if (idx <= 0) return next;
+                      const tmp = next.socialLinks[idx - 1];
+                      next.socialLinks[idx - 1] = next.socialLinks[idx];
+                      next.socialLinks[idx] = tmp;
+                      return next;
+                    })
+                  }
+                  disabled={loading || idx === 0}
+                >
+                  Move up
+                </button>
+                <button
+                  className="adminButton"
+                  type="button"
+                  onClick={() =>
+                    setCms((prev) => {
+                      if (!prev) return prev;
+                      const next = deepClone(prev);
+                      if (!next.socialLinks) next.socialLinks = [];
+                      if (idx >= next.socialLinks.length - 1) return next;
+                      const tmp = next.socialLinks[idx + 1];
+                      next.socialLinks[idx + 1] = next.socialLinks[idx];
+                      next.socialLinks[idx] = tmp;
+                      return next;
+                    })
+                  }
+                  disabled={loading || idx === (cms.socialLinks?.length ?? 0) - 1}
+                >
+                  Move down
+                </button>
+                <button
+                  className="adminButton adminButtonDeleteEntity"
+                  type="button"
+                  onClick={() => {
+                    if (!window.confirm(`Delete social link "${s.platform}"?`)) return;
+                    setCms((prev) => {
+                      if (!prev) return prev;
+                      const next = deepClone(prev);
+                      next.socialLinks = (next.socialLinks ?? []).filter((_, i) => i !== idx);
+                      return next;
+                    });
+                  }}
+                  disabled={loading}
+                >
+                  Delete link
+                </button>
+              </div>
+            </div>
+          ))}
         </section>
       )}
 

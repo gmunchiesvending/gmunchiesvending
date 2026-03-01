@@ -40,6 +40,15 @@ export const testimonialSchema = z.object({
   quote: z.string().min(1),
   clientName: z.string().min(1),
   locationLabel: z.string().optional().default(""),
+  enabled: z.boolean().optional().default(true),
+  showOnHome: z.boolean().optional().default(true),
+  showOnTestimonialsPage: z.boolean().optional().default(true),
+  // Optional metadata for future imports (e.g., Google/Yelp)
+  rating: z.number().min(1).max(5).optional(),
+  author: z.string().optional(),
+  date: z.string().optional(),
+  source: z.string().optional(),
+  sourceUrl: z.string().optional(),
 });
 
 export const cmsSchema = z.object({
@@ -49,6 +58,15 @@ export const cmsSchema = z.object({
     links: z.array(z.object({ label: z.string().min(1), href: z.string().min(1) })),
     ctaLabel: z.string().min(1),
   }),
+  socialLinks: z
+    .array(
+      z.object({
+        platform: z.string().min(1),
+        url: z.string().min(1),
+        enabled: z.boolean().optional().default(true),
+      }),
+    )
+    .default([]),
   dynamicPages: z
     .object({
       services: z.boolean().default(true),
