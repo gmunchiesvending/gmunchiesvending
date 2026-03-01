@@ -1,6 +1,7 @@
 import "./Footer.css";
 import Link from "next/link";
 import Image from "next/image";
+
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube, FaYelp, FaGoogle } from "react-icons/fa";
 
 type SocialLink = { platform: string; url: string; enabled?: boolean };
@@ -20,6 +21,7 @@ export default function Footer({ socialLinks = [] }: { socialLinks?: SocialLink[
   const visible = socialLinks.filter((s) => s.enabled !== false && s.url);
   return (
     <footer className="section-full footerWrapper">
+     
       <div className="footerContainer">
         {/* Logo and Company Info */}
         <div className="footerTop">

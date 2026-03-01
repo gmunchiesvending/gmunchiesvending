@@ -20,4 +20,3 @@ export default async function ServiceSlugPage({ slug }: { slug: string }) {
     />
   );
 }
-

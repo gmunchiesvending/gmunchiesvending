@@ -42,57 +42,8 @@ async function verifyRecaptcha(token: string, remoteip?: string | null) {
   }
 }
 
-function requireEnv(name: string) {
-  const v = process.env[name];
-  if (!v) throw new Error(`Missing ${name}`);
-  return v;
-}
-
-async function sendViaEmailJs(params: {
-  name: string;
-  company: string;
-  email: string;
-  phone: string;
-  service: string;
-  location: string;
-  description: string;
-}) {
-  const serviceId = requireEnv("EMAILJS_SERVICE_ID");
-  const templateId = requireEnv("EMAILJS_TEMPLATE_ID");
-  const publicKey = requireEnv("EMAILJS_PUBLIC_KEY"); // EmailJS "Public Key" (user_id)
-  const privateKey = process.env.EMAILJS_PRIVATE_KEY ?? ""; // EmailJS "Private Key" (accessToken) - recommended
-
-  const payload = {
-    service_id: serviceId,
-    template_id: templateId,
-    user_id: publicKey,
-    ...(privateKey ? { accessToken: privateKey } : {}),
-    template_params: {
-      subject: `GMunchies: New service request from ${params.name}`,
-      name: params.name,
-      company: params.company || "-",
-      email: params.email,
-      phone: params.phone || "-",
-      service: params.service || "-",
-      location: params.location || "-",
-      message: params.description,
-      reply_to: params.email,
-    },
-  };
-
-  const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    const bodyText = await res.text().catch(() => "");
-    throw new Error(`EmailJS failed (${res.status} ${res.statusText})${bodyText ? `: ${bodyText}` : ""}`);
-  }
-}
-
+// Validates the form and verifies reCAPTCHA server-side.
+// Email is sent client-side via EmailJS (browser-only SDK requirement).
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -104,20 +55,9 @@ export async function POST(req: Request) {
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
     await verifyRecaptcha(parsed.data.recaptchaToken, ip);
 
-    await sendViaEmailJs({
-      name: parsed.data.name,
-      company: parsed.data.company,
-      email: parsed.data.email,
-      phone: parsed.data.phone,
-      service: parsed.data.service,
-      location: parsed.data.location,
-      description: parsed.data.description,
-    });
-
     return NextResponse.json({ ok: true });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Server error";
     return NextResponse.json({ ok: false, error: message }, { status: 500 });
   }
 }
-

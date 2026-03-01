@@ -18,6 +18,52 @@ declare global {
   }
 }
 
+async function sendViaEmailJs(params: {
+  name: string;
+  company: string;
+  email: string;
+  phone: string;
+  service: string;
+  location: string;
+  description: string;
+}) {
+  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+  if (!serviceId || !templateId || !publicKey) {
+    throw new Error("EmailJS is not configured. Missing NEXT_PUBLIC_EMAILJS_* environment variables.");
+  }
+
+  const payload = {
+    service_id: serviceId,
+    template_id: templateId,
+    user_id: publicKey,
+    template_params: {
+      subject: `GMunchies: New service request from ${params.name}`,
+      name: params.name,
+      company: params.company || "-",
+      email: params.email,
+      phone: params.phone || "-",
+      service: params.service || "-",
+      location: params.location || "-",
+      message: params.description,
+      reply_to: params.email,
+    },
+  };
+
+  const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const bodyText = await res.text().catch(() => "");
+    throw new Error(`EmailJS failed (${res.status} ${res.statusText})${bodyText ? `: ${bodyText}` : ""}`);
+  }
+}
+
 export default function Form({ services, locations }: FormProps) {
   const visibleServices = services.filter((s) => s.display);
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -100,7 +146,7 @@ export default function Form({ services, locations }: FormProps) {
       const fd = new FormData(formRef.current);
       const token = await executeCaptcha();
 
-      const payload = {
+      const formData = {
         name: String(fd.get("name") ?? ""),
         company: String(fd.get("company") ?? ""),
         email: String(fd.get("email") ?? ""),
@@ -108,19 +154,22 @@ export default function Form({ services, locations }: FormProps) {
         service: String(fd.get("service") ?? ""),
         location: String(fd.get("location") ?? ""),
         description: String(fd.get("description") ?? ""),
-        recaptchaToken: token,
       };
 
+      // Step 1: Verify reCAPTCHA and validate form server-side
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...formData, recaptchaToken: token }),
       });
       const json = await res.json().catch(() => null);
       if (!res.ok) {
         const err = json?.error ?? "Failed to submit";
         throw new Error(err);
       }
+
+      // Step 2: Send email via EmailJS from the browser (required - EmailJS is browser-only)
+      await sendViaEmailJs(formData);
 
       formRef.current.reset();
       if (window.grecaptcha && widgetIdRef.current !== null) window.grecaptcha.reset(widgetIdRef.current);
@@ -193,7 +242,7 @@ export default function Form({ services, locations }: FormProps) {
       <button className="formButton" disabled={submitting}>
         {submitting ? "Sending..." : "Request Service"}
       </button>
-      <p className="text-center text-gray-500">No obligation. We'll reach out to discuss your needs.</p>
+      <p className="underFormText">No obligation. We'll reach out to discuss your needs.</p>
       {message ? <p className="text-center text-gray-500">{message}</p> : null}
     </form>
   );

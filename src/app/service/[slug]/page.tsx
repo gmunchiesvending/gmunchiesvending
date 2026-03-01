@@ -1,4 +1,4 @@
-import ServiceSlugPage from "@/components/sections/pages/ServiceSlugPage";
+import ServiceSlugPage from "@/featured/pages/ServiceSlugPage";
 
 export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

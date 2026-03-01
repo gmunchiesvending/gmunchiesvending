@@ -12,6 +12,12 @@
   border-radius: 2rem;
   cursor: pointer;
   font-weight: 600;
+  width: 50%;
+  margin-left:auto;
+}
+.underFormText{
+  text-align: right;
+  margin-top: -1rem;
 }
 
 .oneInputWrapper{
@@ -35,6 +41,12 @@
   }
   .twoInputsWrapper{
     flex-direction: column;
+  }
+  .formButton{
+    width: 100%;
+  }
+  .underFormText{
+    text-align: center;
   }
 }
 

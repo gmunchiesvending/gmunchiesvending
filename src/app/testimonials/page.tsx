@@ -1,4 +1,4 @@
-import TestimonialsPage from "@/components/sections/pages/TestimonialsPage";
+import TestimonialsPage from "@/featured/pages/TestimonialsPage";
 
 export default function Page() {
   return <TestimonialsPage />;
