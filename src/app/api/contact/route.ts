@@ -58,10 +58,11 @@ async function sendViaEmailJs(
   },
   origin: string
 ) {
-  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
-  const privateKey = process.env.NEXT_PUBLIC_EMAILJS_PRIVATE_KEY;
+  // Accept both naming conventions (with or without NEXT_PUBLIC_ prefix)
+  const serviceId = process.env.EMAILJS_SERVICE_ID ?? process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+  const templateId = process.env.EMAILJS_TEMPLATE_ID ?? process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const publicKey = process.env.EMAILJS_PUBLIC_KEY ?? process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+  const privateKey = process.env.EMAILJS_PRIVATE_KEY ?? process.env.NEXT_PUBLIC_EMAILJS_PRIVATE_KEY;
 
   if (!serviceId || !templateId || !publicKey) {
     throw new Error("EmailJS is not configured (missing EMAILJS env vars on server)");
