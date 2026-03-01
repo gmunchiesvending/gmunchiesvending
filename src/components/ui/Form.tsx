@@ -80,19 +80,20 @@ export default function Form({ services, locations }: FormProps) {
 
   const loadRecaptcha = async () => {
     if (typeof window === "undefined") return;
-    if (window.grecaptcha) return;
+    // Poll for grecaptcha.render specifically — grecaptcha object may exist as a stub before render is ready
+    if (window.grecaptcha?.render) return;
     await new Promise<void>((resolve, reject) => {
       const existing = document.querySelector('script[src^="https://www.google.com/recaptcha/api.js"]');
+      const poll = () => (window.grecaptcha?.render ? resolve() : setTimeout(poll, 50));
       if (existing) {
-        const check = () => (window.grecaptcha ? resolve() : setTimeout(check, 50));
-        check();
+        poll();
         return;
       }
       const s = document.createElement("script");
       s.src = "https://www.google.com/recaptcha/api.js?render=explicit";
       s.async = true;
       s.defer = true;
-      s.onload = () => resolve();
+      s.onload = poll;
       s.onerror = () => reject(new Error("Failed to load reCAPTCHA"));
       document.head.appendChild(s);
     });
@@ -102,7 +103,7 @@ export default function Form({ services, locations }: FormProps) {
     if (!siteKey) throw new Error("Missing NEXT_PUBLIC_RECAPTCHA_SITE_KEY");
     await loadRecaptcha();
     if (!captchaHostRef.current) throw new Error("Missing captcha host");
-    if (!window.grecaptcha) throw new Error("reCAPTCHA not available");
+    if (!window.grecaptcha?.render) throw new Error("reCAPTCHA not available");
     if (widgetIdRef.current !== null) return widgetIdRef.current;
     const id = window.grecaptcha.render(captchaHostRef.current, {
       sitekey: siteKey,
