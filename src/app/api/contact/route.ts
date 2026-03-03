@@ -11,41 +11,8 @@ const contactSchema = z.object({
   service: z.string().max(120).optional().default(""),
   location: z.string().max(120).optional().default(""),
   description: z.string().min(1).max(4000),
-  recaptchaToken: z.string().min(1),
 });
 
-async function verifyRecaptcha(token: string, remoteip?: string | null) {
-  // Skip in local dev
-  if (process.env.SKIP_RECAPTCHA === "true") return;
-
-  const secret = process.env.RECAPTCHA_SECRET_KEY;
-  if (!secret) throw new Error("Missing RECAPTCHA_SECRET_KEY");
-
-  const params = new URLSearchParams();
-  params.set("secret", secret);
-  params.set("response", token);
-  if (remoteip) params.set("remoteip", remoteip);
-
-  const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params.toString(),
-    cache: "no-store",
-  });
-
-  const json = (await res.json().catch(() => null)) as null | {
-    success?: boolean;
-    "error-codes"?: string[];
-  };
-
-  if (!json?.success) {
-    const codes = json?.["error-codes"]?.join(", ") ?? "unknown";
-    throw new Error(`reCAPTCHA failed (${codes})`);
-  }
-}
-
-// EmailJS requires browser Origin header — we forward it from the incoming request.
-// This lets us keep email sending server-side (avoids NEXT_PUBLIC_ build-time issues on client).
 async function sendViaEmailJs(
   params: {
     name: string;
@@ -111,10 +78,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: "Validation error", issues: parsed.error.issues }, { status: 400 });
     }
 
-    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
-    await verifyRecaptcha(parsed.data.recaptchaToken, ip);
-
-    // Use the browser's Origin (or Referer-derived origin) so EmailJS accepts the server call
     const origin =
       req.headers.get("origin") ??
       req.headers.get("referer")?.match(/^(https?:\/\/[^/]+)/)?.[1] ??

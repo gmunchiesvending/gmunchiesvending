@@ -30,31 +30,30 @@ export default function Locations({ intro, locations, enableLinks = true }: Loca
           {intro?.body ? <p className="afterHeading">{intro.body}</p> : null}
         </div>
         <div className="locationGrid">
-          {locations.map((location, index) => (
-            enableLinks ? (
+          {locations.map((location, index) => {
+            const isLastAlone = index === locations.length - 1 && locations.length % 3 === 1;
+            return enableLinks ? (
               <Link
                 key={location.slug}
                 href={`/location/${location.slug}`}
-                className="locationCardLink"
+                className={`locationCardLink${isLastAlone ? " centerCard" : ""}`}
               >
                 <LocationCard
                   name={location.name}
                   Icon={getIconByKey(location.iconKey)}
                   description={location.description}
-                  className={location.slug === "other" ? "centerCard" : ""}
                 />
               </Link>
             ) : (
-              <div key={location.slug} className="locationCardLink">
+              <div key={location.slug} className={`locationCardLink${isLastAlone ? " centerCard" : ""}`}>
                 <LocationCard
                   name={location.name}
                   Icon={getIconByKey(location.iconKey)}
                   description={location.description}
-                  className={location.slug === "other" ? "centerCard" : ""}
                 />
               </div>
-            )
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
