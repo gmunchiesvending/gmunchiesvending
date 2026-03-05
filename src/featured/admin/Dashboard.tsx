@@ -65,31 +65,43 @@ export default function Dashboard() {
     setStatus("saving...");
     try {
       let resolved: CmsContent = deepClone(cms);
+      const pendingImages: Array<{ repoPath: string; content: string }> = [];
 
-      // Upload any staged (blob URL) images before committing content
       if (pendingFiles.size > 0) {
-        setStatus("uploading images...");
-        const replacements = new Map<string, string>();
+        setStatus("preparing images...");
 
+        // Collect all blob URLs referenced in cms
+        const blobUrls = new Set<string>();
         function collectBlobUrls(obj: unknown) {
           if (typeof obj === "string" && obj.startsWith("blob:") && pendingFiles.has(obj)) {
-            replacements.set(obj, "");
+            blobUrls.add(obj);
           } else if (obj && typeof obj === "object") {
             for (const v of Object.values(obj as Record<string, unknown>)) collectBlobUrls(v);
           }
         }
         collectBlobUrls(resolved);
 
-        for (const blobUrl of replacements.keys()) {
+        // Convert each file to base64 and build replacement map
+        const replacements = new Map<string, string>();
+        for (const blobUrl of blobUrls) {
           const file = pendingFiles.get(blobUrl)!;
-          const path = await uploadFile(file);
-          if (!path) {
-            setLoading(false);
-            return;
+          const safeName = file.name.toLowerCase().replace(/[^a-z0-9._-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "") || "upload";
+          const unique = `${Date.now()}-${safeName}`;
+          const repoPath = `public/uploads/${unique}`;
+          const localPath = `/uploads/${unique}`;
+
+          const arrayBuffer = await file.arrayBuffer();
+          const bytes = new Uint8Array(arrayBuffer);
+          let binary = "";
+          const chunk = 0x8000;
+          for (let i = 0; i < bytes.length; i += chunk) {
+            binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
           }
-          replacements.set(blobUrl, path);
+          pendingImages.push({ repoPath, content: btoa(binary) });
+          replacements.set(blobUrl, localPath);
         }
 
+        // Replace blob URLs in cms with final /uploads/ paths
         function replaceBlobUrls(obj: unknown): unknown {
           if (typeof obj === "string") return replacements.has(obj) ? replacements.get(obj)! : obj;
           if (Array.isArray(obj)) return obj.map(replaceBlobUrls);
@@ -112,7 +124,7 @@ export default function Dashboard() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(resolved),
+        body: JSON.stringify({ data: resolved, images: pendingImages }),
       });
       const json = await res.json();
       if (!res.ok) {
