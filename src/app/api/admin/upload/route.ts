@@ -120,6 +120,15 @@ export async function POST(req: Request) {
       );
     }
 
+    // Dev convenience: keep local public/uploads in sync so the dev server can serve the file
+    if (process.env.NODE_ENV !== "production") {
+      try {
+        await writeLocalUpload(unique, buf);
+      } catch {
+        // ignore local write errors
+      }
+    }
+
     return NextResponse.json({ ok: true, path: `/uploads/${unique}` });
   } catch (e) {
     return serverError(e instanceof Error ? e.message : "Server error");
