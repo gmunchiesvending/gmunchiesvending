@@ -81,7 +81,7 @@ export async function POST(req: Request) {
       updateRes = await githubApiFetch(`/repos/${OWNER}/${REPO}/contents/${repoPath}`, {
         method: "PUT",
         body: JSON.stringify({
-          message: `cms: upload ${unique}`,
+          message: `cms: upload ${unique} [skip ci]`,
           content: encoded,
         }),
       });
