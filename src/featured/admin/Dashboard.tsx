@@ -33,6 +33,7 @@ export default function Dashboard() {
     | { type: "location" | "service"; slug: string; blockIdx?: number; field: "heroImageSrc" | "imageSrc" | "iconSrc" | "blockIconSrc" }
     | { type: "about"; field: "heroImageSrc" | "imageSrc" }
   >(null);
+  const [pendingFiles, setPendingFiles] = useState<Map<string, File>>(new Map());
 
   async function load() {
     if (loading) return;
@@ -63,11 +64,55 @@ export default function Dashboard() {
     setLoading(true);
     setStatus("saving...");
     try {
+      let resolved: CmsContent = deepClone(cms);
+
+      // Upload any staged (blob URL) images before committing content
+      if (pendingFiles.size > 0) {
+        setStatus("uploading images...");
+        const replacements = new Map<string, string>();
+
+        function collectBlobUrls(obj: unknown) {
+          if (typeof obj === "string" && obj.startsWith("blob:") && pendingFiles.has(obj)) {
+            replacements.set(obj, "");
+          } else if (obj && typeof obj === "object") {
+            for (const v of Object.values(obj as Record<string, unknown>)) collectBlobUrls(v);
+          }
+        }
+        collectBlobUrls(resolved);
+
+        for (const blobUrl of replacements.keys()) {
+          const file = pendingFiles.get(blobUrl)!;
+          const path = await uploadFile(file);
+          if (!path) {
+            setLoading(false);
+            return;
+          }
+          replacements.set(blobUrl, path);
+        }
+
+        function replaceBlobUrls(obj: unknown): unknown {
+          if (typeof obj === "string") return replacements.has(obj) ? replacements.get(obj)! : obj;
+          if (Array.isArray(obj)) return obj.map(replaceBlobUrls);
+          if (obj && typeof obj === "object") {
+            return Object.fromEntries(
+              Object.entries(obj as Record<string, unknown>).map(([k, v]) => [k, replaceBlobUrls(v)]),
+            );
+          }
+          return obj;
+        }
+        resolved = replaceBlobUrls(resolved) as CmsContent;
+
+        for (const blobUrl of pendingFiles.keys()) URL.revokeObjectURL(blobUrl);
+        setPendingFiles(new Map());
+        setCms(resolved);
+        setStatus("saving...");
+      }
+
       const res = await fetch("/api/admin/content", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(cms),
+        body: JSON.stringify(resolved),
       });
       const json = await res.json();
       if (!res.ok) {
@@ -143,6 +188,16 @@ export default function Dashboard() {
       setStatus("error: upload network error");
       return null;
     }
+  }
+
+  function stageFile(file: File, onStaged: (blobUrl: string) => void) {
+    const blobUrl = URL.createObjectURL(file);
+    setPendingFiles((prev) => {
+      const next = new Map(prev);
+      next.set(blobUrl, file);
+      return next;
+    });
+    onStaged(blobUrl);
   }
 
   async function openMediaPicker(target: NonNullable<typeof mediaTarget>) {
@@ -486,15 +541,15 @@ export default function Dashboard() {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={async (e) => {
+                      onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
-                        const path = await uploadFile(file);
-                        if (!path) return;
-                        setCms((prev) => {
-                          if (!prev) return prev;
-                          return { ...prev, about: { ...prev.about, heroImageSrc: path } };
-                        });
+                        stageFile(file, (blobUrl) =>
+                          setCms((prev) => {
+                            if (!prev) return prev;
+                            return { ...prev, about: { ...prev.about, heroImageSrc: blobUrl } };
+                          }),
+                        );
                       }}
                       disabled={loading}
                     />
@@ -516,15 +571,15 @@ export default function Dashboard() {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={async (e) => {
+                      onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
-                        const path = await uploadFile(file);
-                        if (!path) return;
-                        setCms((prev) => {
-                          if (!prev) return prev;
-                          return { ...prev, about: { ...prev.about, imageSrc: path } };
-                        });
+                        stageFile(file, (blobUrl) =>
+                          setCms((prev) => {
+                            if (!prev) return prev;
+                            return { ...prev, about: { ...prev.about, imageSrc: blobUrl } };
+                          }),
+                        );
                       }}
                       disabled={loading}
                     />
@@ -615,18 +670,18 @@ export default function Dashboard() {
                       <input
                         type="file"
                         accept="image/*"
-                        onChange={async (e) => {
+                        onChange={(e) => {
                           const file = e.target.files?.[0];
                           if (!file) return;
-                          const path = await uploadFile(file);
-                          if (!path) return;
-                          setCms((prev) => {
-                            if (!prev) return prev;
-                            const next = deepClone(prev);
-                            const target = next.locations.find((l) => l.slug === loc.slug);
-                            if (target) target.heroImageSrc = path;
-                            return next;
-                          });
+                          stageFile(file, (blobUrl) =>
+                            setCms((prev) => {
+                              if (!prev) return prev;
+                              const next = deepClone(prev);
+                              const target = next.locations.find((l) => l.slug === loc.slug);
+                              if (target) target.heroImageSrc = blobUrl;
+                              return next;
+                            }),
+                          );
                         }}
                         disabled={loading}
                       />
@@ -772,18 +827,18 @@ export default function Dashboard() {
                             <input
                               type="file"
                               accept="image/*"
-                              onChange={async (e) => {
+                              onChange={(e) => {
                                 const file = e.target.files?.[0];
                                 if (!file) return;
-                                const path = await uploadFile(file);
-                                if (!path) return;
-                                setCms((prev) => {
-                                  if (!prev) return prev;
-                                  const next = deepClone(prev);
-                                  const target = next.locations.find((l) => l.slug === loc.slug);
-                                  if (target) (target.blocks[idx] as any).iconSrc = path;
-                                  return next;
-                                });
+                                stageFile(file, (blobUrl) =>
+                                  setCms((prev) => {
+                                    if (!prev) return prev;
+                                    const next = deepClone(prev);
+                                    const target = next.locations.find((l) => l.slug === loc.slug);
+                                    if (target) (target.blocks[idx] as any).iconSrc = blobUrl;
+                                    return next;
+                                  }),
+                                );
                               }}
                               disabled={loading}
                             />
@@ -821,18 +876,18 @@ export default function Dashboard() {
                             <input
                               type="file"
                               accept="image/*"
-                              onChange={async (e) => {
+                              onChange={(e) => {
                                 const file = e.target.files?.[0];
                                 if (!file) return;
-                                const path = await uploadFile(file);
-                                if (!path) return;
-                                setCms((prev) => {
-                                  if (!prev) return prev;
-                                  const next = deepClone(prev);
-                                  const target = next.locations.find((l) => l.slug === loc.slug);
-                                  if (target) target.blocks[idx].imageSrc = path;
-                                  return next;
-                                });
+                                stageFile(file, (blobUrl) =>
+                                  setCms((prev) => {
+                                    if (!prev) return prev;
+                                    const next = deepClone(prev);
+                                    const target = next.locations.find((l) => l.slug === loc.slug);
+                                    if (target) target.blocks[idx].imageSrc = blobUrl;
+                                    return next;
+                                  }),
+                                );
                               }}
                               disabled={loading}
                             />
@@ -989,18 +1044,18 @@ export default function Dashboard() {
                       <input
                         type="file"
                         accept="image/*"
-                        onChange={async (e) => {
+                        onChange={(e) => {
                           const file = e.target.files?.[0];
                           if (!file) return;
-                          const path = await uploadFile(file);
-                          if (!path) return;
-                          setCms((prev) => {
-                            if (!prev) return prev;
-                            const next = deepClone(prev);
-                            const target = next.services.find((s) => s.slug === srv.slug);
-                            if (target) target.iconSrc = path;
-                            return next;
-                          });
+                          stageFile(file, (blobUrl) =>
+                            setCms((prev) => {
+                              if (!prev) return prev;
+                              const next = deepClone(prev);
+                              const target = next.services.find((s) => s.slug === srv.slug);
+                              if (target) target.iconSrc = blobUrl;
+                              return next;
+                            }),
+                          );
                         }}
                         disabled={loading}
                       />
@@ -1053,18 +1108,18 @@ export default function Dashboard() {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={async (e) => {
+                      onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
-                        const path = await uploadFile(file);
-                        if (!path) return;
-                        setCms((prev) => {
-                          if (!prev) return prev;
-                          const next = deepClone(prev);
-                          const target = next.services.find((s) => s.slug === srv.slug);
-                          if (target) target.heroImageSrc = path;
-                          return next;
-                        });
+                        stageFile(file, (blobUrl) =>
+                          setCms((prev) => {
+                            if (!prev) return prev;
+                            const next = deepClone(prev);
+                            const target = next.services.find((s) => s.slug === srv.slug);
+                            if (target) target.heroImageSrc = blobUrl;
+                            return next;
+                          }),
+                        );
                       }}
                       disabled={loading}
                     />
@@ -1184,18 +1239,18 @@ export default function Dashboard() {
                             <input
                               type="file"
                               accept="image/*"
-                              onChange={async (e) => {
+                              onChange={(e) => {
                                 const file = e.target.files?.[0];
                                 if (!file) return;
-                                const path = await uploadFile(file);
-                                if (!path) return;
-                                setCms((prev) => {
-                                  if (!prev) return prev;
-                                  const next = deepClone(prev);
-                                  const target = next.services.find((s) => s.slug === srv.slug);
-                                  if (target) (target.blocks[idx] as any).iconSrc = path;
-                                  return next;
-                                });
+                                stageFile(file, (blobUrl) =>
+                                  setCms((prev) => {
+                                    if (!prev) return prev;
+                                    const next = deepClone(prev);
+                                    const target = next.services.find((s) => s.slug === srv.slug);
+                                    if (target) (target.blocks[idx] as any).iconSrc = blobUrl;
+                                    return next;
+                                  }),
+                                );
                               }}
                               disabled={loading}
                             />
@@ -1233,18 +1288,18 @@ export default function Dashboard() {
                             <input
                               type="file"
                               accept="image/*"
-                              onChange={async (e) => {
+                              onChange={(e) => {
                                 const file = e.target.files?.[0];
                                 if (!file) return;
-                                const path = await uploadFile(file);
-                                if (!path) return;
-                                setCms((prev) => {
-                                  if (!prev) return prev;
-                                  const next = deepClone(prev);
-                                  const target = next.services.find((s) => s.slug === srv.slug);
-                                  if (target) target.blocks[idx].imageSrc = path;
-                                  return next;
-                                });
+                                stageFile(file, (blobUrl) =>
+                                  setCms((prev) => {
+                                    if (!prev) return prev;
+                                    const next = deepClone(prev);
+                                    const target = next.services.find((s) => s.slug === srv.slug);
+                                    if (target) target.blocks[idx].imageSrc = blobUrl;
+                                    return next;
+                                  }),
+                                );
                               }}
                               disabled={loading}
                             />
