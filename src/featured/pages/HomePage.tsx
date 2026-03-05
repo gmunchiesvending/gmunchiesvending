@@ -1,4 +1,5 @@
 import Hero from "@/components/sections/Hero";
+import AboutPreview from "@/components/sections/AboutPreview";
 import Services from "@/components/sections/Services";
 import Results from "@/components/sections/Results";
 import Locations from "@/components/sections/Locations";
@@ -17,6 +18,12 @@ export default async function HomePage() {
         body={cms.home.hero.body}
         ctaLabel={cms.home.hero.ctaLabel}
         imageSrc={cms.home.hero.imageSrc}
+      />
+      <AboutPreview
+        eyebrow={cms.about.eyebrow}
+        headline={cms.about.headline}
+        body={cms.about.body}
+        imageSrc={cms.about.imageSrc}
       />
       <Services intro={cms.home.servicesIntro} services={cms.services} enableLinks={cms.dynamicPages.services} />
       <Locations intro={cms.home.locationsIntro} locations={cms.locations} enableLinks={cms.dynamicPages.locations} />

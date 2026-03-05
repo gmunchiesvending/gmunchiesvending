@@ -51,6 +51,14 @@ export const testimonialSchema = z.object({
   sourceUrl: z.string().optional(),
 });
 
+export const aboutSchema = z.object({
+  eyebrow: z.string().optional().default(""),
+  heroImageSrc: z.string().optional().default(""),
+  headline: z.string().optional().default(""),
+  body: z.string().optional().default(""),
+  imageSrc: z.string().optional().default(""),
+}).default({ eyebrow: "", heroImageSrc: "", headline: "", body: "", imageSrc: "" });
+
 export const cmsSchema = z.object({
   navbar: z.object({
     logoSrc: z.string().min(1),
@@ -109,6 +117,7 @@ export const cmsSchema = z.object({
       })
       .optional(),
   }),
+  about: aboutSchema.optional().default({ eyebrow: "", heroImageSrc: "", headline: "", body: "", imageSrc: "" }),
   services: z.array(serviceSchema).default([]),
   locations: z.array(locationSchema).default([]),
   testimonials: z.array(testimonialSchema).default([]),

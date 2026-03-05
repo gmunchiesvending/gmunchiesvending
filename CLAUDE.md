@@ -17,6 +17,7 @@
 src/
 ├── app/                        # Next.js App Router
 │   ├── page.tsx                # Home → featured/pages/HomePage
+│   ├── about/page.tsx          # About → featured/pages/AboutPage
 │   ├── layout.tsx
 │   ├── not-found.tsx
 │   ├── location/[slug]/page.tsx   → featured/pages/LocationSlugPage
@@ -36,6 +37,7 @@ src/
 │   │   ├── Locations.tsx
 │   │   ├── Results.tsx
 │   │   ├── ContactForm.tsx     # Wraps Form.tsx
+│   │   ├── AboutPreview.tsx    # Home page about section (left text + right image + read more)
 │   │   ├── Testemonials.tsx    # Note: typo in filename kept intentionally
 │   │   ├── NavBar.tsx
 │   │   ├── Footer.tsx
@@ -56,6 +58,9 @@ src/
 ├── featured/
 │   ├── pages/                  # Full page compositions (used by app router)
 │   │   ├── HomePage.tsx
+│   │   ├── AboutPage.tsx       # Server — fetches CMS, passes to AboutPageView
+│   │   ├── AboutPageView.tsx   # Client — parallax hero + body + image
+│   │   ├── AboutPage.css
 │   │   ├── LocationSlugPage.tsx
 │   │   ├── LocationsPage.tsx
 │   │   ├── ServiceSlugPage.tsx
@@ -143,3 +148,58 @@ npm run lint     # ESLint
 **Whenever you change the project structure, component locations, conventions, or env vars:**
 1. Update this `CLAUDE.md` to reflect the new state.
 2. Update `~/.claude/projects/.../memory/MEMORY.md` if the project entry there is stale.
+
+---
+
+## Site Flow Scan
+
+### Pages & Routes
+
+| Route | Composition | Notes |
+|---|---|---|
+| `/` | `app/page.tsx` → `featured/pages/HomePage.tsx` | Home |
+| `/about` | `app/about/page.tsx` → `featured/pages/AboutPage.tsx` → `AboutPageView.tsx` (client) | About page |
+| `/services` | `app/services/page.tsx` → `featured/pages/ServicesPage.tsx` | Services listing |
+| `/service/[slug]` | `app/service/[slug]/page.tsx` → `featured/pages/ServiceSlugPage.tsx` → `SAL.tsx` (client) | Service detail |
+| `/locations` | `app/locations/page.tsx` → `featured/pages/LocationsPage.tsx` | Locations listing |
+| `/location/[slug]` | `app/location/[slug]/page.tsx` → `featured/pages/LocationSlugPage.tsx` → `SAL.tsx` (client) | Location detail |
+| `/testimonials` | `app/testimonials/page.tsx` → `featured/pages/TestimonialsPage.tsx` | Testimonials |
+| `/admin` | `app/admin/page.tsx` → `featured/admin/Admin.tsx` → `Dashboard.tsx` (client) | CMS admin panel |
+
+### Home Page Sections (order)
+
+1. **Hero** — parallax image, headline, body, CTA scrolls to contact form
+2. **AboutPreview** — left: headline + 300-char excerpt + "Read more →"; right: image
+3. **Services** — intro + ServiceCard grid
+4. **Locations** — intro + LocationCard grid
+5. **Results** — static stats
+6. **Testimonials** — intro + TestimonialCard grid
+7. **ContactForm** — reCAPTCHA + EmailJS
+
+### About Page Sections
+
+1. **Hero** — parallax image (`aspect-ratio: 3/1`), centered eyebrow + headline
+2. **Content** — centered body text + image (center layout)
+
+### CMS data.json Top-Level Keys
+
+| Key | Description |
+|---|---|
+| `navbar` | Logo src/href, links array, CTA label |
+| `dynamicPages` | Feature flags: `services`, `locations` (bool) |
+| `socialLinks` | Social platform links with `enabled` flag |
+| `home` | hero, servicesIntro, locationsIntro, testimonialsIntro, formIntro |
+| `about` | eyebrow, heroImageSrc, headline, body, imageSrc |
+| `services` | Array of service objects with blocks[] |
+| `locations` | Array of location objects with blocks[] |
+| `testimonials` | Array of testimonial objects |
+
+### Admin Panel Modes
+
+`about` | `locations` | `services` | `testimonials` | `social`
+
+### ContentBlock Layouts (used on service/location detail and about pages)
+
+- `left` — text on right, image on left
+- `right` — text on left, image on right
+- `center` — text above, image below (stacked, centered)

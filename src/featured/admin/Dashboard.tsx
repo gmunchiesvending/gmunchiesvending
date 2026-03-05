@@ -7,7 +7,7 @@ import type { CmsContent } from "@/lib/content";
 import { FiArrowLeft } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react";
 
-type EditorMode = "locations" | "services" | "testimonials" | "social";
+type EditorMode = "about" | "locations" | "services" | "testimonials" | "social";
 
 function deepClone<T>(value: T): T {
   // structuredClone isn't available in older iOS Safari
@@ -25,11 +25,13 @@ export default function Dashboard() {
     null,
   );
   const [loading, setLoading] = useState(false);
-  const [mode, setMode] = useState<EditorMode>("locations");
+  const [mode, setMode] = useState<EditorMode>("about");
   const [mediaOpen, setMediaOpen] = useState(false);
   const [media, setMedia] = useState<string[]>([]);
   const [mediaTarget, setMediaTarget] = useState<
-    null | { type: "location" | "service"; slug: string; blockIdx?: number; field: "heroImageSrc" | "imageSrc" | "iconSrc" | "blockIconSrc" }
+    | null
+    | { type: "location" | "service"; slug: string; blockIdx?: number; field: "heroImageSrc" | "imageSrc" | "iconSrc" | "blockIconSrc" }
+    | { type: "about"; field: "heroImageSrc" | "imageSrc" }
   >(null);
 
   async function load() {
@@ -167,7 +169,9 @@ export default function Dashboard() {
     setCms((prev) => {
       if (!prev) return prev;
       const next: CmsContent = deepClone(prev);
-      if (mediaTarget.type === "location") {
+      if (mediaTarget.type === "about") {
+        next.about = { ...next.about, [mediaTarget.field]: path };
+      } else if (mediaTarget.type === "location") {
         const loc = next.locations.find((l) => l.slug === mediaTarget.slug);
         if (!loc) return next;
         if (mediaTarget.field === "heroImageSrc") {
@@ -179,7 +183,7 @@ export default function Dashboard() {
           const idx = mediaTarget.blockIdx ?? -1;
           if (idx >= 0 && loc.blocks[idx]) loc.blocks[idx].imageSrc = path;
         }
-      } else {
+      } else if (mediaTarget.type === "service") {
         const srv = next.services.find((s) => s.slug === mediaTarget.slug);
         if (!srv) return next;
         if (mediaTarget.field === "heroImageSrc") {
@@ -321,6 +325,13 @@ export default function Dashboard() {
         <div className="adminTopbarRow adminTopbarRowBottom">
           <div className="adminModeSwitch">
             <button
+              className={`adminButton ${mode === "about" ? "adminButtonPrimary" : ""}`}
+              onClick={() => setMode("about")}
+              disabled={loading}
+            >
+              Edit about
+            </button>
+            <button
               className={`adminButton ${mode === "locations" ? "adminButtonPrimary" : ""}`}
               onClick={() => setMode("locations")}
               disabled={loading}
@@ -357,27 +368,29 @@ export default function Dashboard() {
 
         <div className="adminTopbarRow">
           <div className="adminActions">
-            <button
-              className="adminButton"
-              onClick={
-                mode === "locations"
-                  ? addLocation
+            {mode !== "about" ? (
+              <button
+                className="adminButton"
+                onClick={
+                  mode === "locations"
+                    ? addLocation
+                    : mode === "services"
+                      ? addService
+                      : mode === "testimonials"
+                        ? addTestimonial
+                        : addSocialLink
+                }
+                disabled={loading}
+              >
+                {mode === "locations"
+                  ? "Add location"
                   : mode === "services"
-                    ? addService
+                    ? "Add service"
                     : mode === "testimonials"
-                      ? addTestimonial
-                      : addSocialLink
-              }
-              disabled={loading}
-            >
-              {mode === "locations"
-                ? "Add location"
-                : mode === "services"
-                  ? "Add service"
-                  : mode === "testimonials"
-                    ? "Add testimonial"
-                    : "Add social link"}
-            </button>
+                      ? "Add testimonial"
+                      : "Add social link"}
+              </button>
+            ) : null}
             <button className="adminButton" onClick={load} disabled={loading}>
               {loading ? "Loading..." : "Reload"}
             </button>
@@ -413,7 +426,123 @@ export default function Dashboard() {
         </div>
       ) : null}
 
-      {mode === "locations" ? (
+      {mode === "about" ? (
+        <section className="adminSection">
+          <div className="adminCard">
+            <div className="adminCardBody">
+              <div className="adminSubheading">About Page</div>
+
+              <div className="adminRow">
+                <div className="adminField">
+                  <label>Eyebrow text</label>
+                  <input
+                    value={cms.about.eyebrow ?? ""}
+                    onChange={(e) =>
+                      setCms((prev) => {
+                        if (!prev) return prev;
+                        return { ...prev, about: { ...prev.about, eyebrow: e.target.value } };
+                      })
+                    }
+                    disabled={loading}
+                    placeholder="Who we are"
+                  />
+                </div>
+                <div className="adminField">
+                  <label>Headline</label>
+                  <input
+                    value={cms.about.headline ?? ""}
+                    onChange={(e) =>
+                      setCms((prev) => {
+                        if (!prev) return prev;
+                        return { ...prev, about: { ...prev.about, headline: e.target.value } };
+                      })
+                    }
+                    disabled={loading}
+                    placeholder="About G Munchies"
+                  />
+                </div>
+              </div>
+
+              <div className="adminField">
+                <label>Body text</label>
+                <textarea
+                  value={cms.about.body ?? ""}
+                  onChange={(e) =>
+                    setCms((prev) => {
+                      if (!prev) return prev;
+                      return { ...prev, about: { ...prev.about, body: e.target.value } };
+                    })
+                  }
+                  disabled={loading}
+                  rows={8}
+                />
+              </div>
+
+              <div className="adminRow">
+                <div className="adminField">
+                  <label>Hero image</label>
+                  <div className="blockPreview">
+                    {cms.about.heroImageSrc ? <img src={cms.about.heroImageSrc} alt="" /> : null}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const path = await uploadFile(file);
+                        if (!path) return;
+                        setCms((prev) => {
+                          if (!prev) return prev;
+                          return { ...prev, about: { ...prev.about, heroImageSrc: path } };
+                        });
+                      }}
+                      disabled={loading}
+                    />
+                    <button
+                      className="adminButton"
+                      type="button"
+                      onClick={() => openMediaPicker({ type: "about", field: "heroImageSrc" })}
+                      disabled={loading}
+                    >
+                      Add image from media
+                    </button>
+                  </div>
+                </div>
+
+                <div className="adminField">
+                  <label>Content image</label>
+                  <div className="blockPreview">
+                    {cms.about.imageSrc ? <img src={cms.about.imageSrc} alt="" /> : null}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const path = await uploadFile(file);
+                        if (!path) return;
+                        setCms((prev) => {
+                          if (!prev) return prev;
+                          return { ...prev, about: { ...prev.about, imageSrc: path } };
+                        });
+                      }}
+                      disabled={loading}
+                    />
+                    <button
+                      className="adminButton"
+                      type="button"
+                      onClick={() => openMediaPicker({ type: "about", field: "imageSrc" })}
+                      disabled={loading}
+                    >
+                      Add image from media
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : mode === "locations" ? (
         <section className="adminSection">
           {cms.locations.map((loc, locIdx) => (
             <details key={`loc-${locIdx}`} className="adminCard">
