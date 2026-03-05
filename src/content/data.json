@@ -14,6 +14,10 @@
       {
         "label": "Locations",
         "href": "/locations"
+      },
+      {
+        "label": "About",
+        "href": "/about"
       }
     ],
     "ctaLabel": "Request Service"
@@ -100,7 +104,7 @@
       "blocks": [
         {
           "layout": "left",
-          "eyebrow": "modern solutions",
+          "eyebrow": "",
           "heading": "Snack Vending ",
           "body": "Bring convenience directly to your location with professionally managed snack vending machines designed to keep people satisfied throughout the day. G Munchies provides modern, reliable machines stocked with a wide selection of popular snacks, healthier choices, and customer favorites.\n\nWe handle everything from delivery and installation to regular restocking and maintenance. No cost to your business. No hassle. Just a clean, fully serviced vending solution that keeps your employees, guests, or customers happy and energized.",
           "iconSrc": "/uploads/1771947434993-icon_vending.svg",
@@ -108,7 +112,7 @@
         },
         {
           "layout": "right",
-          "eyebrow": "product mix",
+          "eyebrow": "",
           "heading": "Drink Vending",
           "body": "Keep your location refreshed with professionally managed drink vending machines from G Munchies. We provide modern, energy-efficient machines stocked with a wide range of cold beverages, from soft drinks and sparkling water to juices and healthier options.\nOur team takes care of delivery, installation, restocking, and maintenance, ensuring your machine stays clean, fully stocked, and running smoothly. With cashless payment options and consistent service, your employees and customers get quick, reliable access to the drinks they want, anytime.",
           "iconSrc": "/uploads/icon_micro-market.svg",
@@ -116,7 +120,7 @@
         },
         {
           "layout": "center",
-          "eyebrow": "service included",
+          "eyebrow": "",
           "heading": "Combo Vending",
           "body": "A smart solution for high-traffic locations.\n\nWith both snacks and beverages available in one reliable unit, our combo vending service delivers convenience and value in a compact footprint. Modern payment systems, energy-efficient operation, and consistent service make it easy to provide food and drinks without added work for your team.\n\nG Munchies keeps everything filled, fresh, and functioning so your people always have access to what they need.",
           "iconSrc": "/uploads/icon_snack-vending-machines.svg",

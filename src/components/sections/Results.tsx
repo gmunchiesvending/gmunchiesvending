@@ -22,7 +22,7 @@ export default function Counter() {
 
           <ResultCard headline="Happy Clients" target={45} Icon={BiUser}/>
           <ResultCard headline="Locations" target={150} Icon={GoLocation}/>
-          <ResultCard headline="Maintenance" target={14000} Icon={GrHostMaintenance}/>
+          {/* <ResultCard headline="Maintenance" target={14000} Icon={GrHostMaintenance}/> */}
         </div>
       </div>
     </section>

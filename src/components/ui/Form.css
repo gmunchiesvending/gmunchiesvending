@@ -13,10 +13,10 @@
   cursor: pointer;
   font-weight: 600;
   width: 50%;
-  margin-left:auto;
+  margin: 0 auto;
 }
 .underFormText{
-  text-align: right;
+  text-align: center;
   margin-top: -1rem;
 }
 
