@@ -236,7 +236,9 @@ input {
   color: red;
   width: 0%;
   left: 65%;
-  bottom: -0.32rem;
+  bottom: -0.36rem;
+  bottom: -0.33rem;
+  border-radius: 10%;
   line-height: 0;
   transition: 0.3s width;
 }
