@@ -99,7 +99,7 @@
       "display": true,
       "iconSrc": "/uploads/1771947434993-icon_vending.svg",
       "title": "Vending",
-      "excerpt": "Modern snack machines with top brands and smart inventory support. Clean look, reliable performance, easy.",
+      "excerpt": "Under vending icon: Vending machines stocked with snacks and drinks for every taste. ",
       "heroImageSrc": "/uploads/1772899303051-chatgpt-image-mar-7-2026-04_55_46-pm.png",
       "blocks": [
         {
@@ -201,6 +201,7 @@
     {
       "slug": "office-building",
       "name": "Office Building",
+      "excerpt": "",
       "description": "Perfect for corporate environments and business centers.",
       "iconKey": "FaBuilding",
       "heroImageSrc": "/uploads/hero.webp",
@@ -226,6 +227,7 @@
     {
       "slug": "appartment-complex",
       "name": "Appartment Complex",
+      "excerpt": "",
       "description": "Convenient solutions for residential communities",
       "iconKey": "FaHome",
       "heroImageSrc": "/uploads/hero.webp",
@@ -251,6 +253,7 @@
     {
       "slug": "ware-house-industrial",
       "name": "Ware House/Industrial",
+      "excerpt": "",
       "description": "Reliable vending for industrial and warehouse facilities",
       "iconKey": "FaWarehouse",
       "heroImageSrc": "/uploads/hero.webp",
@@ -276,6 +279,7 @@
     {
       "slug": "gym-fitness-center",
       "name": "Gym/Fitness-center",
+      "excerpt": "",
       "description": "Healthy snacks and drinks for active members.",
       "iconKey": "FaDumbbell",
       "heroImageSrc": "/uploads/hero.webp",
@@ -301,6 +305,7 @@
     {
       "slug": "hospital-healtcare",
       "name": "Hospital / Healtcare",
+      "excerpt": "",
       "description": "24/7 refreshment options for staff and visitors",
       "iconKey": "FaHospital",
       "heroImageSrc": "/uploads/hero.webp",
@@ -326,6 +331,7 @@
     {
       "slug": "school-university",
       "name": "School University",
+      "excerpt": "",
       "description": "Campus-wide vending solutions for students and faculty",
       "iconKey": "FaGraduationCap",
       "heroImageSrc": "/uploads/hero.webp",
@@ -351,6 +357,7 @@
     {
       "slug": "other",
       "name": "Other",
+      "excerpt": "",
       "description": "Custom solutions for your unique location",
       "iconKey": "FaMapMarkerAlt",
       "heroImageSrc": "/uploads/hero.webp",
