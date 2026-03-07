@@ -4,7 +4,18 @@ import "./Admin.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { CmsContent } from "@/lib/content";
-import { FiArrowLeft } from "react-icons/fi";
+import {
+  FiArrowLeft,
+  FiGrid,
+  FiInfo,
+  FiLogOut,
+  FiMapPin,
+  FiMessageSquare,
+  FiPlus,
+  FiRefreshCw,
+  FiSave,
+  FiShare2,
+} from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 type EditorMode = "about" | "locations" | "services" | "testimonials" | "social";
@@ -17,6 +28,10 @@ function deepClone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
 }
 
+function normSrc(value: unknown): string {
+  return typeof value === "string" ? value.trim() : "";
+}
+
 export default function Dashboard() {
   const { data: session, status: sessionStatus } = useSession();
   const [cms, setCms] = useState<CmsContent | null>(null);
@@ -25,7 +40,7 @@ export default function Dashboard() {
     null,
   );
   const [loading, setLoading] = useState(false);
-  const [mode, setMode] = useState<EditorMode>("about");
+  const [mode, setMode] = useState<EditorMode>("services");
   const [mediaOpen, setMediaOpen] = useState(false);
   const [media, setMedia] = useState<string[]>([]);
   const [mediaTarget, setMediaTarget] = useState<
@@ -375,69 +390,79 @@ export default function Dashboard() {
   }
 
   return (
-    <main className="adminPage adminPageWithTopbar">
-      <div className="adminFixedTopbar">
-        <div className="adminTopbarRow">
-          <Link href="/" className="adminBackLink">
-            <FiArrowLeft size={18} />
-            <span>Back to website</span>
-          </Link>
-          {session ? (
-            <button className="adminButton" onClick={() => signOut()} disabled={loading}>
-              Sign out
-            </button>
-          ) : null}
-        </div>
+    <main className="adminShell">
+      <aside className="adminSidebar">
+        <Link href="/" className="adminBackLink">
+          <FiArrowLeft size={18} />
+          <span>Back to website</span>
+        </Link>
 
-        <div className="adminTopbarRow adminTopbarRowBottom">
-          <div className="adminModeSwitch">
-            <button
-              className={`adminButton ${mode === "about" ? "adminButtonPrimary" : ""}`}
-              onClick={() => setMode("about")}
-              disabled={loading}
-            >
-              Edit about
-            </button>
-            <button
-              className={`adminButton ${mode === "locations" ? "adminButtonPrimary" : ""}`}
-              onClick={() => setMode("locations")}
-              disabled={loading}
-            >
-              Edit locations
-            </button>
-            <button
-              className={`adminButton ${mode === "services" ? "adminButtonPrimary" : ""}`}
-              onClick={() => setMode("services")}
-              disabled={loading}
-            >
-              Edit services
-            </button>
-            <button
-              className={`adminButton ${mode === "testimonials" ? "adminButtonPrimary" : ""}`}
-              onClick={() => setMode("testimonials")}
-              disabled={loading}
-            >
-              Edit testimonials
-            </button>
-            <button
-              className={`adminButton ${mode === "social" ? "adminButtonPrimary" : ""}`}
-              onClick={() => setMode("social")}
-              disabled={loading}
-            >
-              Edit social media
-            </button>
-          </div>
-
-          <button className="adminButton adminButtonSave" onClick={save} disabled={loading}>
-            {loading ? "Saving..." : "Save"}
+        <div className="adminSidebarNav" role="navigation" aria-label="Admin sections">
+          <button
+            className={`adminSidebarNavItem ${mode === "services" ? "active" : ""}`}
+            onClick={() => setMode("services")}
+            disabled={loading}
+            type="button"
+          >
+            <FiGrid size={18} />
+            <span>Edit services</span>
+          </button>
+          <button
+            className={`adminSidebarNavItem ${mode === "locations" ? "active" : ""}`}
+            onClick={() => setMode("locations")}
+            disabled={loading}
+            type="button"
+          >
+            <FiMapPin size={18} />
+            <span>Edit locations</span>
+          </button>
+          <button
+            className={`adminSidebarNavItem ${mode === "about" ? "active" : ""}`}
+            onClick={() => setMode("about")}
+            disabled={loading}
+            type="button"
+          >
+            <FiInfo size={18} />
+            <span>Edit about</span>
+          </button>
+          <button
+            className={`adminSidebarNavItem ${mode === "testimonials" ? "active" : ""}`}
+            onClick={() => setMode("testimonials")}
+            disabled={loading}
+            type="button"
+          >
+            <FiMessageSquare size={18} />
+            <span>Edit testimonials</span>
+          </button>
+          <button
+            className={`adminSidebarNavItem ${mode === "social" ? "active" : ""}`}
+            onClick={() => setMode("social")}
+            disabled={loading}
+            type="button"
+          >
+            <FiShare2 size={18} />
+            <span>Edit social media</span>
           </button>
         </div>
 
-        <div className="adminTopbarRow">
-          <div className="adminActions">
+        <div className="adminSidebarActions" />
+
+        <div className="adminSidebarFooter">
+          {session ? (
+            <button className="adminSidebarAction adminButton" onClick={() => signOut()} disabled={loading} type="button">
+              <FiLogOut size={18} />
+              <span>Sign out</span>
+            </button>
+          ) : null}
+        </div>
+      </aside>
+
+      <div className="adminMain">
+        <div className="adminMainInner">
+          <div className="adminMainTopActions">
             {mode !== "about" ? (
               <button
-                className="adminButton"
+                className="adminMainActionButton adminButton"
                 onClick={
                   mode === "locations"
                     ? addLocation
@@ -448,50 +473,56 @@ export default function Dashboard() {
                         : addSocialLink
                 }
                 disabled={loading}
+                type="button"
               >
-                {mode === "locations"
-                  ? "Add location"
-                  : mode === "services"
-                    ? "Add service"
-                    : mode === "testimonials"
-                      ? "Add testimonial"
-                      : "Add social link"}
+                <FiPlus size={18} />
+                <span>Add</span>
               </button>
             ) : null}
-            <button className="adminButton" onClick={load} disabled={loading}>
-              {loading ? "Loading..." : "Reload"}
+
+            <button className="adminMainActionButton adminButton" onClick={load} disabled={loading} type="button">
+              <FiRefreshCw size={18} />
+              <span>{loading ? "Loading..." : "Reload"}</span>
+            </button>
+
+            <button
+              className="adminMainActionButton adminButton adminButtonSave"
+              onClick={save}
+              disabled={loading}
+              type="button"
+            >
+              <FiSave size={18} />
+              <span>{loading ? "Saving..." : "Save"}</span>
             </button>
           </div>
-        </div>
-      </div>
 
-      {status && <p className="adminStatus">{status}</p>}
-      {popup ? (
-        <div
-          className="adminPopupOverlay"
-          role="dialog"
-          aria-modal="true"
-          aria-label={popup.title}
-          onClick={() => setPopup(null)}
-        >
-          <div className="adminPopup" onClick={(e) => e.stopPropagation()}>
-            <div className="adminPopupHeader">
-              <strong>{popup.title}</strong>
-              <button className="adminPopupClose" type="button" onClick={() => setPopup(null)} aria-label="Close">
-                ✕
-              </button>
-            </div>
-            <div className="adminPopupBody">
-              {popup.body}
-              {popup.kind === "error" ? (
-                <div style={{ marginTop: "var(--space-10)" }}>
-                  <a href="mailto:nikodola@gmail.com">nikodola@gmail.com</a>
+          {status && <p className="adminStatus">{status}</p>}
+          {popup ? (
+            <div
+              className="adminPopupOverlay"
+              role="dialog"
+              aria-modal="true"
+              aria-label={popup.title}
+              onClick={() => setPopup(null)}
+            >
+              <div className="adminPopup" onClick={(e) => e.stopPropagation()}>
+                <div className="adminPopupHeader">
+                  <strong>{popup.title}</strong>
+                  <button className="adminPopupClose" type="button" onClick={() => setPopup(null)} aria-label="Close">
+                    ✕
+                  </button>
                 </div>
-              ) : null}
+                <div className="adminPopupBody">
+                  {popup.body}
+                  {popup.kind === "error" ? (
+                    <div style={{ marginTop: "var(--space-10)" }}>
+                      <a href="mailto:nikodola@gmail.com">nikodola@gmail.com</a>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      ) : null}
+          ) : null}
 
       {mode === "about" ? (
         <section className="adminSection">
@@ -617,6 +648,29 @@ export default function Dashboard() {
                 <div>
                   <h3>{loc.name}</h3>
                   <div style={{ opacity: 0.7, fontSize: 13 }}>/location/{loc.slug}</div>
+                </div>
+                <div
+                  className="adminCardHeaderActions"
+                  onClick={(e) => e.stopPropagation()}
+                  onPointerDown={(e) => e.stopPropagation()}
+                >
+                  <button
+                    className="adminButton adminButtonDeleteEntity adminCardHeaderDelete"
+                    type="button"
+                    onClick={() => {
+                      if (!confirmDelete("location", loc.name)) return;
+                      setCms((prev) => {
+                        if (!prev) return prev;
+                        const next = deepClone(prev);
+                        next.locations = next.locations.filter((l) => l.slug !== loc.slug);
+                        return next;
+                      });
+                    }}
+                    disabled={loading}
+                    aria-label={`Delete location ${loc.name}`}
+                  >
+                    Delete
+                  </button>
                 </div>
               </summary>
 
@@ -758,7 +812,10 @@ export default function Dashboard() {
                   <div className="blocksList">
                     {loc.blocks.map((b, idx) => (
                       <div key={idx} className="blockItem">
-                        <div className="adminBlockHeader">Section {idx + 1}</div>
+                        <div className="adminBlockHeader">
+                          <div className="adminBlockKicker">Section {idx + 1}</div>
+                          <div className="adminBlockTitle">{b.heading || "Untitled section"}</div>
+                        </div>
                         <div className="adminRow">
                           <div className="adminField">
                             <label>Layout</label>
@@ -832,85 +889,89 @@ export default function Dashboard() {
                           />
                         </div>
 
-                        <div className="adminField adminFieldSectionIcon">
-                          <label>Section icon (optional)</label>
-                          <div className="blockPreview">
-                            {(b as any).iconSrc ? <img src={(b as any).iconSrc} alt="" /> : null}
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (!file) return;
-                                stageFile(file, (blobUrl) =>
-                                  setCms((prev) => {
-                                    if (!prev) return prev;
-                                    const next = deepClone(prev);
-                                    const target = next.locations.find((l) => l.slug === loc.slug);
-                                    if (target) (target.blocks[idx] as any).iconSrc = blobUrl;
-                                    return next;
-                                  }),
-                                );
-                              }}
-                              disabled={loading}
-                            />
-                            <button
-                              className="adminButton"
-                              type="button"
-                              onClick={() =>
-                                openMediaPicker({ type: "location", slug: loc.slug, field: "blockIconSrc", blockIdx: idx })
-                              }
-                              disabled={loading}
-                            >
-                              Add icon from media
-                            </button>
-                            <input
-                              value={(b as any).iconSrc ?? ""}
-                              onChange={(e) =>
-                                setCms((prev) => {
-                                  if (!prev) return prev;
-                                  const next = deepClone(prev);
-                                  const target = next.locations.find((l) => l.slug === loc.slug);
-                                  if (target) (target.blocks[idx] as any).iconSrc = e.target.value;
-                                  return next;
-                                })
-                              }
-                              disabled={loading}
-                              placeholder="/uploads/your-icon.png"
-                            />
+                        <div className="adminMediaRow adminFieldSectionIcon">
+                          <div className="adminMediaCol">
+                            <label>Section icon (optional)</label>
+                            <div className="adminMediaPreview adminMediaPreviewIcon">
+                              {normSrc((b as any).iconSrc) ? (
+                                <img src={normSrc((b as any).iconSrc)} alt="Icon preview" />
+                              ) : (
+                                <div className="adminMediaEmpty">No section icon</div>
+                              )}
+                            </div>
+                            <div className="adminMediaControls">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (!file) return;
+                                  stageFile(file, (blobUrl) =>
+                                    setCms((prev) => {
+                                      if (!prev) return prev;
+                                      const next = deepClone(prev);
+                                      const target = next.locations.find((l) => l.slug === loc.slug);
+                                      if (target) (target.blocks[idx] as any).iconSrc = blobUrl;
+                                      return next;
+                                    }),
+                                  );
+                                }}
+                                disabled={loading}
+                              />
+                              <button
+                                className="adminButton"
+                                type="button"
+                                onClick={() =>
+                                  openMediaPicker({ type: "location", slug: loc.slug, field: "blockIconSrc", blockIdx: idx })
+                                }
+                                disabled={loading}
+                              >
+                                Add icon from media
+                              </button>
+                              <div className="adminMediaPath">{normSrc((b as any).iconSrc)}</div>
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="adminField">
-                          <label>Image</label>
-                          <div className="blockPreview">
-                            {b.imageSrc ? <img src={b.imageSrc} alt="" /> : null}
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (!file) return;
-                                stageFile(file, (blobUrl) =>
-                                  setCms((prev) => {
-                                    if (!prev) return prev;
-                                    const next = deepClone(prev);
-                                    const target = next.locations.find((l) => l.slug === loc.slug);
-                                    if (target) target.blocks[idx].imageSrc = blobUrl;
-                                    return next;
-                                  }),
-                                );
-                              }}
-                              disabled={loading}
-                            />
-                            <button
-                              className="adminButton"
-                              type="button"
-                              onClick={() => openMediaPicker({ type: "location", slug: loc.slug, field: "imageSrc", blockIdx: idx })}
-                              disabled={loading}
-                            >
-                              Add image from media
-                            </button>
+                          <div className="adminMediaCol adminMediaColWide">
+                            <label>Image</label>
+                            <div className="adminMediaPreview adminMediaPreviewLarge">
+                              {normSrc(b.imageSrc) ? (
+                                <img src={normSrc(b.imageSrc)} alt="Section image preview" />
+                              ) : (
+                                <div className="adminMediaEmpty">No image</div>
+                              )}
+                            </div>
+                            <div className="adminMediaControls">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (!file) return;
+                                  stageFile(file, (blobUrl) =>
+                                    setCms((prev) => {
+                                      if (!prev) return prev;
+                                      const next = deepClone(prev);
+                                      const target = next.locations.find((l) => l.slug === loc.slug);
+                                      if (target) target.blocks[idx].imageSrc = blobUrl;
+                                      return next;
+                                    }),
+                                  );
+                                }}
+                                disabled={loading}
+                              />
+                              <button
+                                className="adminButton"
+                                type="button"
+                                onClick={() =>
+                                  openMediaPicker({ type: "location", slug: loc.slug, field: "imageSrc", blockIdx: idx })
+                                }
+                                disabled={loading}
+                              >
+                                Add image from media
+                              </button>
+                              <div className="adminMediaPath">{normSrc(b.imageSrc)}</div>
+                            </div>
                           </div>
                         </div>
 
@@ -934,21 +995,6 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                <button
-                  className="adminButton adminButtonDeleteEntity"
-                  onClick={() => {
-                    if (!confirmDelete("location", loc.name)) return;
-                    setCms((prev) => {
-                      if (!prev) return prev;
-                      const next = deepClone(prev);
-                      next.locations = next.locations.filter((l) => l.slug !== loc.slug);
-                      return next;
-                    });
-                  }}
-                  disabled={loading}
-                >
-                  Delete location
-                </button>
               </div>
             </details>
           ))}
@@ -991,6 +1037,68 @@ export default function Dashboard() {
                   <h3>{srv.title}</h3>
                   <div style={{ opacity: 0.7, fontSize: 13 }}>/service/{srv.slug}</div>
                 </div>
+                <div
+                  className="adminCardHeaderActions"
+                  onClick={(e) => e.stopPropagation()}
+                  onPointerDown={(e) => e.stopPropagation()}
+                >
+                  <div className="adminRadioPill adminRadioPillHeader" aria-label="Show on homepage">
+                    <label className="adminRadioPillOption">
+                      <input
+                        type="radio"
+                        name={`srv-display-header-${srvIdx}`}
+                        checked={srv.display === true}
+                        onChange={() =>
+                          setCms((prev) => {
+                            if (!prev) return prev;
+                            const next = deepClone(prev);
+                            const target = next.services.find((s) => s.slug === srv.slug);
+                            if (target) target.display = true;
+                            return next;
+                          })
+                        }
+                        disabled={loading}
+                      />
+                      <span>Show</span>
+                    </label>
+                    <label className="adminRadioPillOption">
+                      <input
+                        type="radio"
+                        name={`srv-display-header-${srvIdx}`}
+                        checked={srv.display === false}
+                        onChange={() =>
+                          setCms((prev) => {
+                            if (!prev) return prev;
+                            const next = deepClone(prev);
+                            const target = next.services.find((s) => s.slug === srv.slug);
+                            if (target) target.display = false;
+                            return next;
+                          })
+                        }
+                        disabled={loading}
+                      />
+                      <span>Hide</span>
+                    </label>
+                  </div>
+
+                  <button
+                    className="adminButton adminButtonDeleteEntity adminCardHeaderDelete"
+                    type="button"
+                    onClick={() => {
+                      if (!confirmDelete("service", srv.title)) return;
+                      setCms((prev) => {
+                        if (!prev) return prev;
+                        const next = deepClone(prev);
+                        next.services = next.services.filter((s) => s.slug !== srv.slug);
+                        return next;
+                      });
+                    }}
+                    disabled={loading}
+                    aria-label={`Delete service ${srv.title}`}
+                  >
+                    Delete
+                  </button>
+                </div>
               </summary>
               <div className="adminCardBody">
                 <div className="adminSubheading">Hero section</div>
@@ -1029,70 +1137,49 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                <div className="adminRow">
-                  <div className="adminField">
-                    <label>Display on homepage</label>
-                    <select
-                      value={srv.display ? "yes" : "no"}
+                <div className="adminField">
+                  <label>Icon image</label>
+                  <div className="blockPreview">
+                    {srv.iconSrc ? <img src={srv.iconSrc} alt="" /> : null}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        stageFile(file, (blobUrl) =>
+                          setCms((prev) => {
+                            if (!prev) return prev;
+                            const next = deepClone(prev);
+                            const target = next.services.find((s) => s.slug === srv.slug);
+                            if (target) target.iconSrc = blobUrl;
+                            return next;
+                          }),
+                        );
+                      }}
+                      disabled={loading}
+                    />
+                    <button
+                      className="adminButton"
+                      type="button"
+                      onClick={() => openMediaPicker({ type: "service", slug: srv.slug, field: "iconSrc" })}
+                      disabled={loading}
+                    >
+                      Add icon from media
+                    </button>
+                    <input
+                      value={srv.iconSrc}
                       onChange={(e) =>
                         setCms((prev) => {
                           if (!prev) return prev;
                           const next = deepClone(prev);
                           const target = next.services.find((s) => s.slug === srv.slug);
-                          if (target) target.display = e.target.value === "yes";
+                          if (target) target.iconSrc = e.target.value;
                           return next;
                         })
                       }
                       disabled={loading}
-                    >
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </select>
-                  </div>
-                  <div className="adminField">
-                    <label>Icon image</label>
-                    <div className="blockPreview">
-                      {srv.iconSrc ? <img src={srv.iconSrc} alt="" /> : null}
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (!file) return;
-                          stageFile(file, (blobUrl) =>
-                            setCms((prev) => {
-                              if (!prev) return prev;
-                              const next = deepClone(prev);
-                              const target = next.services.find((s) => s.slug === srv.slug);
-                              if (target) target.iconSrc = blobUrl;
-                              return next;
-                            }),
-                          );
-                        }}
-                        disabled={loading}
-                      />
-                      <button
-                        className="adminButton"
-                        type="button"
-                        onClick={() => openMediaPicker({ type: "service", slug: srv.slug, field: "iconSrc" })}
-                        disabled={loading}
-                      >
-                        Add icon from media
-                      </button>
-                      <input
-                        value={srv.iconSrc}
-                        onChange={(e) =>
-                          setCms((prev) => {
-                            if (!prev) return prev;
-                            const next = deepClone(prev);
-                            const target = next.services.find((s) => s.slug === srv.slug);
-                            if (target) target.iconSrc = e.target.value;
-                            return next;
-                          })
-                        }
-                        disabled={loading}
-                      />
-                    </div>
+                    />
                   </div>
                 </div>
 
@@ -1170,7 +1257,10 @@ export default function Dashboard() {
                   <div className="blocksList">
                     {srv.blocks.map((b, idx) => (
                       <div key={idx} className="blockItem">
-                        <div className="adminBlockHeader">Section {idx + 1}</div>
+                        <div className="adminBlockHeader">
+                          <div className="adminBlockKicker">Section {idx + 1}</div>
+                          <div className="adminBlockTitle">{b.heading || "Untitled section"}</div>
+                        </div>
                         <div className="adminRow">
                           <div className="adminField">
                             <label>Layout</label>
@@ -1244,85 +1334,87 @@ export default function Dashboard() {
                           />
                         </div>
 
-                        <div className="adminField adminFieldSectionIcon">
-                          <label>Section icon (optional)</label>
-                          <div className="blockPreview">
-                            {(b as any).iconSrc ? <img src={(b as any).iconSrc} alt="" /> : null}
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (!file) return;
-                                stageFile(file, (blobUrl) =>
-                                  setCms((prev) => {
-                                    if (!prev) return prev;
-                                    const next = deepClone(prev);
-                                    const target = next.services.find((s) => s.slug === srv.slug);
-                                    if (target) (target.blocks[idx] as any).iconSrc = blobUrl;
-                                    return next;
-                                  }),
-                                );
-                              }}
-                              disabled={loading}
-                            />
-                            <button
-                              className="adminButton"
-                              type="button"
-                              onClick={() =>
-                                openMediaPicker({ type: "service", slug: srv.slug, field: "blockIconSrc", blockIdx: idx })
-                              }
-                              disabled={loading}
-                            >
-                              Add icon from media
-                            </button>
-                            <input
-                              value={(b as any).iconSrc ?? ""}
-                              onChange={(e) =>
-                                setCms((prev) => {
-                                  if (!prev) return prev;
-                                  const next = deepClone(prev);
-                                  const target = next.services.find((s) => s.slug === srv.slug);
-                                  if (target) (target.blocks[idx] as any).iconSrc = e.target.value;
-                                  return next;
-                                })
-                              }
-                              disabled={loading}
-                              placeholder="/uploads/your-icon.png"
-                            />
+                        <div className="adminMediaRow adminFieldSectionIcon">
+                          <div className="adminMediaCol">
+                            <label>Section icon (optional)</label>
+                            <div className="adminMediaPreview adminMediaPreviewIcon">
+                              {normSrc((b as any).iconSrc) ? (
+                                <img src={normSrc((b as any).iconSrc)} alt="Icon preview" />
+                              ) : (
+                                <div className="adminMediaEmpty">No icon</div>
+                              )}
+                            </div>
+                            <div className="adminMediaControls">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (!file) return;
+                                  stageFile(file, (blobUrl) =>
+                                    setCms((prev) => {
+                                      if (!prev) return prev;
+                                      const next = deepClone(prev);
+                                      const target = next.services.find((s) => s.slug === srv.slug);
+                                      if (target) (target.blocks[idx] as any).iconSrc = blobUrl;
+                                      return next;
+                                    }),
+                                  );
+                                }}
+                                disabled={loading}
+                              />
+                              <button
+                                className="adminButton"
+                                type="button"
+                                onClick={() =>
+                                  openMediaPicker({ type: "service", slug: srv.slug, field: "blockIconSrc", blockIdx: idx })
+                                }
+                                disabled={loading}
+                              >
+                                Add icon from media
+                              </button>
+                              <div className="adminMediaPath">{normSrc((b as any).iconSrc)}</div>
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="adminField">
-                          <label>Image</label>
-                          <div className="blockPreview">
-                            {b.imageSrc ? <img src={b.imageSrc} alt="" /> : null}
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (!file) return;
-                                stageFile(file, (blobUrl) =>
-                                  setCms((prev) => {
-                                    if (!prev) return prev;
-                                    const next = deepClone(prev);
-                                    const target = next.services.find((s) => s.slug === srv.slug);
-                                    if (target) target.blocks[idx].imageSrc = blobUrl;
-                                    return next;
-                                  }),
-                                );
-                              }}
-                              disabled={loading}
-                            />
-                            <button
-                              className="adminButton"
-                              type="button"
-                              onClick={() => openMediaPicker({ type: "service", slug: srv.slug, field: "imageSrc", blockIdx: idx })}
-                              disabled={loading}
-                            >
-                              Add image from media
-                            </button>
+                          <div className="adminMediaCol adminMediaColWide">
+                            <label>Image</label>
+                            <div className="adminMediaPreview adminMediaPreviewLarge">
+                              {normSrc(b.imageSrc) ? (
+                                <img src={normSrc(b.imageSrc)} alt="Section image preview" />
+                              ) : (
+                                <div className="adminMediaEmpty">No image</div>
+                              )}
+                            </div>
+                            <div className="adminMediaControls">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (!file) return;
+                                  stageFile(file, (blobUrl) =>
+                                    setCms((prev) => {
+                                      if (!prev) return prev;
+                                      const next = deepClone(prev);
+                                      const target = next.services.find((s) => s.slug === srv.slug);
+                                      if (target) target.blocks[idx].imageSrc = blobUrl;
+                                      return next;
+                                    }),
+                                  );
+                                }}
+                                disabled={loading}
+                              />
+                              <button
+                                className="adminButton"
+                                type="button"
+                                onClick={() => openMediaPicker({ type: "service", slug: srv.slug, field: "imageSrc", blockIdx: idx })}
+                                disabled={loading}
+                              >
+                                Add image from media
+                              </button>
+                              <div className="adminMediaPath">{normSrc(b.imageSrc)}</div>
+                            </div>
                           </div>
                         </div>
 
@@ -1346,21 +1438,6 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                <button
-                  className="adminButton adminButtonDeleteEntity"
-                  onClick={() => {
-                    if (!confirmDelete("service", srv.title)) return;
-                    setCms((prev) => {
-                      if (!prev) return prev;
-                      const next = deepClone(prev);
-                      next.services = next.services.filter((s) => s.slug !== srv.slug);
-                      return next;
-                    });
-                  }}
-                  disabled={loading}
-                >
-                  Delete service
-                </button>
               </div>
             </details>
           ))}
@@ -1727,26 +1804,28 @@ export default function Dashboard() {
         </section>
       )}
 
-      {mediaOpen ? (
-        <div className="adminModalOverlay" role="dialog" aria-modal="true">
-          <div className="adminModal">
-            <div className="adminModalHeader">
-              <h3>Media</h3>
-              <button className="adminButton" onClick={() => setMediaOpen(false)} disabled={loading}>
-                Close
-              </button>
+          {mediaOpen ? (
+            <div className="adminModalOverlay" role="dialog" aria-modal="true">
+              <div className="adminModal">
+                <div className="adminModalHeader">
+                  <h3>Media</h3>
+                  <button className="adminButton" onClick={() => setMediaOpen(false)} disabled={loading}>
+                    Close
+                  </button>
+                </div>
+                <div className="adminMediaGrid">
+                  {media.map((p) => (
+                    <button key={p} className="adminMediaItem" onClick={() => setImageFromPicker(p)}>
+                      <img src={p} alt={p} />
+                      <div className="adminMediaLabel">{p}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div className="adminMediaGrid">
-              {media.map((p) => (
-                <button key={p} className="adminMediaItem" onClick={() => setImageFromPicker(p)}>
-                  <img src={p} alt={p} />
-                  <div className="adminMediaLabel">{p}</div>
-                </button>
-              ))}
-            </div>
-          </div>
+          ) : null}
         </div>
-      ) : null}
+      </div>
     </main>
   );
 }

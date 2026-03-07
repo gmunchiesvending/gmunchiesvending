@@ -9,6 +9,25 @@
   padding-bottom: 0;
 }
 
+.salStrip {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Two subtle “near-white” grays alternating */
+.salStripA {
+  background: #f6f6f6;
+}
+
+.salStripB {
+  background: #fbfbfb;
+}
+
+/* When we wrap .section-regular inside .section-full, avoid double padding */
+.salStrip > .section-regular {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .salHeading{
   text-align: center;
   margin-top: 4rem;
@@ -23,6 +42,7 @@
   opacity: 0;
   will-change: transform;
 }
+
 
 .salParallaxWrapper.loaded {
   opacity: 1;
@@ -48,6 +68,22 @@
   padding-inline: var(--space-6);
 }
 
+/* overlay under text to darken hero images */
+.salCTAWrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: #000;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+/* ensure the flex children sit above the overlay */
+.salCTAWrapper > * {
+  position: relative;
+  z-index: 2;
+}
+
 .salHeroHeading {
   color: white;
   text-align: center;
@@ -71,16 +107,8 @@
   margin: 0;
 }
 
-.salContent {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-16);
-  margin-bottom: 4rem;
-}
-
-.salSectionNav {
-  padding-top: var(--space-10);
-  padding-bottom: var(--space-10);
+.salSectionNavStrip .salHeading {
+  margin-top: 0;
 }
 
 .salSectionNavGrid {
@@ -98,25 +126,10 @@
   }
 }
 
-.salBlocks {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-16);
-}
-
 .salTestimonialsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--space-12);
-}
-
-.headingWrapperLeft{
-  text-align: center;
-  margin-bottom: 2rem;
-  .beforeHeading{
-    margin: 0 auto;
-    margin-top: 8rem;
-  }
 }
 
 @keyframes salFade {
@@ -141,9 +154,5 @@
 @media (max-width: 750px) {
   .salSectionNavGrid{
     grid-template-columns: 1fr;
-  }
-  .sectionJumpCard{
-    flex-direction: row;
-    background-color: red;
   }
 }

@@ -8,6 +8,114 @@
   gap: var(--space-12);
 }
 
+.adminShell {
+  min-height: 100vh;
+  display: flex;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.adminSidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 280px;
+  background: white;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  padding: var(--space-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+  z-index: 20;
+}
+
+.adminSidebarNav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.adminSidebarNavItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--black);
+  text-align: left;
+}
+
+.adminSidebarNavItem:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.adminSidebarNavItem.active {
+  background: var(--secondary);
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+.adminSidebarActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.adminSidebarAction {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-6);
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: white;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.adminSidebarFooter {
+  margin-top: auto;
+  padding-top: var(--space-8);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.adminMain {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  padding: var(--space-12) var(--space-10);
+}
+
+.adminMainInner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.adminMainTopActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.adminMainActionButton {
+  min-width: 120px;
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
 .adminPageWithTopbar {
   padding-top: calc(200px + var(--space-12));
 }
@@ -99,7 +207,7 @@
 
 .adminButtonDanger {
   background: rgba(178, 31, 54, 0.08);
-  border-color: rgba(178, 31, 54, 0.45);
+  border-color: rgba(251, 201, 209, 0.45);
   color: var(--primary-color);
 }
 
@@ -138,10 +246,22 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: #f3f3f3;
+  color: #111;
 }
 
 .adminCardHeader h3 {
   margin: 0;
+}
+
+.adminCardHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.adminCardHeaderDelete {
+  padding: 10px 14px;
 }
 
 .adminCardBody {
@@ -149,6 +269,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-12);
+  background: #fff;
+  color: #111;
 }
 
 .adminRow {
@@ -165,7 +287,7 @@
 
 .adminField label {
   font-size: var(--paragraph-small);
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .adminField input,
@@ -175,10 +297,78 @@
   border-radius: 12px;
   padding: 10px 12px;
   font-size: 14px;
+  background: #fff;
+  color: #111;
 }
 
 .adminField textarea {
   min-height: 90px;
+}
+
+.adminRadioPill {
+  display: flex;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+  width: max-content;
+}
+
+/* Header variant of the On/Off pill (works on white header background) */
+.adminRadioPillHeader {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.adminRadioPillHeader .adminRadioPillOption span {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.78);
+  min-width: 72px;
+  padding: 9px 12px;
+}
+
+.adminRadioPillHeader .adminRadioPillOption input:checked + span {
+  background: var(--secondary);
+  color: var(--black);
+}
+
+.adminRadioPillOption {
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.adminRadioPillOption input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.adminRadioPillOption span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  color: black;
+  background: rgb(225, 225, 225);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.adminRadioPillOption input:checked + span {
+  background: var(--secondary);
+  border-color: transparent;
+  color: var(--black);
+}
+
+.adminRadioPillOption span:active {
+  transform: translateY(1px);
 }
 
 .blocksList {
@@ -205,8 +395,26 @@
 }
 
 .adminBlockHeader {
-  font-weight: 800;
   margin: 0 0 var(--space-6) 0;
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.adminBlockKicker {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 900;
+  opacity: 0.65;
+}
+
+.adminBlockTitle {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.15;
 }
 
 .adminFieldSectionIcon {
@@ -248,6 +456,92 @@
   height: auto;
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* New block media layout (icon + image side-by-side) */
+.adminMediaRow {
+  display: flex;
+  gap: var(--space-10);
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.adminMediaCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  flex: 0 0 280px;
+}
+
+.adminMediaColWide {
+  flex: 1 1 560px;
+  min-width: 360px;
+}
+
+.adminMediaPreview {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.adminMediaPreview img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.adminMediaPreviewIcon {
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adminMediaPreviewIcon img {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  background: transparent;
+}
+
+.adminMediaPreviewLarge {
+  min-height: 400px;
+}
+
+.adminMediaEmpty {
+  padding: var(--space-10);
+  text-align: center;
+  opacity: 0.7;
+}
+
+.adminMediaControls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.adminMediaPath {
+  font-size: 12px;
+  opacity: 0.75;
+  word-break: break-word;
+}
+
+.adminMediaHint {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+@media (max-width: 820px) {
+  .adminMediaCol,
+  .adminMediaColWide {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .adminMediaPreviewLarge {
+    min-height: 260px;
+  }
 }
 
 @media (max-width: 820px) {

@@ -88,6 +88,9 @@ export default function SAL({
     }))
     .filter((x) => Boolean(x.iconSrc));
 
+  const stripeClass = (index: number) => (index % 2 === 0 ? "salStripA" : "salStripB");
+  const firstContentIndex = navItems.length > 0 ? 1 : 0;
+
   return (
     <main>
       <section className="section-full salHeroWrapper">
@@ -113,61 +116,62 @@ export default function SAL({
       </section>
 
       {navItems.length > 0 ? (
-        <section className="section-regular salSectionNav">
+        <section className={`section-full salStrip ${stripeClass(0)} salSectionNavStrip`}>
+          <div className="section-regular">
             <h3 className="salHeading">Our {title} services</h3>
-          <div className="salSectionNavGrid" aria-label="Jump to sections">
-          
-            {navItems.map((n) => (
-              <SectionJumpCard
-                key={n.anchorId}
-                iconSrc={n.iconSrc!}
-                title={n.title}
-                onClick={() => smoothScrollToId(n.anchorId)}
-              />
-            ))}
+            <div className="salSectionNavGrid" aria-label="Jump to sections">
+              {navItems.map((n) => (
+                <SectionJumpCard
+                  key={n.anchorId}
+                  iconSrc={n.iconSrc!}
+                  title={n.title}
+                  onClick={() => smoothScrollToId(n.anchorId)}
+                />
+              ))}
+            </div>
           </div>
         </section>
       ) : null}
 
-      <section className="section-regular">
-        <div className="salContent">
-          {blocks.length > 0 ? (
-            <div className="salBlocks">
-              {blocks.map((b, idx) => (
-                <ContentBlock
-                  key={idx}
-                  anchorId={`${kind}-${slug}-section-${idx}`}
-                  layout={b.layout}
-                  eyebrow={b.eyebrow}
-                  heading={b.heading}
-                  body={b.body}
-                  imageSrc={b.imageSrc}
+      {blocks.map((b, idx) => {
+        const sectionIndex = firstContentIndex + idx;
+        return (
+          <section key={idx} className={`section-full salStrip ${stripeClass(sectionIndex)}`}>
+            <div className="section-regular">
+              <ContentBlock
+                anchorId={`${kind}-${slug}-section-${idx}`}
+                layout={b.layout}
+                eyebrow={b.eyebrow}
+                heading={b.heading}
+                body={b.body}
+                imageSrc={b.imageSrc}
+              />
+            </div>
+          </section>
+        );
+      })}
+
+      {kind === "location" && testimonials.length > 0 ? (
+        <section className={`section-full salStrip ${stripeClass(firstContentIndex + blocks.length)}`}>
+          <div className="section-regular">
+            <div className="headingWrapper">
+              <p className="beforeHeading">reviews</p>
+              <h2 className="h2">What people say</h2>
+            </div>
+
+            <div className="salTestimonialsGrid">
+              {testimonials.map((t) => (
+                <TestimonialCard
+                  key={t.id}
+                  locationLabel={t.locationLabel || title}
+                  quote={t.quote}
+                  clientName={t.clientName}
                 />
               ))}
             </div>
-          ) : null}
-
-          {kind === "location" && testimonials.length > 0 ? (
-            <div>
-              <div className="headingWrapperLeft">
-                <p className="beforeHeading">reviews</p>
-                <h2 className="h2Left">What people say</h2>
-              </div>
-
-              <div className="salTestimonialsGrid">
-                {testimonials.map((t) => (
-                  <TestimonialCard
-                    key={t.id}
-                    locationLabel={t.locationLabel || title}
-                    quote={t.quote}
-                    clientName={t.clientName}
-                  />
-                ))}
-              </div>
-            </div>
-          ) : null}
-        </div>
-      </section>
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }
