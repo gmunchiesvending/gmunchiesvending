@@ -142,7 +142,7 @@
       "blocks": [
         {
           "layout": "right",
-          "eyebrow": "refreshments",
+          "eyebrow": "",
           "heading": "Coffee Service",
           "body": "Keep your workplace energized with reliable office coffee service from GMunchies Vending. We provide quality coffee selections and modern brewing machines designed to deliver a fresh, consistent cup throughout the workday. Whether your team enjoys bold, rich blends or smoother, lighter roasts, our coffee solutions make it easy to enjoy great coffee right at work. ",
           "iconSrc": "",
@@ -150,7 +150,7 @@
         },
         {
           "layout": "left",
-          "eyebrow": "variety",
+          "eyebrow": "",
           "heading": "Coffee Variety ",
           "body": "Choose from a selection of flavorful coffee blends that satisfy a wide range of tastes across your workplace. ",
           "iconSrc": "",
@@ -158,7 +158,7 @@
         },
         {
           "layout": "left",
-          "eyebrow": "cashless ready",
+          "eyebrow": "",
           "heading": "Modern Coffee Machines ",
           "body": "Our easy-to-use coffee brewers are designed for office environments and deliver consistent quality in every cup. ",
           "iconSrc": "",
@@ -185,7 +185,7 @@
       "blocks": [
         {
           "layout": "left",
-          "eyebrow": "all-in-one",
+          "eyebrow": "",
           "heading": "Micro Market Service ",
           "body": "Upgrade your workplace breakroom with a modern micro market from GMunchies Vending. Our self-checkout markets provide employees with convenient access to a wide variety of snacks and drinks right inside your workplace. It’s a simple, flexible solution that offers more selection than traditional vending machines while making it easy for employees to grab what they need throughout the day. ",
           "iconSrc": "",
@@ -193,7 +193,7 @@
         },
         {
           "layout": "right",
-          "eyebrow": "ideal fit",
+          "eyebrow": "",
           "heading": "More Variety ",
           "body": "Micro markets offer a larger selection of snacks and beverages than traditional vending machines, giving employees more choices to enjoy during their breaks. ",
           "iconSrc": "",
@@ -201,7 +201,7 @@
         },
         {
           "layout": "left",
-          "eyebrow": "managed service",
+          "eyebrow": "",
           "heading": "Quick Self-Checkout ",
           "body": "Employees can quickly grab their favorite items and check out using a simple, convenient self-checkout system designed for busy workplaces. ",
           "iconSrc": "",
