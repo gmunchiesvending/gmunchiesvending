@@ -184,7 +184,7 @@
       "heroImageSrc": "/uploads/hero.webp",
       "blocks": [
         {
-          "layout": "center",
+          "layout": "left",
           "eyebrow": "all-in-one",
           "heading": "Micro Market Service ",
           "body": "Upgrade your workplace breakroom with a modern micro market from GMunchies Vending. Our self-checkout markets provide employees with convenient access to a wide variety of snacks and drinks right inside your workplace. It’s a simple, flexible solution that offers more selection than traditional vending machines while making it easy for employees to grab what they need throughout the day. ",
@@ -192,12 +192,12 @@
           "imageSrc": "/uploads/1772924316061-gmunchies-vending-website-changes_aa.webp"
         },
         {
-          "layout": "left",
+          "layout": "right",
           "eyebrow": "ideal fit",
-          "heading": "Perfect for compact areas",
-          "body": "Get snack and drink choices without needing multiple machines—great for offices, gyms, and smaller breakrooms.",
+          "heading": "More Variety ",
+          "body": "Micro markets offer a larger selection of snacks and beverages than traditional vending machines, giving employees more choices to enjoy during their breaks. ",
           "iconSrc": "",
-          "imageSrc": "/uploads/cart1.png"
+          "imageSrc": "/uploads/1772924437694-screenshot_5.jpg"
         },
         {
           "layout": "right",
