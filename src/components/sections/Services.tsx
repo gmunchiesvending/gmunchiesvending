@@ -15,12 +15,21 @@ type ServicesProps = {
     heading: string;
     body?: string;
   };
+  listingText?: string;
   services: Service[];
   enableLinks?: boolean;
 };
 
-export default function Services({ intro, services, enableLinks = true }: ServicesProps) {
+function splitParagraphs(text: string) {
+  return text
+    .split(/\n\s*\n/g)
+    .map((p) => p.trim())
+    .filter(Boolean);
+}
+
+export default function Services({ intro, listingText = "", services, enableLinks = true }: ServicesProps) {
   const visible = services.filter((s) => s.display);
+  const paras = splitParagraphs(listingText);
   return (
     <section className="section-regular">
       <div className="headingWrapper">
@@ -39,6 +48,13 @@ export default function Services({ intro, services, enableLinks = true }: Servic
           />
         ))}
       </div>
+      {paras.length > 0 ? (
+        <div className="servicesListingText">
+          {paras.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }

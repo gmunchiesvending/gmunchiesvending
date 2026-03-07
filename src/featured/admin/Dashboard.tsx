@@ -322,6 +322,7 @@ export default function Dashboard() {
           iconSrc: "/uploads/icon-04.svg",
           title: "New Service",
           excerpt: "",
+          sectionsIntro: "",
           heroImageSrc: "/uploads/hero.webp",
           blocks: [],
         },
@@ -643,6 +644,21 @@ export default function Dashboard() {
         </section>
       ) : mode === "locations" ? (
         <section className="adminSection">
+          <div className="adminSettingsCard">
+            <div style={{ fontWeight: 800 }}>Locations listing text</div>
+            <div style={{ opacity: 0.75, marginTop: 6 }}>
+              This appears under the location cards (Home + /locations). Leave blank for now if you don’t want it.
+            </div>
+            <div className="adminField" style={{ marginTop: "var(--space-8)" }}>
+              <textarea
+                value={cms.locationsListingText ?? ""}
+                onChange={(e) => setCms((prev) => (prev ? { ...prev, locationsListingText: e.target.value } : prev))}
+                disabled={loading}
+                placeholder="Supports blank lines for paragraph breaks."
+              />
+            </div>
+          </div>
+
           {cms.locations.map((loc, locIdx) => (
             <details key={`loc-${locIdx}`} className="adminCard">
               <summary className="adminCardHeader">
@@ -1048,6 +1064,21 @@ export default function Dashboard() {
         </section>
       ) : mode === "services" ? (
         <section className="adminSection">
+          <div className="adminSettingsCard">
+            <div style={{ fontWeight: 800 }}>Services listing text</div>
+            <div style={{ opacity: 0.75, marginTop: 6 }}>
+              This appears under the services cards (Home + /services). Use a blank line to create a new paragraph.
+            </div>
+            <div className="adminField" style={{ marginTop: "var(--space-8)" }}>
+              <textarea
+                value={cms.servicesListingText ?? ""}
+                onChange={(e) => setCms((prev) => (prev ? { ...prev, servicesListingText: e.target.value } : prev))}
+                disabled={loading}
+                placeholder="Supports blank lines for paragraph breaks."
+              />
+            </div>
+          </div>
+
           {cms.services.map((srv, srvIdx) => (
             <details key={`srv-${srvIdx}`} className="adminCard">
               <summary className="adminCardHeader">

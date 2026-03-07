@@ -93,20 +93,23 @@
     "body": "At GMunchies Vending, our mission is simple: provide businesses across the Rio Grande Valley with modern, reliable vending solutions and snack options people actually enjoy. Proudly serving the 956 area, including McAllen, Mission, Edinburg, Pharr, and surrounding communities, we help workplaces upgrade their breakrooms with convenient and dependable vending services.\n\nWe offer a full range of solutions including snack, drink, and combo vending machines, office coffee service, and self-checkout micro markets designed to keep employees energized and customers satisfied throughout the day. Our machines feature modern technology such as cashless payment options, infrared delivery sensors, and remote monitoring systems that help ensure machines stay stocked, run smoothly, and provide a hassle-free experience.\n\nWhat truly sets GMunchies Vending apart is our commitment to service and product variety. Along with the most popular name-brand snacks and beverages, we proudly offer authentic Mexican products imported from Mexico. This gives businesses a unique vending selection that reflects the tastes and culture of the communities we serve.\n\nAt GMunchies Vending, we work closely with every business to customize vending options that best fit their location and needs. From small offices to large workplaces, our focus is simple: deliver dependable service, quality products, and a vending experience people can rely on every day.",
     "imageSrc": "/uploads/1772761285881-gmunchies-v2_original.png"
   },
+  "servicesListingText": "All vending machines from GMunchies Vending are professionally installed, stocked, and maintained to ensure a clean, reliable, and hassle free experience. Our team monitors inventory, provides regular service, and keeps machines operating smoothly so your location always has convenient refreshment options available..\n\nNot only does it also explain the services behind the machines I service but also gives more space in between the snack vending, drink vending, and combo vending paragraphs so that clicking on the jump to section feels more natural when it moves more down if that makes sense.",
+  "locationsListingText": "",
   "services": [
     {
       "slug": "vending",
       "display": true,
       "iconSrc": "/uploads/1771947434993-icon_vending.svg",
       "title": "Vending",
-      "excerpt": "Modern snack machines with top brands and smart inventory support. Clean look, reliable performance, easy.",
-      "heroImageSrc": "/uploads/1772899303051-chatgpt-image-mar-7-2026-04_55_46-pm.png",
+      "excerpt": "Vending machines stocked with snacks and drinks for every taste. ",
+      "sectionsIntro": "",
+      "heroImageSrc": "/uploads/1771954203757-chatgpt-image-feb-24-2026-06_26_31-pm.png",
       "blocks": [
         {
           "layout": "left",
           "eyebrow": "",
           "heading": "Snack Vending ",
-          "body": "Bring convenience directly to your location with professionally managed snack vending machines designed to keep people satisfied throughout the day. G Munchies provides modern, reliable machines stocked with a wide selection of popular snacks, healthier choices, and customer favorites.\n\nWe handle everything from delivery and installation to regular restocking and maintenance. No cost to your business. No hassle. Just a clean, fully serviced vending solution that keeps your employees, guests, or customers happy and energized.",
+          "body": "Snack vending machines provide convenient access to a wide variety of snacks for employees, guests, and customers throughout the day. Our machines feature a mix of popular brands, healthier options, and customer favorites to satisfy different tastes. In addition to well known snacks, GMunchies Vending also offers authentic Mexican snacks imported from Mexico, giving your location a unique selection that reflects the community we proudly serve. ",
           "iconSrc": "/uploads/1771947434993-icon_vending.svg",
           "imageSrc": "/uploads/1772916681563-chatgpt-image-mar-7-2026-09_47_07-pm.png"
         },
@@ -114,7 +117,7 @@
           "layout": "right",
           "eyebrow": "",
           "heading": "Drink Vending",
-          "body": "Keep your location refreshed with professionally managed drink vending machines from G Munchies. We provide modern, energy-efficient machines stocked with a wide range of cold beverages, from soft drinks and sparkling water to juices and healthier options.\nOur team takes care of delivery, installation, restocking, and maintenance, ensuring your machine stays clean, fully stocked, and running smoothly. With cashless payment options and consistent service, your employees and customers get quick, reliable access to the drinks they want, anytime.",
+          "body": "Drink vending machines offer quick and convenient access to refreshing beverages throughout the day. Our machines carry a variety of popular drinks including soft drinks, sparkling water, juices, sports drinks, and other customer favorites, making it easy for employees, guests, and customers to find the beverages they enjoy most. ",
           "iconSrc": "/uploads/icon_micro-market.svg",
           "imageSrc": "/uploads/1772899614562-chatgpt-image-mar-7-2026-05_00_02-pm.png"
         },
@@ -122,7 +125,7 @@
           "layout": "center",
           "eyebrow": "",
           "heading": "Combo Vending",
-          "body": "A smart solution for high-traffic locations.\n\nWith both snacks and beverages available in one reliable unit, our combo vending service delivers convenience and value in a compact footprint. Modern payment systems, energy-efficient operation, and consistent service make it easy to provide food and drinks without added work for your team.\n\nG Munchies keeps everything filled, fresh, and functioning so your people always have access to what they need.",
+          "body": "Combo vending machines provide both snacks and beverages in one convenient machine. This space saving option is ideal for locations that want to offer a variety of refreshments without needing multiple machines. With a balanced selection of snacks and drinks in a single unit, combo machines provide flexibility and convenience for any workplace or public space. ",
           "iconSrc": "/uploads/icon_snack-vending-machines.svg",
           "imageSrc": "/uploads/1772916722887-chatgpt-image-mar-7-2026-04_55_46-pm.png"
         }
@@ -133,7 +136,8 @@
       "display": true,
       "iconSrc": "/uploads/1771947479788-icon_coffee.svg",
       "title": "Coffee",
-      "excerpt": "Fresh, hot coffee available anytime. Perfect for offices and busy spaces.",
+      "excerpt": "Fresh, great-tasting coffee to help your team conquer the day. ",
+      "sectionsIntro": "",
       "heroImageSrc": "/uploads/1771963231278-basically-coffee-0219-03-copy.webp",
       "blocks": [
         {
@@ -167,7 +171,8 @@
       "display": true,
       "iconSrc": "/uploads/1771947568624-icon_micro-market.svg",
       "title": "Micro Market",
-      "excerpt": "Snacks + drinks in one machine. Perfect for smaller spaces that still need variety.",
+      "excerpt": " A self-checkout breakroom market with snacks and drinks your team will love. ",
+      "sectionsIntro": "",
       "heroImageSrc": "/uploads/hero.webp",
       "blocks": [
         {
@@ -201,6 +206,7 @@
     {
       "slug": "office-building",
       "name": "Office Building",
+      "excerpt": "",
       "description": "Perfect for corporate environments and business centers.",
       "iconKey": "FaBuilding",
       "heroImageSrc": "/uploads/hero.webp",
@@ -226,6 +232,7 @@
     {
       "slug": "appartment-complex",
       "name": "Appartment Complex",
+      "excerpt": "",
       "description": "Convenient solutions for residential communities",
       "iconKey": "FaHome",
       "heroImageSrc": "/uploads/hero.webp",
@@ -251,6 +258,7 @@
     {
       "slug": "ware-house-industrial",
       "name": "Ware House/Industrial",
+      "excerpt": "",
       "description": "Reliable vending for industrial and warehouse facilities",
       "iconKey": "FaWarehouse",
       "heroImageSrc": "/uploads/hero.webp",
@@ -276,6 +284,7 @@
     {
       "slug": "gym-fitness-center",
       "name": "Gym/Fitness-center",
+      "excerpt": "",
       "description": "Healthy snacks and drinks for active members.",
       "iconKey": "FaDumbbell",
       "heroImageSrc": "/uploads/hero.webp",
@@ -301,6 +310,7 @@
     {
       "slug": "hospital-healtcare",
       "name": "Hospital / Healtcare",
+      "excerpt": "",
       "description": "24/7 refreshment options for staff and visitors",
       "iconKey": "FaHospital",
       "heroImageSrc": "/uploads/hero.webp",
@@ -326,6 +336,7 @@
     {
       "slug": "school-university",
       "name": "School University",
+      "excerpt": "",
       "description": "Campus-wide vending solutions for students and faculty",
       "iconKey": "FaGraduationCap",
       "heroImageSrc": "/uploads/hero.webp",
@@ -351,6 +362,7 @@
     {
       "slug": "other",
       "name": "Other",
+      "excerpt": "",
       "description": "Custom solutions for your unique location",
       "iconKey": "FaMapMarkerAlt",
       "heroImageSrc": "/uploads/hero.webp",

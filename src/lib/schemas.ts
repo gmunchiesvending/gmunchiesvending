@@ -21,6 +21,7 @@ export const serviceSchema = z.object({
   iconSrc: z.string().min(1),
   title: z.string().min(1),
   excerpt: z.string().min(1),
+  sectionsIntro: z.string().optional().default(""),
   heroImageSrc: z.string().min(1),
   blocks: z.array(contentBlockSchema).default([]),
 });
@@ -119,6 +120,8 @@ export const cmsSchema = z.object({
       .optional(),
   }),
   about: aboutSchema.optional().default({ eyebrow: "", heroImageSrc: "", headline: "", body: "", imageSrc: "" }),
+  servicesListingText: z.string().optional().default(""),
+  locationsListingText: z.string().optional().default(""),
   services: z.array(serviceSchema).default([]),
   locations: z.array(locationSchema).default([]),
   testimonials: z.array(testimonialSchema).default([]),

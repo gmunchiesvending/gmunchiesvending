@@ -18,10 +18,19 @@ type LocationsProps = {
     body?: string;
   };
   locations: Location[];
+  listingText?: string;
   enableLinks?: boolean;
 };
 
-export default function Locations({ intro, locations, enableLinks = true }: LocationsProps) {
+function splitParagraphs(text: string) {
+  return text
+    .split(/\n\s*\n/g)
+    .map((p) => p.trim())
+    .filter(Boolean);
+}
+
+export default function Locations({ intro, locations, listingText = "", enableLinks = true }: LocationsProps) {
+  const paras = splitParagraphs(listingText);
   return (
     <section className="section-full locationSection">
       <div className="section-regular locationContainer">
@@ -56,6 +65,13 @@ export default function Locations({ intro, locations, enableLinks = true }: Loca
             );
           })}
         </div>
+        {paras.length > 0 ? (
+          <div className="locationsListingText">
+            {paras.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+        ) : null}
       </div>
     </section>
   );

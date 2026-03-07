@@ -19,8 +19,18 @@ export default async function HomePage() {
         ctaLabel={cms.home.hero.ctaLabel}
         imageSrc={cms.home.hero.imageSrc}
       />
-      <Services intro={cms.home.servicesIntro} services={cms.services} enableLinks={cms.dynamicPages.services} />
-      <Locations intro={cms.home.locationsIntro} locations={cms.locations} enableLinks={cms.dynamicPages.locations} />
+      <Services
+        intro={cms.home.servicesIntro}
+        listingText={cms.servicesListingText}
+        services={cms.services}
+        enableLinks={cms.dynamicPages.services}
+      />
+      <Locations
+        intro={cms.home.locationsIntro}
+        listingText={cms.locationsListingText}
+        locations={cms.locations}
+        enableLinks={cms.dynamicPages.locations}
+      />
       <Results />
       <Testimonials intro={cms.home.testimonialsIntro} testimonials={homeTestimonials} />
       <AboutPreview
