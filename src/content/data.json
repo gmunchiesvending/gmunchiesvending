@@ -200,12 +200,20 @@
           "imageSrc": "/uploads/1772924437694-screenshot_5.jpg"
         },
         {
-          "layout": "right",
+          "layout": "left",
           "eyebrow": "managed service",
-          "heading": "Stocking and maintenance included",
-          "body": "We keep the machine filled and running, so your team gets consistent access to what they want.",
+          "heading": "Quick Self-Checkout ",
+          "body": "Employees can quickly grab their favorite items and check out using a simple, convenient self-checkout system designed for busy workplaces. ",
           "iconSrc": "",
-          "imageSrc": "/uploads/hero.webp"
+          "imageSrc": ""
+        },
+        {
+          "layout": "left",
+          "eyebrow": "",
+          "heading": "Modern Breakroom Upgrade ",
+          "body": "A micro market transforms your breakroom into a convenient refreshment space that employees can access anytime during the workday. ",
+          "iconSrc": "",
+          "imageSrc": ""
         }
       ]
     }
