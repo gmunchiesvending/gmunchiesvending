@@ -21,11 +21,14 @@ export default function ContentBlock({
   body,
   imageSrc,
 }: ContentBlockData & { anchorId?: string }) {
-  const hasImage = Boolean(imageSrc);
+  const hasImage = Boolean(imageSrc && imageSrc.trim());
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <section id={anchorId} className={`contentBlock contentBlock--${layout}`}>
+    <section
+      id={anchorId}
+      className={`contentBlock contentBlock--${layout}${hasImage ? "" : " contentBlock--noImage"}`}
+    >
   
       <div className="contentBlockInner">
         <div className="contentBlockText">

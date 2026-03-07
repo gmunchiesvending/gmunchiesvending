@@ -1004,6 +1004,22 @@ export default function Dashboard() {
                               >
                                 Add image from media
                               </button>
+                              <button
+                                className="adminButton adminButtonDanger"
+                                type="button"
+                                onClick={() =>
+                                  setCms((prev) => {
+                                    if (!prev) return prev;
+                                    const next = deepClone(prev);
+                                    const target = next.locations.find((l) => l.slug === loc.slug);
+                                    if (target) target.blocks[idx].imageSrc = "";
+                                    return next;
+                                  })
+                                }
+                                disabled={loading}
+                              >
+                                Remove image
+                              </button>
                               <div className="adminMediaPath">{normSrc(b.imageSrc)}</div>
                             </div>
                           </div>
@@ -1461,6 +1477,22 @@ export default function Dashboard() {
                                 disabled={loading}
                               >
                                 Add image from media
+                              </button>
+                              <button
+                                className="adminButton adminButtonDanger"
+                                type="button"
+                                onClick={() =>
+                                  setCms((prev) => {
+                                    if (!prev) return prev;
+                                    const next = deepClone(prev);
+                                    const target = next.services.find((s) => s.slug === srv.slug);
+                                    if (target) target.blocks[idx].imageSrc = "";
+                                    return next;
+                                  })
+                                }
+                                disabled={loading}
+                              >
+                                Remove image
                               </button>
                               <div className="adminMediaPath">{normSrc(b.imageSrc)}</div>
                             </div>

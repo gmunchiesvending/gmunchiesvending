@@ -95,6 +95,17 @@ box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   max-width: 900px;
 }
 
+/* If there is no image, force a clean left-aligned text-only layout */
+.contentBlock--noImage .contentBlockInner {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.contentBlock--noImage .contentBlockText {
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
 @media (max-width: 1000px) {
   /* On mobile: ignore left/right layouts and stack consistently */
   .contentBlock--left .contentBlockInner,

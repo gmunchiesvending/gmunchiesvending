@@ -9,7 +9,9 @@ import { getCmsContent } from "@/lib/content";
 
 export default async function HomePage() {
   const cms = await getCmsContent();
-  const homeTestimonials = cms.testimonials.filter((t) => t.enabled && t.showOnHome);
+  const homeTestimonials = cms.testimonials.filter(
+    (t) => t.enabled && t.showOnHome,
+  );
 
   return (
     <main>
@@ -25,6 +27,12 @@ export default async function HomePage() {
         services={cms.services}
         enableLinks={cms.dynamicPages.services}
       />
+      <AboutPreview
+        eyebrow={cms.about.eyebrow}
+        headline={cms.about.headline}
+        body={cms.about.body}
+        imageSrc={cms.about.imageSrc}
+      />
       <Locations
         intro={cms.home.locationsIntro}
         listingText={cms.locationsListingText}
@@ -32,14 +40,16 @@ export default async function HomePage() {
         enableLinks={cms.dynamicPages.locations}
       />
       <Results />
-      <Testimonials intro={cms.home.testimonialsIntro} testimonials={homeTestimonials} />
-      <AboutPreview
-        eyebrow={cms.about.eyebrow}
-        headline={cms.about.headline}
-        body={cms.about.body}
-        imageSrc={cms.about.imageSrc}
+      <Testimonials
+        intro={cms.home.testimonialsIntro}
+        testimonials={homeTestimonials}
       />
-      <ContactForm intro={cms.home.formIntro} services={cms.services} locations={cms.locations} />
+
+      <ContactForm
+        intro={cms.home.formIntro}
+        services={cms.services}
+        locations={cms.locations}
+      />
     </main>
   );
 }
