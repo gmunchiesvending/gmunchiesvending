@@ -15,11 +15,11 @@
 
 /* Two subtle “near-white” grays alternating */
 .salStripA {
-  background: #f6f6f6;
+  background: #fbfbfb; /* white-ish first */
 }
 
 .salStripB {
-  background: #fbfbfb;
+  background: #f6f6f6; /* gray second */
 }
 
 /* When we wrap .section-regular inside .section-full, avoid double padding */
