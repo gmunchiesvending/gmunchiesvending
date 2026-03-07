@@ -28,6 +28,7 @@ export const serviceSchema = z.object({
 export const locationSchema = z.object({
   slug: z.string().min(1),
   name: z.string().min(1),
+  excerpt: z.string().optional().default(""),
   description: z.string().optional().default(""),
   iconKey: z.string().min(1).optional().default("FaMapMarkerAlt"),
   heroImageSrc: z.string().optional().default(""),

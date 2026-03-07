@@ -16,7 +16,7 @@ export default async function LocationSlugPage({ slug }: { slug: string }) {
       slug={slug}
       eyebrow="location"
       title={location.name}
-      description={location.description}
+      description={location.excerpt || location.description}
       heroImageSrc={location.heroImageSrc}
       blocks={location.blocks}
       testimonials={testimonials}

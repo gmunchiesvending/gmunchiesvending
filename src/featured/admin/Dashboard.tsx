@@ -299,6 +299,7 @@ export default function Dashboard() {
         {
           slug,
           name: "New Location",
+          excerpt: "",
           description: "",
           iconKey: "FaMapMarkerAlt",
           heroImageSrc: "",
@@ -709,6 +710,23 @@ export default function Dashboard() {
                       disabled={loading}
                     />
                   </div>
+                </div>
+
+                <div className="adminField">
+                  <label>Excerpt</label>
+                  <textarea
+                    value={(loc as any).excerpt ?? ""}
+                    onChange={(e) =>
+                      setCms((prev) => {
+                        if (!prev) return prev;
+                        const next = deepClone(prev);
+                        const target = next.locations.find((l) => l.slug === loc.slug);
+                        if (target) (target as any).excerpt = e.target.value;
+                        return next;
+                      })
+                    }
+                    disabled={loading}
+                  />
                 </div>
 
                 <div className="adminField">

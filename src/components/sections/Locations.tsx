@@ -6,6 +6,7 @@ import { getIconByKey } from "@/lib/iconMap";
 type Location = {
   slug: string;
   name: string;
+  excerpt?: string;
   description?: string;
   iconKey?: string;
 };
@@ -41,7 +42,7 @@ export default function Locations({ intro, locations, enableLinks = true }: Loca
                 <LocationCard
                   name={location.name}
                   Icon={getIconByKey(location.iconKey)}
-                  description={location.description}
+                  description={location.excerpt || location.description}
                 />
               </Link>
             ) : (
@@ -49,7 +50,7 @@ export default function Locations({ intro, locations, enableLinks = true }: Loca
                 <LocationCard
                   name={location.name}
                   Icon={getIconByKey(location.iconKey)}
-                  description={location.description}
+                  description={location.excerpt || location.description}
                 />
               </div>
             );
