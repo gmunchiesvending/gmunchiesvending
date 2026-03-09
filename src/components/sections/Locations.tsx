@@ -2,6 +2,7 @@ import "./Locations.css";
 import LocationCard from "@/components/ui/LocationCard";
 import Link from "next/link";
 import { getIconByKey } from "@/lib/iconMap";
+import { titleCaseEyebrow } from "@/lib/text";
 
 type Location = {
   slug: string;
@@ -35,7 +36,7 @@ export default function Locations({ intro, locations, listingText = "", enableLi
     <section className="section-full locationSection">
       <div className="section-regular locationContainer">
         <div className="headingWrapper">
-          {intro?.eyebrow ? <p className="beforeHeading">{intro.eyebrow}</p> : null}
+          {intro?.eyebrow ? <p className="beforeHeading">{titleCaseEyebrow(intro.eyebrow)}</p> : null}
           <h2 className="h2">{intro?.heading ?? "Locations"}</h2>
           {intro?.body ? <p className="afterHeading">{intro.body}</p> : null}
         </div>

@@ -3,6 +3,7 @@
 import "./ContactForm.css";
 import Image from "next/image";
 import Form from "@/components/ui/Form";
+import { titleCaseEyebrow } from "@/lib/text";
 
 type ContactFormProps = {
   intro?: {
@@ -19,7 +20,7 @@ export default function ContactForm({ intro, services, locations }: ContactFormP
     <section id="request-services-form" className="section-full formSection">
       <div className="section-regular">
         <div className="headingWrapper">
-          {intro?.eyebrow ? <p className="beforeHeading">{intro.eyebrow}</p> : null}
+          {intro?.eyebrow ? <p className="beforeHeading">{titleCaseEyebrow(intro.eyebrow)}</p> : null}
           <h2 className="h2">{intro?.heading ?? "Request Service Today"}</h2>
           {intro?.body ? <p className="afterHeading">{intro.body}</p> : null}
         </div>

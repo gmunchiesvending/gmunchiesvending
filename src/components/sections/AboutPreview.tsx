@@ -4,6 +4,7 @@ import "./AboutPreview.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { titleCaseEyebrow } from "@/lib/text";
 
 type AboutPreviewProps = {
   eyebrow: string;
@@ -21,7 +22,7 @@ export default function AboutPreview({ eyebrow, headline, body, imageSrc }: Abou
     <section className="section-regular aboutPreview">
       <div className="aboutPreviewInner">
         <div className="aboutPreviewText">
-          {eyebrow ? <p className="beforeHeading">{eyebrow}</p> : null}
+          {eyebrow ? <p className="beforeHeading">{titleCaseEyebrow(eyebrow)}</p> : null}
           <h2 className="aboutPreviewHeading">{headline}</h2>
           <p className="aboutPreviewBody">{preview}</p>
           {hasMore ? (

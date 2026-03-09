@@ -6,13 +6,14 @@ import ResultCard from "@/components/ui/ResultCard"
 import { GoLocation } from "react-icons/go";
 import { BiUser } from "react-icons/bi";
 import { GrHostMaintenance } from "react-icons/gr";
+import { titleCaseEyebrow } from "@/lib/text";
 
 export default function Counter() {
   return (
     <section className="section-full rsfWrapper">
       <div className="section-regular">
         <div className="headingWrapper">
-        <p className="beforeHeading">Our Growth</p>
+        <p className="beforeHeading">{titleCaseEyebrow("Our Growth")}</p>
         <h2 className="h2">Results</h2>
         <p className="afterHeading">Our numbers reflect consistent growth, trusted partnerships, and long term reliability.
         From installations to ongoing service, we focus on delivering solutions that perform every day.</p>

@@ -2,6 +2,7 @@
 
 import "./Testimonials.css";
 import TestimonialCard from "@/components/ui/TestimonialCard";
+import { titleCaseEyebrow } from "@/lib/text";
 
 type Testimonial = {
   id: string;
@@ -27,7 +28,7 @@ export default function Testimonials({ intro, testimonials }: TestimonialsProps)
       <div className="testomonialWrapper">
         <div className="section-regular">
           <div className="headingWrapper">
-            {intro?.eyebrow ? <p className="beforeHeading">{intro.eyebrow}</p> : null}
+            {intro?.eyebrow ? <p className="beforeHeading">{titleCaseEyebrow(intro.eyebrow)}</p> : null}
             <h2 className="h2">{intro?.heading ?? "Testimonials"}</h2>
             {intro?.body ? <p className="afterHeading">{intro.body}</p> : null}
           </div>

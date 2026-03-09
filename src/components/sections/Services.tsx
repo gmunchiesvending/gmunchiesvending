@@ -1,5 +1,6 @@
 import "./Services.css";
 import ServiceCard from "@/components/ui/ServiceCard";
+import { titleCaseEyebrow } from "@/lib/text";
 
 type Service = {
   slug: string;
@@ -33,7 +34,7 @@ export default function Services({ intro, listingText = "", services, enableLink
   return (
     <section className="section-regular">
       <div className="headingWrapper">
-        {intro?.eyebrow ? <p className="beforeHeading">{intro.eyebrow}</p> : null}
+        {intro?.eyebrow ? <p className="beforeHeading">{titleCaseEyebrow(intro.eyebrow)}</p> : null}
         <h2 className="h2">{intro?.heading ?? "Services"}</h2>
         {intro?.body ? <p className="afterHeading">{intro.body}</p> : null}
       </div>

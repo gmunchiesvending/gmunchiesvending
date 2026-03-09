@@ -3,6 +3,7 @@
 import "./ContentBlock.css";
 import Image from "next/image";
 import { useState } from "react";
+import { titleCaseEyebrow } from "@/lib/text";
 
 export type ContentBlockData = {
   layout: "left" | "right" | "center";
@@ -32,7 +33,7 @@ export default function ContentBlock({
   
       <div className="contentBlockInner">
         <div className="contentBlockText">
-          {eyebrow ? <p className="beforeHeading">{eyebrow}</p> : null}
+          {eyebrow ? <p className="beforeHeading">{titleCaseEyebrow(eyebrow)}</p> : null}
           <h2 className="h2Left contentBlockHeading">{heading}</h2>
           {body ? <p className="contentBlockBody">{body}</p> : null}
         </div>
