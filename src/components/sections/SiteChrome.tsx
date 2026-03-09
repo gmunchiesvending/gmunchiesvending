@@ -21,7 +21,14 @@ export default async function SiteChrome({ children }: { children: ReactNode }) 
           dynamicPages={cms.dynamicPages}
         />
       }
-      footer={<Footer socialLinks={cms.socialLinks} />}
+      footer={
+        <Footer
+          socialLinks={cms.socialLinks}
+          formIntro={cms.home.formIntro}
+          services={cms.services}
+          locations={cms.locations}
+        />
+      }
     >
       <Providers>{children}</Providers>
     </AdminAwareChrome>

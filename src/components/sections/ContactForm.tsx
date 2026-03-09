@@ -13,12 +13,17 @@ type ContactFormProps = {
   };
   services: { slug: string; title: string; display: boolean }[];
   locations: { slug: string; name: string }[];
+  variant?: "page" | "footer";
 };
 
-export default function ContactForm({ intro, services, locations }: ContactFormProps) {
+export default function ContactForm({ intro, services, locations, variant = "page" }: ContactFormProps) {
+  const Wrapper = (variant === "footer" ? "div" : "section") as any;
   return (
-    <section id="request-services-form" className="section-full formSection">
-      <div className="section-regular">
+    <Wrapper
+      id="request-services-form"
+      className={variant === "footer" ? "footerRequestSection" : "section-full formSection"}
+    >
+      <div className={variant === "footer" ? "footerRequestInner" : "section-regular"}>
         <div className="headingWrapper">
           {intro?.eyebrow ? <p className="beforeHeading">{titleCaseEyebrow(intro.eyebrow)}</p> : null}
           <h2 className="h2">{intro?.heading ?? "Request Service Today"}</h2>
@@ -41,6 +46,6 @@ export default function ContactForm({ intro, services, locations }: ContactFormP
           </div>
         </div>
       </div>
-    </section>
+    </Wrapper>
   );
 }

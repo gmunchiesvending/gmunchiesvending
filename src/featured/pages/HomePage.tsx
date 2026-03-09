@@ -3,7 +3,6 @@ import AboutPreview from "@/components/sections/AboutPreview";
 import Services from "@/components/sections/Services";
 import Results from "@/components/sections/Results";
 import Locations from "@/components/sections/Locations";
-import ContactForm from "@/components/sections/ContactForm";
 import Testimonials from "@/components/ui/Testimonials";
 import { getCmsContent } from "@/lib/content";
 
@@ -39,16 +38,10 @@ export default async function HomePage() {
         locations={cms.locations}
         enableLinks={cms.dynamicPages.locations}
       />
-      <Results />
+      <Results intro={cms.home.resultsIntro} stats={cms.home.resultsStats} />
       <Testimonials
         intro={cms.home.testimonialsIntro}
         testimonials={homeTestimonials}
-      />
-
-      <ContactForm
-        intro={cms.home.formIntro}
-        services={cms.services}
-        locations={cms.locations}
       />
     </main>
   );

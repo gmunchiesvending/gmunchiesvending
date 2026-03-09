@@ -1,3 +1,27 @@
+.footerOuter {
+  width: 100%;
+}
+
+.footerRequestWrap {
+  width: 100%;
+  background: #fff;
+  color: var(--black);
+  padding-top: var(--section-padding-y);
+  padding-bottom: var(--section-padding-y);
+  padding-left: var(--space-8);
+  padding-right: var(--space-8);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.footerRequestWrap .footerRequestSection {
+  width: 100%;
+}
+
+.footerRequestInner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
 .footerWrapper {
   background-color: var(--black);
   color: var(--white);
@@ -86,6 +110,10 @@
 }
 
 @media (max-width: 768px) {
+  .footerRequestWrap {
+    padding: var(--space-12) var(--space-6);
+  }
+
   .footerWrapper {
     padding: var(--space-12) var(--space-6);
   }

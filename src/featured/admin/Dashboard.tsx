@@ -530,6 +530,182 @@ export default function Dashboard() {
 
       {mode === "about" ? (
         <section className="adminSection">
+          <div className="adminSettingsCard">
+            <div style={{ fontWeight: 800 }}>Home: Results section</div>
+            <div style={{ opacity: 0.75, marginTop: 6 }}>Controls the “Results” counters section on the home page.</div>
+
+            <div className="adminRow" style={{ marginTop: "var(--space-8)" }}>
+              <div className="adminField">
+                <label>Eyebrow</label>
+                <input
+                  value={cms.home.resultsIntro?.eyebrow ?? ""}
+                  onChange={(e) =>
+                    setCms((prev) => {
+                      if (!prev) return prev;
+                      return {
+                        ...prev,
+                        home: {
+                          ...prev.home,
+                          resultsIntro: { ...(prev.home.resultsIntro ?? { eyebrow: "", heading: "Results", body: "" }), eyebrow: e.target.value },
+                        },
+                      };
+                    })
+                  }
+                  disabled={loading}
+                />
+              </div>
+              <div className="adminField">
+                <label>Heading</label>
+                <input
+                  value={cms.home.resultsIntro?.heading ?? "Results"}
+                  onChange={(e) =>
+                    setCms((prev) => {
+                      if (!prev) return prev;
+                      return {
+                        ...prev,
+                        home: {
+                          ...prev.home,
+                          resultsIntro: { ...(prev.home.resultsIntro ?? { eyebrow: "", heading: "Results", body: "" }), heading: e.target.value },
+                        },
+                      };
+                    })
+                  }
+                  disabled={loading}
+                />
+              </div>
+            </div>
+
+            <div className="adminField" style={{ marginTop: "var(--space-8)" }}>
+              <label>Description</label>
+              <textarea
+                value={cms.home.resultsIntro?.body ?? ""}
+                onChange={(e) =>
+                  setCms((prev) => {
+                    if (!prev) return prev;
+                    return {
+                      ...prev,
+                      home: {
+                        ...prev.home,
+                        resultsIntro: { ...(prev.home.resultsIntro ?? { eyebrow: "", heading: "Results", body: "" }), body: e.target.value },
+                      },
+                    };
+                  })
+                }
+                disabled={loading}
+                rows={4}
+              />
+            </div>
+
+            <div className="adminField" style={{ marginTop: "var(--space-8)" }}>
+              <label>Stats</label>
+              <div className="blocksList">
+                {(cms.home.resultsStats ?? []).map((s, idx) => (
+                  <div key={`rs-${idx}`} className="blockItem">
+                    <div className="adminRow">
+                      <div className="adminField">
+                        <label>Headline</label>
+                        <input
+                          value={s.headline}
+                          onChange={(e) =>
+                            setCms((prev) => {
+                              if (!prev) return prev;
+                              const next = deepClone(prev);
+                              if (!next.home.resultsStats) next.home.resultsStats = [];
+                              if (next.home.resultsStats[idx]) next.home.resultsStats[idx].headline = e.target.value;
+                              return next;
+                            })
+                          }
+                          disabled={loading}
+                        />
+                      </div>
+                      <div className="adminField">
+                        <label>Number</label>
+                        <input
+                          type="number"
+                          min={0}
+                          value={s.target}
+                          onChange={(e) =>
+                            setCms((prev) => {
+                              if (!prev) return prev;
+                              const next = deepClone(prev);
+                              if (!next.home.resultsStats) next.home.resultsStats = [];
+                              if (next.home.resultsStats[idx]) next.home.resultsStats[idx].target = Number(e.target.value || 0);
+                              return next;
+                            })
+                          }
+                          disabled={loading}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="adminRow">
+                      <div className="adminField">
+                        <label>Icon</label>
+                        <select
+                          value={s.iconKey}
+                          onChange={(e) =>
+                            setCms((prev) => {
+                              if (!prev) return prev;
+                              const next = deepClone(prev);
+                              if (!next.home.resultsStats) next.home.resultsStats = [];
+                              if (next.home.resultsStats[idx]) next.home.resultsStats[idx].iconKey = e.target.value;
+                              return next;
+                            })
+                          }
+                          disabled={loading}
+                        >
+                          <option value="BiUser">User</option>
+                          <option value="GoLocation">Location</option>
+                          <option value="GiVendingMachine">Vending machine</option>
+                          <option value="GrHostMaintenance">Maintenance</option>
+                        </select>
+                      </div>
+                      <div className="adminField" style={{ justifyContent: "flex-end" }}>
+                        <label style={{ opacity: 0 }}>Delete</label>
+                        <button
+                          className="adminButton adminButtonDanger"
+                          type="button"
+                          onClick={() =>
+                            setCms((prev) => {
+                              if (!prev) return prev;
+                              const next = deepClone(prev);
+                              next.home.resultsStats = (next.home.resultsStats ?? []).filter((_, i) => i !== idx);
+                              return next;
+                            })
+                          }
+                          disabled={loading}
+                        >
+                          Delete stat
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="adminActions" style={{ marginTop: "var(--space-8)" }}>
+                <button
+                  className="adminButton"
+                  type="button"
+                  onClick={() =>
+                    setCms((prev) => {
+                      if (!prev) return prev;
+                      const next = deepClone(prev);
+                      next.home.resultsStats = [
+                        ...(next.home.resultsStats ?? []),
+                        { headline: "New stat", target: 0, iconKey: "BiUser" },
+                      ];
+                      return next;
+                    })
+                  }
+                  disabled={loading}
+                >
+                  Add stat
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div className="adminCard">
             <div className="adminCardBody">
               <div className="adminSubheading">About Page</div>
@@ -1099,6 +1275,81 @@ export default function Dashboard() {
         </section>
       ) : mode === "services" ? (
         <section className="adminSection">
+          <div className="adminSettingsCard" style={{ marginBottom: "var(--space-10)" }}>
+            <div style={{ fontWeight: 800 }}>Home: Services section</div>
+            <div style={{ opacity: 0.75, marginTop: 6 }}>
+              This controls the heading text above the Services cards on the home page.
+            </div>
+
+            <div className="adminRow" style={{ marginTop: "var(--space-8)" }}>
+              <div className="adminField">
+                <label>Eyebrow</label>
+                <input
+                  value={cms.home.servicesIntro?.eyebrow ?? ""}
+                  onChange={(e) =>
+                    setCms((prev) => {
+                      if (!prev) return prev;
+                      const next = deepClone(prev);
+                      next.home = {
+                        ...next.home,
+                        servicesIntro: {
+                          ...(next.home.servicesIntro ?? { eyebrow: "", heading: "Services", body: "" }),
+                          eyebrow: e.target.value,
+                        },
+                      };
+                      return next;
+                    })
+                  }
+                  disabled={loading}
+                />
+              </div>
+              <div className="adminField">
+                <label>Heading</label>
+                <input
+                  value={cms.home.servicesIntro?.heading ?? "Services"}
+                  onChange={(e) =>
+                    setCms((prev) => {
+                      if (!prev) return prev;
+                      const next = deepClone(prev);
+                      next.home = {
+                        ...next.home,
+                        servicesIntro: {
+                          ...(next.home.servicesIntro ?? { eyebrow: "", heading: "Services", body: "" }),
+                          heading: e.target.value,
+                        },
+                      };
+                      return next;
+                    })
+                  }
+                  disabled={loading}
+                />
+              </div>
+            </div>
+
+            <div className="adminField" style={{ marginTop: "var(--space-8)" }}>
+              <label>Description</label>
+              <textarea
+                value={cms.home.servicesIntro?.body ?? ""}
+                onChange={(e) =>
+                  setCms((prev) => {
+                    if (!prev) return prev;
+                    const next = deepClone(prev);
+                    next.home = {
+                      ...next.home,
+                      servicesIntro: {
+                        ...(next.home.servicesIntro ?? { eyebrow: "", heading: "Services", body: "" }),
+                        body: e.target.value,
+                      },
+                    };
+                    return next;
+                  })
+                }
+                disabled={loading}
+                placeholder="Supports blank lines for paragraph breaks."
+              />
+            </div>
+          </div>
+
           <div className="adminSettingsCard">
             <div style={{ fontWeight: 800 }}>Services listing text</div>
             <div style={{ opacity: 0.75, marginTop: 6 }}>

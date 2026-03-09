@@ -3,8 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube, FaYelp, FaGoogle } from "react-icons/fa";
+import ContactForm from "@/components/sections/ContactForm";
 
 type SocialLink = { platform: string; url: string; enabled?: boolean };
+type FormIntro = { eyebrow?: string; heading: string; body?: string };
+type ServiceOption = { slug: string; title: string; display: boolean };
+type LocationOption = { slug: string; name: string };
 
 function iconForPlatform(platform: string) {
   const key = platform.trim().toLowerCase();
@@ -17,12 +21,26 @@ function iconForPlatform(platform: string) {
   return null;
 }
 
-export default function Footer({ socialLinks = [] }: { socialLinks?: SocialLink[] }) {
+export default function Footer({
+  socialLinks = [],
+  formIntro,
+  services = [],
+  locations = [],
+}: {
+  socialLinks?: SocialLink[];
+  formIntro?: FormIntro;
+  services?: ServiceOption[];
+  locations?: LocationOption[];
+}) {
   const visible = socialLinks.filter((s) => s.enabled !== false && s.url);
   return (
-    <footer className="section-full footerWrapper">
-     
-      <div className="footerContainer">
+    <footer className="footerOuter">
+      <div className="footerRequestWrap">
+        <ContactForm variant="footer" intro={formIntro} services={services} locations={locations} />
+      </div>
+
+      <div className="section-full footerWrapper">
+        <div className="footerContainer">
         {/* Logo and Company Info */}
         <div className="footerTop">
           <Link href="/" className="footerLogo">
@@ -68,6 +86,7 @@ export default function Footer({ socialLinks = [] }: { socialLinks?: SocialLink[
         <div className="footerCopyright">
           <p>&copy; {new Date().getFullYear()} GMunchies. All rights reserved.</p>
         </div>
+      </div>
       </div>
     </footer>
   );

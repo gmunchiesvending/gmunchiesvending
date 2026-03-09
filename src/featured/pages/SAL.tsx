@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import ContentBlock, { type ContentBlockData } from "@/components/ui/ContentBlock";
 import TestimonialCard from "@/components/ui/TestimonialCard";
 import SectionJumpCard from "@/components/ui/SectionJumpCard";
+import { titleCaseEyebrow } from "@/lib/text";
 
 type Testimonial = {
   id: string;
@@ -109,7 +110,7 @@ export default function SAL({
         ) : null}
 
         <div className="salCTAWrapper">
-          <p className="beforeHeading">{eyebrow}</p>
+          <p className="beforeHeading">{titleCaseEyebrow(eyebrow)}</p>
           <h1 className="salHeroHeading">{title}</h1>
           {description ? <p className="salHeroDescription">{description}</p> : null}
         </div>

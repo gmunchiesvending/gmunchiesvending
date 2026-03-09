@@ -92,6 +92,24 @@ export const cmsSchema = z.object({
       ctaLabel: z.string().min(1),
       imageSrc: z.string().min(1),
     }),
+    resultsIntro: z
+      .object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string().min(1).default("Results"),
+        body: z.string().optional().default(""),
+      })
+      .optional()
+      .default({ eyebrow: "", heading: "Results", body: "" }),
+    resultsStats: z
+      .array(
+        z.object({
+          headline: z.string().min(1),
+          target: z.number().int().nonnegative(),
+          iconKey: z.string().min(1),
+        }),
+      )
+      .optional()
+      .default([]),
     servicesIntro: z
       .object({
         eyebrow: z.string().optional().default(""),

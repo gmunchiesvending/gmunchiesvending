@@ -65,10 +65,16 @@
       "ctaLabel": "Request Service",
       "imageSrc": "/uploads/hero.webp"
     },
+    "resultsIntro": {
+      "eyebrow": "Our Growth",
+      "heading": "Results",
+      "body": "Trusted by businesses across the Rio Grande Valley. Our numbers represent lasting partnerships and dependable vending service. From installation to ongoing support, we deliver quality products and reliable service every day. "
+    },
+    "resultsStats": [],
     "servicesIntro": {
       "eyebrow": "Modern Vending Solutions",
       "heading": "Services",
-      "body": "From a single vending machine to a full refreshment program, we have solutions that fit."
+      "body": "From a single vending machine to a full refreshment program, we provide solutions tailored to your workplace. "
     },
     "locationsIntro": {
       "eyebrow": "Where We Serve",
@@ -184,7 +190,7 @@
       "title": "Micro Market",
       "excerpt": " A self-checkout breakroom market with snacks and drinks your team will love. ",
       "sectionsIntro": "",
-      "heroImageSrc": "/uploads/hero.webp",
+      "heroImageSrc": "/uploads/1772924316061-gmunchies-vending-website-changes_aa.webp",
       "blocks": [
         {
           "layout": "left",
@@ -192,7 +198,7 @@
           "heading": "Micro Market Service ",
           "body": "Upgrade your workplace breakroom with a modern micro market from GMunchies Vending. Our self-checkout markets provide employees with convenient access to a wide variety of snacks and drinks right inside your workplace. It’s a simple, flexible solution that offers more selection than traditional vending machines while making it easy for employees to grab what they need throughout the day. ",
           "iconSrc": "",
-          "imageSrc": "/uploads/1772924316061-gmunchies-vending-website-changes_aa.webp"
+          "imageSrc": "/uploads/1772924437694-screenshot_5.jpg"
         },
         {
           "layout": "right",
@@ -224,6 +230,7 @@
   "locations": [
     {
       "slug": "office-building",
+      "eyebrow": "location",
       "name": "Office Building",
       "excerpt": "",
       "description": "Perfect for corporate environments and business centers.",
@@ -250,6 +257,7 @@
     },
     {
       "slug": "appartment-complex",
+      "eyebrow": "location",
       "name": "Appartment Complex",
       "excerpt": "",
       "description": "Convenient solutions for residential communities",
@@ -276,6 +284,7 @@
     },
     {
       "slug": "ware-house-industrial",
+      "eyebrow": "location",
       "name": "Ware House/Industrial",
       "excerpt": "",
       "description": "Reliable vending for industrial and warehouse facilities",
@@ -302,6 +311,7 @@
     },
     {
       "slug": "gym-fitness-center",
+      "eyebrow": "location",
       "name": "Gym/Fitness-center",
       "excerpt": "",
       "description": "Healthy snacks and drinks for active members.",
@@ -328,6 +338,7 @@
     },
     {
       "slug": "hospital-healtcare",
+      "eyebrow": "location",
       "name": "Hospital / Healtcare",
       "excerpt": "",
       "description": "24/7 refreshment options for staff and visitors",
@@ -354,6 +365,7 @@
     },
     {
       "slug": "school-university",
+      "eyebrow": "location",
       "name": "School University",
       "excerpt": "",
       "description": "Campus-wide vending solutions for students and faculty",
@@ -380,6 +392,7 @@
     },
     {
       "slug": "other",
+      "eyebrow": "location",
       "name": "Other",
       "excerpt": "",
       "description": "Custom solutions for your unique location",
