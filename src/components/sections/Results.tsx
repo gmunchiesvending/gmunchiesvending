@@ -12,7 +12,7 @@ export default function Counter() {
     <section className="section-full rsfWrapper">
       <div className="section-regular">
         <div className="headingWrapper">
-        <p className="beforeHeading">our progress</p>
+        <p className="beforeHeading">Our Growth</p>
         <h2 className="h2">Results</h2>
         <p className="afterHeading">Our numbers reflect consistent growth, trusted partnerships, and long term reliability.
         From installations to ongoing service, we focus on delivering solutions that perform every day.</p>
