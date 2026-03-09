@@ -299,6 +299,7 @@ export default function Dashboard() {
         {
           slug,
           name: "New Location",
+          eyebrow: "location",
           excerpt: "",
           description: "",
           iconKey: "FaMapMarkerAlt",
@@ -319,6 +320,7 @@ export default function Dashboard() {
         {
           slug,
           display: true,
+          eyebrow: "service",
           iconSrc: "/uploads/icon-04.svg",
           title: "New Service",
           excerpt: "",
@@ -708,6 +710,23 @@ export default function Dashboard() {
                         })
                       }
                       disabled={loading}
+                    />
+                  </div>
+                  <div className="adminField">
+                    <label>Hero eyebrow</label>
+                    <input
+                      value={(loc as any).eyebrow ?? ""}
+                      onChange={(e) =>
+                        setCms((prev) => {
+                          if (!prev) return prev;
+                          const next = deepClone(prev);
+                          const target = next.locations.find((l) => l.slug === loc.slug);
+                          if (target) (target as any).eyebrow = e.target.value;
+                          return next;
+                        })
+                      }
+                      disabled={loading}
+                      placeholder="location"
                     />
                   </div>
                   <div className="adminField">
@@ -1182,6 +1201,23 @@ export default function Dashboard() {
                         })
                       }
                       disabled={loading}
+                    />
+                  </div>
+                  <div className="adminField">
+                    <label>Hero eyebrow</label>
+                    <input
+                      value={(srv as any).eyebrow ?? ""}
+                      onChange={(e) =>
+                        setCms((prev) => {
+                          if (!prev) return prev;
+                          const next = deepClone(prev);
+                          const target = next.services.find((s) => s.slug === srv.slug);
+                          if (target) (target as any).eyebrow = e.target.value;
+                          return next;
+                        })
+                      }
+                      disabled={loading}
+                      placeholder="service"
                     />
                   </div>
                   <div className="adminField">

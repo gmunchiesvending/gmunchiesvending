@@ -18,6 +18,7 @@ export const contentBlockSchema = z.object({
 export const serviceSchema = z.object({
   slug: z.string().min(1),
   display: z.boolean().default(true),
+  eyebrow: z.string().optional().default("service"),
   iconSrc: z.string().min(1),
   title: z.string().min(1),
   excerpt: z.string().min(1),
@@ -28,6 +29,7 @@ export const serviceSchema = z.object({
 
 export const locationSchema = z.object({
   slug: z.string().min(1),
+  eyebrow: z.string().optional().default("location"),
   name: z.string().min(1),
   excerpt: z.string().optional().default(""),
   description: z.string().optional().default(""),

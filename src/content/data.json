@@ -78,7 +78,7 @@
     "testimonialsIntro": {
       "eyebrow": "Our Happy Clients",
       "heading": "Testimonials",
-      "body": "See what businesses say about working with us and how our vending solutions make a difference in their locations."
+      "body": ":See what people are saying about their experience with us. "
     },
     "formIntro": {
       "eyebrow": "Get Started",
@@ -99,6 +99,7 @@
     {
       "slug": "vending",
       "display": true,
+      "eyebrow": "service",
       "iconSrc": "/uploads/1771947434993-icon_vending.svg",
       "title": "Vending",
       "excerpt": "Vending machines stocked with snacks and drinks for every taste. ",
@@ -134,6 +135,7 @@
     {
       "slug": "coffee",
       "display": true,
+      "eyebrow": "service",
       "iconSrc": "/uploads/1771947479788-icon_coffee.svg",
       "title": "Coffee",
       "excerpt": "Fresh, great-tasting coffee to help your team conquer the day. ",
@@ -177,6 +179,7 @@
     {
       "slug": "micro-market",
       "display": true,
+      "eyebrow": "service",
       "iconSrc": "/uploads/1771947568624-icon_micro-market.svg",
       "title": "Micro Market",
       "excerpt": " A self-checkout breakroom market with snacks and drinks your team will love. ",

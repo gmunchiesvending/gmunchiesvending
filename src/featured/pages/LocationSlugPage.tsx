@@ -14,7 +14,7 @@ export default async function LocationSlugPage({ slug }: { slug: string }) {
     <SAL
       kind="location"
       slug={slug}
-      eyebrow="location"
+      eyebrow={(location as any).eyebrow || "location"}
       title={location.name}
       description={location.excerpt || location.description}
       heroImageSrc={location.heroImageSrc}

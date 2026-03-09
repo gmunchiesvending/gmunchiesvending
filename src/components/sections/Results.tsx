@@ -15,8 +15,7 @@ export default function Counter() {
         <div className="headingWrapper">
         <p className="beforeHeading">{titleCaseEyebrow("Our Growth")}</p>
         <h2 className="h2">Results</h2>
-        <p className="afterHeading">Our numbers reflect consistent growth, trusted partnerships, and long term reliability.
-        From installations to ongoing service, we focus on delivering solutions that perform every day.</p>
+        <p className="afterHeading">From a single vending machine to a full refreshment program, we provide solutions tailored to your workplace.</p>
       </div>
 
         <div className="rsCardsWrapper">
