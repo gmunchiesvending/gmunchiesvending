@@ -184,7 +184,7 @@
       "title": "Micro Market",
       "excerpt": " A self-checkout breakroom market with snacks and drinks your team will love. ",
       "sectionsIntro": "",
-      "heroImageSrc": "/uploads/hero.webp",
+      "heroImageSrc": "/uploads/1772924316061-gmunchies-vending-website-changes_aa.webp",
       "blocks": [
         {
           "layout": "left",
@@ -224,6 +224,7 @@
   "locations": [
     {
       "slug": "office-building",
+      "eyebrow": "location",
       "name": "Office Building",
       "excerpt": "",
       "description": "Perfect for corporate environments and business centers.",
@@ -250,6 +251,7 @@
     },
     {
       "slug": "appartment-complex",
+      "eyebrow": "location",
       "name": "Appartment Complex",
       "excerpt": "",
       "description": "Convenient solutions for residential communities",
@@ -276,6 +278,7 @@
     },
     {
       "slug": "ware-house-industrial",
+      "eyebrow": "location",
       "name": "Ware House/Industrial",
       "excerpt": "",
       "description": "Reliable vending for industrial and warehouse facilities",
@@ -302,6 +305,7 @@
     },
     {
       "slug": "gym-fitness-center",
+      "eyebrow": "location",
       "name": "Gym/Fitness-center",
       "excerpt": "",
       "description": "Healthy snacks and drinks for active members.",
@@ -328,6 +332,7 @@
     },
     {
       "slug": "hospital-healtcare",
+      "eyebrow": "location",
       "name": "Hospital / Healtcare",
       "excerpt": "",
       "description": "24/7 refreshment options for staff and visitors",
@@ -354,6 +359,7 @@
     },
     {
       "slug": "school-university",
+      "eyebrow": "location",
       "name": "School University",
       "excerpt": "",
       "description": "Campus-wide vending solutions for students and faculty",
@@ -380,6 +386,7 @@
     },
     {
       "slug": "other",
+      "eyebrow": "location",
       "name": "Other",
       "excerpt": "",
       "description": "Custom solutions for your unique location",
