@@ -106,7 +106,7 @@
       "slug": "vending",
       "display": true,
       "eyebrow": "service",
-      "iconSrc": "/uploads/1773422871483-gmunchies_vending_website_changes_pt-removebg-preview-01.png",
+      "iconSrc": "/uploads/1773424531554-icons-01.png",
       "title": "Vending",
       "excerpt": "Vending machines stocked with snacks and drinks for every taste. ",
       "sectionsIntro": "",
@@ -142,7 +142,7 @@
       "slug": "coffee",
       "display": true,
       "eyebrow": "service",
-      "iconSrc": "/uploads/1773423015245-coffee-01.png",
+      "iconSrc": "/uploads/1773424531567-coffee-01.png",
       "title": "Coffee",
       "excerpt": "Fresh, great-tasting coffee to help your team conquer the day. ",
       "sectionsIntro": "",
@@ -154,7 +154,7 @@
           "heading": "Coffee Service",
           "body": "Keep your workplace energized with reliable office coffee service from GMunchies Vending. We provide quality coffee selections and modern brewing machines designed to deliver a fresh, consistent cup throughout the workday. Whether your team enjoys bold, rich blends or smoother, lighter roasts, our coffee solutions make it easy to enjoy great coffee right at work. ",
           "iconSrc": "",
-          "imageSrc": "/uploads/1773423902954-coffee-service-picture.png"
+          "imageSrc": "/uploads/1772919504452-screenshot_3_aa.webp"
         },
         {
           "layout": "left",
@@ -162,7 +162,7 @@
           "heading": "Coffee Variety ",
           "body": "Choose from a selection of flavorful coffee blends that satisfy a wide range of tastes across your workplace. ",
           "iconSrc": "",
-          "imageSrc": "/uploads/1773424005908-coffee-variety-picture.png"
+          "imageSrc": "/uploads/1772919861341-screenshot_4_aa2-copy.webp"
         },
         {
           "layout": "left",
@@ -170,7 +170,7 @@
           "heading": "Modern Coffee Machines ",
           "body": "Our easy-to-use coffee brewers are designed for office environments and deliver consistent quality in every cup. ",
           "iconSrc": "",
-          "imageSrc": "/uploads/1773424085425-modern-coffee-machines-picture.png"
+          "imageSrc": ""
         },
         {
           "layout": "left",
@@ -178,7 +178,7 @@
           "heading": "Breakroom Essentials ",
           "body": "We supply cups, stirrers, sweeteners, creamers, and other coffee necessities so your breakroom is always ready. ",
           "iconSrc": "",
-          "imageSrc": "/uploads/1773424275889-break-room-essentials-picture.png"
+          "imageSrc": ""
         }
       ]
     },
