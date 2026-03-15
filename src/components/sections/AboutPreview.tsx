@@ -19,8 +19,9 @@ export default function AboutPreview({ eyebrow, headline, body, imageSrc }: Abou
   const [imgLoaded, setImgLoaded] = useState(false);
 
   return (
-    <section className="section-regular aboutPreview">
-      <div className="aboutPreviewInner">
+    <section className="section-full aboutPreviewSection">
+      <div className="section-regular aboutPreview">
+        <div className="aboutPreviewInner">
         <div className="aboutPreviewText">
           {eyebrow ? <p className="beforeHeading">{titleCaseEyebrow(eyebrow)}</p> : null}
           <h2 className="aboutPreviewHeading">{headline}</h2>
@@ -46,6 +47,7 @@ export default function AboutPreview({ eyebrow, headline, body, imageSrc }: Abou
             </div>
           </div>
         ) : null}
+        </div>
       </div>
     </section>
   );

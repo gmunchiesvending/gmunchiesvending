@@ -1,3 +1,8 @@
+/* Between white (Services) and Locations gray (244): subtle step so the section flows */
+.aboutPreviewSection {
+  background-color: #fafafa;
+}
+
 .aboutPreview {
   padding-top: var(--space-16);
   padding-bottom: var(--space-16);
