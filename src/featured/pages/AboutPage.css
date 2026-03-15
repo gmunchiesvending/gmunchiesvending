@@ -68,7 +68,11 @@
   margin: 0;
 }
 
-/* ── About Content Section ── */
+/* ── About Content Section (same gray as home AboutPreview, divides from white request form below) ── */
+.aboutContentWrapper {
+  background-color: #fafafa;
+}
+
 .aboutContentSection {
   padding-top: var(--space-16);
   padding-bottom: var(--space-16);

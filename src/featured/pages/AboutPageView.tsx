@@ -60,9 +60,10 @@ export default function AboutPageView({
         </div>
       </section>
 
-      {/* Content */}
-      <section className="section-regular aboutContentSection">
-        <div className="aboutContent">
+      {/* Content — same gray as home AboutPreview so it divides from request services (white) below */}
+      <section className="section-full aboutContentWrapper">
+        <div className="section-regular aboutContentSection">
+          <div className="aboutContent">
           {body ? (
             <div className="aboutBodyBlock">
               {body.split("\n\n").map((paragraph, i) => (
@@ -86,6 +87,7 @@ export default function AboutPageView({
               </div>
             </div>
           ) : null}
+          </div>
         </div>
       </section>
     </main>
