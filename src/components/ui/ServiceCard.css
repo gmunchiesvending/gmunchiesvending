@@ -36,7 +36,6 @@
 }
 .srvImg{
   position: relative;
- 
 }
 @keyframes anmImg {
   0%   { transform: translate(-50%,  0%); }
@@ -59,8 +58,11 @@
     padding-left: 5%;
     padding-right: 5%;
   }
+  .srvImgBg{
+    width: 100px;
+    height: 100px;
+  }
   .srvImg{
     width: 150px;
-    
   }
 }
