@@ -107,7 +107,9 @@ export default function SAL({
               onLoadingComplete={() => setIsLoaded(true)}
             />
           </div>
-        ) : null}
+        ) : (
+          <div className="salHeroPlaceholder" aria-hidden />
+        )}
 
         <div className="salCTAWrapper">
           <p className="beforeHeading">{titleCaseEyebrow(eyebrow)}</p>

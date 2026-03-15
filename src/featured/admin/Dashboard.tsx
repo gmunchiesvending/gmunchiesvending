@@ -784,6 +784,20 @@ export default function Dashboard() {
                     >
                       Add image from media
                     </button>
+                    {cms.about.heroImageSrc ? (
+                      <button
+                        className="adminButton adminButtonDanger"
+                        type="button"
+                        onClick={() =>
+                          setCms((prev) =>
+                            prev ? { ...prev, about: { ...prev.about, heroImageSrc: "" } } : prev
+                          )
+                        }
+                        disabled={loading}
+                      >
+                        Remove hero image
+                      </button>
+                    ) : null}
                   </div>
                 </div>
 
@@ -988,6 +1002,24 @@ export default function Dashboard() {
                       >
                         Add image from media
                       </button>
+                      {loc.heroImageSrc ? (
+                        <button
+                          className="adminButton adminButtonDanger"
+                          type="button"
+                          onClick={() =>
+                            setCms((prev) => {
+                              if (!prev) return prev;
+                              const next = deepClone(prev);
+                              const target = next.locations.find((l) => l.slug === loc.slug);
+                              if (target) target.heroImageSrc = "";
+                              return next;
+                            })
+                          }
+                          disabled={loading}
+                        >
+                          Remove hero image
+                        </button>
+                      ) : null}
                     </div>
                   </div>
 
@@ -1157,6 +1189,24 @@ export default function Dashboard() {
                               >
                                 Add icon from media
                               </button>
+                              {normSrc((b as any).iconSrc) ? (
+                                <button
+                                  className="adminButton adminButtonDanger"
+                                  type="button"
+                                  onClick={() =>
+                                    setCms((prev) => {
+                                      if (!prev) return prev;
+                                      const next = deepClone(prev);
+                                      const target = next.locations.find((l) => l.slug === loc.slug);
+                                      if (target) (target.blocks[idx] as any).iconSrc = "";
+                                      return next;
+                                    })
+                                  }
+                                  disabled={loading}
+                                >
+                                  Remove icon
+                                </button>
+                              ) : null}
                               <div className="adminMediaPath">{normSrc((b as any).iconSrc)}</div>
                             </div>
                           </div>
@@ -1519,6 +1569,24 @@ export default function Dashboard() {
                     >
                       Add icon from media
                     </button>
+                    {srv.iconSrc ? (
+                      <button
+                        className="adminButton adminButtonDanger"
+                        type="button"
+                        onClick={() =>
+                          setCms((prev) => {
+                            if (!prev) return prev;
+                            const next = deepClone(prev);
+                            const target = next.services.find((s) => s.slug === srv.slug);
+                            if (target) target.iconSrc = "";
+                            return next;
+                          })
+                        }
+                        disabled={loading}
+                      >
+                        Remove icon
+                      </button>
+                    ) : null}
                     <input
                       value={srv.iconSrc}
                       onChange={(e) =>
@@ -1582,6 +1650,24 @@ export default function Dashboard() {
                     >
                       Add image from media
                     </button>
+                    {srv.heroImageSrc ? (
+                      <button
+                        className="adminButton adminButtonDanger"
+                        type="button"
+                        onClick={() =>
+                          setCms((prev) => {
+                            if (!prev) return prev;
+                            const next = deepClone(prev);
+                            const target = next.services.find((s) => s.slug === srv.slug);
+                            if (target) target.heroImageSrc = "";
+                            return next;
+                          })
+                        }
+                        disabled={loading}
+                      >
+                        Remove hero image
+                      </button>
+                    ) : null}
                   </div>
                 </div>
 
@@ -1725,6 +1811,24 @@ export default function Dashboard() {
                               >
                                 Add icon from media
                               </button>
+                              {normSrc((b as any).iconSrc) ? (
+                                <button
+                                  className="adminButton adminButtonDanger"
+                                  type="button"
+                                  onClick={() =>
+                                    setCms((prev) => {
+                                      if (!prev) return prev;
+                                      const next = deepClone(prev);
+                                      const target = next.services.find((s) => s.slug === srv.slug);
+                                      if (target) (target.blocks[idx] as any).iconSrc = "";
+                                      return next;
+                                    })
+                                  }
+                                  disabled={loading}
+                                >
+                                  Remove icon
+                                </button>
+                              ) : null}
                               <div className="adminMediaPath">{normSrc((b as any).iconSrc)}</div>
                             </div>
                           </div>

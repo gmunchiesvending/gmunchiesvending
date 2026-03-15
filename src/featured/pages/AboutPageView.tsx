@@ -50,7 +50,9 @@ export default function AboutPageView({
               onLoad={() => setIsLoaded(true)}
             />
           </div>
-        ) : null}
+        ) : (
+          <div className="aboutHeroPlaceholder" aria-hidden />
+        )}
 
         <div className="aboutCTAWrapper">
           {eyebrow ? <p className="beforeHeading aboutEyebrow">{eyebrow}</p> : null}
