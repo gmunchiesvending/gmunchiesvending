@@ -262,6 +262,16 @@
   .navDropdownItem:focus-visible {
     background: transparent;
   }
+
+  .navDropdownItem:active {
+    color: #fff;
+    background: var(--primary-color);
+  }
+
+  .navDropdownItem.active {
+    color: #fff;
+    background: var(--primary-color);
+  }
 }
 
 

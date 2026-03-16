@@ -2,6 +2,7 @@
 import "./NavBar.css";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -28,6 +29,7 @@ export default function Navbar({
   dynamicPages,
 }: NavbarProps) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const servicesDynamic = dynamicPages?.services ?? true;
   const locationsDynamic = dynamicPages?.locations ?? true;
 
@@ -139,7 +141,7 @@ export default function Navbar({
                 </div>
 
                 <div className="navDropdownMenu" role="menu" aria-label="Services">
-                  <Link className="navDropdownItem" href="/services" onClick={closeMenu} role="menuitem">
+                  <Link className={`navDropdownItem${pathname === "/services" ? " active" : ""}`} href="/services" onClick={closeMenu} role="menuitem">
                     All services
                   </Link>
                   {services
@@ -147,7 +149,7 @@ export default function Navbar({
                     .map((s) => (
                       <Link
                         key={s.slug}
-                        className="navDropdownItem"
+                        className={`navDropdownItem${pathname === `/service/${s.slug}` ? " active" : ""}`}
                         href={`/service/${s.slug}`}
                         onClick={closeMenu}
                         role="menuitem"
