@@ -29,6 +29,20 @@
   object-fit: cover;
 }
 
+.CTA_Wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: #000;
+  opacity: 0.45;
+  z-index: 1;
+}
+
+.CTA_Wrapper > * {
+  position: relative;
+  z-index: 2;
+}
+
 .CTA_Wrapper {
   position: relative;
   z-index: 5;
