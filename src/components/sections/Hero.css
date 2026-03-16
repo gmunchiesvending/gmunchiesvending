@@ -83,3 +83,15 @@
   }
   }
 }
+
+@media (max-width: 768px) {
+  .heroWrapper {
+    height: 50vh;
+  }
+  .parallaxWrapper {
+    height: 105%;
+  }
+  .CTA_Wrapper {
+    height: 50vh;
+  }
+}

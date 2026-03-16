@@ -138,3 +138,13 @@
     max-height: none;
   }
 }
+
+@media (max-width: 768px) {
+  .section-full.aboutHeroWrapper {
+    height: 50vh;
+    min-height: 50vh;
+  }
+  .aboutParallaxWrapper {
+    height: 105%;
+  }
+}
