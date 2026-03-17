@@ -68,9 +68,28 @@
     "resultsIntro": {
       "eyebrow": "Our Growth",
       "heading": "Results",
-      "body": "Trusted by businesses across the Rio Grande Valley. Our numbers represent lasting partnerships and dependable vending service. From installation to ongoing support, we deliver quality products and reliable service every day. "
+      "body": "Trusted by businesses across the Rio Grande Valley. Our numbers represent lasting partnerships and dependable vending service. From installation to ongoing support, we deliver quality products and reliable service every day."
     },
-    "resultsStats": [],
+    "resultsStats": [
+      {
+        "headline": "Locations Served",
+        "target": 10,
+        "iconKey": "GoLocation",
+        "targetDisplay": "10+"
+      },
+      {
+        "headline": "Snack & Drink Options",
+        "target": 75,
+        "iconKey": "GiVendingMachine",
+        "targetDisplay": "75+"
+      },
+      {
+        "headline": "Restocking and Service",
+        "target": 0,
+        "iconKey": "GrHostMaintenance",
+        "targetDisplay": "Weekly-Biweekly"
+      }
+    ],
     "servicesIntro": {
       "eyebrow": "Modern Vending Solutions",
       "heading": "Services",

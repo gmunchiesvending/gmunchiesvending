@@ -106,6 +106,8 @@ export const cmsSchema = z.object({
           headline: z.string().min(1),
           target: z.number().int().nonnegative(),
           iconKey: z.string().min(1),
+          // Optional display label for non-numeric or formatted values (e.g. "10+", "Weekly-Biweekly")
+          targetDisplay: z.string().optional(),
         }),
       )
       .optional()

@@ -7,10 +7,13 @@ import { useEffect, useRef, useState } from "react";
 type ResultCardProps = {
   headline: string;
   target: number;
+  // Optional display label for non-numeric or formatted values
+  // When provided, this string will be shown instead of the animated counter.
+  targetDisplay?: string;
   Icon: IconType;
 };
 
-export default function Counter({ headline, target, Icon }: ResultCardProps) {
+export default function Counter({ headline, target, targetDisplay, Icon }: ResultCardProps) {
   const TARGET = target;
 
   const countRef = useRef<HTMLSpanElement | null>(null);
@@ -45,6 +48,8 @@ export default function Counter({ headline, target, Icon }: ResultCardProps) {
   };
 
   useEffect(() => {
+    // If a custom display value is provided, skip the animated counter logic entirely.
+    if (targetDisplay) return;
     if (!countRef.current) return;
     if (typeof window === "undefined") return;
 
@@ -58,14 +63,14 @@ export default function Counter({ headline, target, Icon }: ResultCardProps) {
     observer.observe(countRef.current);
 
     return () => observer.disconnect();
-  }, []);
+  }, [targetDisplay]);
 
   return (
     <div className="rsCard">
       <Icon className="react-icon" size={140} />
-      <p >{headline}</p>
+      <p>{headline}</p>
       <span ref={countRef} onMouseEnter={startCounting} className="counter">
-        {value}
+        {targetDisplay ?? value}
       </span>
     </div>
   );

@@ -751,6 +751,26 @@ export default function Dashboard() {
 
                     <div className="adminRow">
                       <div className="adminField">
+                        <label>Display value (optional)</label>
+                        <input
+                          placeholder='Examples: "10+", "Weekly-Biweekly"'
+                          value={s.targetDisplay ?? ""}
+                          onChange={(e) =>
+                            setCms((prev) => {
+                              if (!prev) return prev;
+                              const next = deepClone(prev);
+                              if (!next.home.resultsStats) next.home.resultsStats = [];
+                              if (next.home.resultsStats[idx]) next.home.resultsStats[idx].targetDisplay = e.target.value || undefined;
+                              return next;
+                            })
+                          }
+                          disabled={loading}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="adminRow">
+                      <div className="adminField">
                         <label>Icon</label>
                         <select
                           value={s.iconKey}
