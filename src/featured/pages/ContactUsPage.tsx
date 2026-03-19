@@ -36,36 +36,27 @@ export default async function ContactUsPage() {
             </div>
 
             <div className="contactUsInfoCard">
-              <div className="contactUsItem">
-                <span className="contactUsIcon" aria-hidden="true">
-                  <MdEmail size={22} />
-                </span>
-                <div>
-                  <h2 className="h3">Email</h2>
+              <div className="contactUsDetails">
+                <div className="contactUsItem">
+                  <span className="contactUsIcon" aria-hidden="true">
+                    <MdEmail size={20} />
+                  </span>
                   <Link href={`mailto:${email}`} className="contactUsLink">
                     {email}
                   </Link>
                 </div>
-              </div>
-
-              <div className="contactUsItem">
-                <span className="contactUsIcon" aria-hidden="true">
-                  <MdPhone size={22} />
-                </span>
-                <div>
-                  <h2 className="h3">Phone</h2>
+                <div className="contactUsItem">
+                  <span className="contactUsIcon" aria-hidden="true">
+                    <MdPhone size={20} />
+                  </span>
                   <Link href={`tel:${phoneHref}`} className="contactUsLink">
                     {phoneDisplay}
                   </Link>
                 </div>
-              </div>
-
-              <div className="contactUsItem">
-                <span className="contactUsIcon" aria-hidden="true">
-                  <MdPlace size={22} />
-                </span>
-                <div>
-                  <h2 className="h3">Service Area</h2>
+                <div className="contactUsItem">
+                  <span className="contactUsIcon" aria-hidden="true">
+                    <MdPlace size={20} />
+                  </span>
                   <p className="contactUsText">Rio Grande Valley, Texas</p>
                 </div>
               </div>
