@@ -1,6 +1,9 @@
+"use client";
+
 import "./Footer.css";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube, FaYelp, FaGoogle } from "react-icons/fa";
 import ContactForm from "@/components/sections/ContactForm";
@@ -32,12 +35,16 @@ export default function Footer({
   services?: ServiceOption[];
   locations?: LocationOption[];
 }) {
+  const pathname = usePathname();
+  const hideRequestForm = /^\/contact(?:-us)?(?:\/|$)/.test(pathname ?? "");
   const visible = socialLinks.filter((s) => s.enabled !== false && s.url);
   return (
     <footer className="footerOuter">
-      <div className="footerRequestWrap">
-        <ContactForm variant="footer" intro={formIntro} services={services} locations={locations} />
-      </div>
+      {hideRequestForm ? null : (
+        <div className="footerRequestWrap">
+          <ContactForm variant="footer" intro={formIntro} services={services} locations={locations} />
+        </div>
+      )}
 
       <div className="section-full footerWrapper">
         <div className="footerContainer">
@@ -64,11 +71,11 @@ export default function Footer({
         {/* Social Media Links */}
         {visible.length > 0 ? (
           <div className="footerSocial">
-            {visible.map((s) => {
+            {visible.map((s, idx) => {
               const Icon = iconForPlatform(s.platform);
               return (
                 <a
-                  key={`${s.platform}-${s.url}`}
+                  key={`${s.platform}-${s.url}-${idx}`}
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"

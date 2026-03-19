@@ -16,8 +16,8 @@ export default async function TestimonialsPage() {
         </div>
 
         <div className={styles.grid}>
-          {testimonials.map((t) => (
-            <TestimonialCard key={t.id} locationLabel={t.locationLabel} quote={t.quote} clientName={t.clientName} />
+          {testimonials.map((t, idx) => (
+            <TestimonialCard key={`${t.id}-${idx}`} locationLabel={t.locationLabel} quote={t.quote} clientName={t.clientName} />
           ))}
         </div>
       </div>

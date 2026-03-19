@@ -45,7 +45,7 @@ export default function Locations({ intro, locations, listingText = "", enableLi
             const isLastAlone = index === locations.length - 1 && locations.length % 3 === 1;
             return enableLinks ? (
               <Link
-                key={location.slug}
+                key={`${location.slug}-${index}`}
                 href={`/location/${location.slug}`}
                 className={`locationCardLink${isLastAlone ? " centerCard" : ""}`}
               >
@@ -56,7 +56,7 @@ export default function Locations({ intro, locations, listingText = "", enableLi
                 />
               </Link>
             ) : (
-              <div key={location.slug} className={`locationCardLink${isLastAlone ? " centerCard" : ""}`}>
+              <div key={`${location.slug}-${index}`} className={`locationCardLink${isLastAlone ? " centerCard" : ""}`}>
                 <LocationCard
                   name={location.name}
                   Icon={getIconByKey(location.iconKey)}

@@ -1,0 +1,111 @@
+.contactUsSection {
+  background-color: #fafafa;
+}
+
+.contactUsInner {
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-16);
+}
+
+.contactUsInlineLink {
+  color: var(--primary-color);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+
+.contactUsGrid {
+  margin-top: var(--space-10);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-10);
+  align-items: start;
+}
+
+.contactUsFormCard,
+.contactUsInfoCard {
+
+  border-radius: 1.25rem;
+  box-shadow: rgba(15, 23, 42, 0.08) 0px 14px 35px -20px;
+  padding: var(--space-8);
+}
+
+.contactUsFormCard .formWrapper {
+  width: 100%;
+}
+
+.contactUsFormCard .formButton {
+  width: 100%;
+}
+
+.contactUsInfoCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.contactUsItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.contactUsIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background-color: rgba(255, 171, 0, 0.14);
+  color: var(--primary-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contactUsLink {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.contactUsText {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.contactUsMapFrame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 1rem;
+  overflow: hidden;
+  margin-top: var(--space-2);
+}
+
+.contactUsMapFrame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.contactUsCaption {
+  margin: 0;
+  opacity: 0.85;
+}
+
+@media (max-width: 1000px) {
+  .contactUsGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .contactUsInner {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+
+  .contactUsFormCard,
+  .contactUsInfoCard {
+    padding: var(--space-6);
+  }
+}
+

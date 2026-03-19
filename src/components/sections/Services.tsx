@@ -39,9 +39,9 @@ export default function Services({ intro, listingText = "", services, enableLink
         {intro?.body ? <p className="afterHeading">{intro.body}</p> : null}
       </div>
       <div className="cardWrapper">
-        {visible.map((service) => (
+        {visible.map((service, idx) => (
           <ServiceCard
-            key={service.slug}
+            key={`${service.slug}-${idx}`}
             img={service.iconSrc}
             headline={service.title}
             bodyText={service.excerpt}

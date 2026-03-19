@@ -139,7 +139,7 @@ export default function SAL({
       {blocks.map((b, idx) => {
         const sectionIndex = firstContentIndex + idx;
         return (
-          <section key={idx} className={`section-full salStrip ${stripeClass(sectionIndex)}`}>
+          <section key={`${kind}-${slug}-block-${idx}`} className={`section-full salStrip ${stripeClass(sectionIndex)}`}>
             <div className="section-regular">
               <ContentBlock
                 anchorId={`${kind}-${slug}-section-${idx}`}
@@ -163,9 +163,9 @@ export default function SAL({
             </div>
 
             <div className="salTestimonialsGrid">
-              {testimonials.map((t) => (
+              {testimonials.map((t, idx) => (
                 <TestimonialCard
-                  key={t.id}
+                  key={`${t.id}-${idx}`}
                   locationLabel={t.locationLabel || title}
                   quote={t.quote}
                   clientName={t.clientName}

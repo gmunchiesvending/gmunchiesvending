@@ -18,6 +18,7 @@ src/
 ├── app/                        # Next.js App Router
 │   ├── page.tsx                # Home → featured/pages/HomePage
 │   ├── about/page.tsx          # About → featured/pages/AboutPage
+│   ├── contact-us/page.tsx     # Contact Us → featured/pages/ContactUsPage
 │   ├── layout.tsx
 │   ├── not-found.tsx
 │   ├── location/[slug]/page.tsx   → featured/pages/LocationSlugPage
@@ -159,6 +160,7 @@ npm run lint     # ESLint
 |---|---|---|
 | `/` | `app/page.tsx` → `featured/pages/HomePage.tsx` | Home |
 | `/about` | `app/about/page.tsx` → `featured/pages/AboutPage.tsx` → `AboutPageView.tsx` (client) | About page |
+| `/contact-us` | `app/contact-us/page.tsx` → `featured/pages/ContactUsPage.tsx` | Contact form + contact info |
 | `/services` | `app/services/page.tsx` → `featured/pages/ServicesPage.tsx` | Services listing |
 | `/service/[slug]` | `app/service/[slug]/page.tsx` → `featured/pages/ServiceSlugPage.tsx` → `SAL.tsx` (client) | Service detail |
 | `/locations` | `app/locations/page.tsx` → `featured/pages/LocationsPage.tsx` | Locations listing |

@@ -5,23 +5,27 @@ export const runtime = "nodejs";
 
 const contactSchema = z.object({
   name: z.string().min(1).max(120),
+  lastName: z.string().max(120).optional().default(""),
   company: z.string().max(200).optional().default(""),
   email: z.string().email().max(200),
   phone: z.string().max(60).optional().default(""),
   service: z.string().max(120).optional().default(""),
   location: z.string().max(120).optional().default(""),
   description: z.string().min(1).max(4000),
+  source: z.enum(["request-service", "contact-us"]).optional().default("request-service"),
 });
 
 async function sendViaEmailJs(
   params: {
     name: string;
+    lastName: string;
     company: string;
     email: string;
     phone: string;
     service: string;
     location: string;
     description: string;
+    source: "request-service" | "contact-us";
   },
   origin: string
 ) {
@@ -41,14 +45,23 @@ async function sendViaEmailJs(
     user_id: publicKey,
     ...(privateKey ? { accessToken: privateKey } : {}),
     template_params: {
-      subject: `GMunchies: New service request from ${params.name}`,
+      subject:
+        params.source === "contact-us"
+          ? `GMunchies: New contact-us inquiry from ${params.name}${params.lastName ? ` ${params.lastName}` : ""}`
+          : `GMunchies: New service request from ${params.name}`,
       name: params.name,
+      last_name: params.lastName || "-",
+      full_name: `${params.name}${params.lastName ? ` ${params.lastName}` : ""}`,
       company: params.company || "-",
       email: params.email,
       phone: params.phone || "-",
       service: params.service || "-",
       location: params.location || "-",
-      message: params.description,
+      message:
+        params.source === "contact-us"
+          ? `[SOURCE: CONTACT-US]\n${params.description}`
+          : params.description,
+      source: params.source,
       reply_to: params.email,
     },
   };
@@ -86,12 +99,14 @@ export async function POST(req: Request) {
     await sendViaEmailJs(
       {
         name: parsed.data.name,
+        lastName: parsed.data.lastName,
         company: parsed.data.company,
         email: parsed.data.email,
         phone: parsed.data.phone,
         service: parsed.data.service,
         location: parsed.data.location,
         description: parsed.data.description,
+        source: parsed.data.source,
       },
       origin
     );

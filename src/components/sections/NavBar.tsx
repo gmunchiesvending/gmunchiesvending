@@ -110,20 +110,20 @@ export default function Navbar({
         {links
           .filter((l) => !(l.href === "/services" && !servicesDynamic))
           .filter((l) => !(l.href === "/locations" && !locationsDynamic))
-          .map((l) => {
+          .map((l, linkIdx) => {
           const isServices = l.href === "/services";
           const isLocations = l.href === "/locations";
 
           if (isServices) {
             if (!servicesDynamic) {
               return (
-                <Link key={l.href} className="navLink" href={l.href} onClick={closeMenu}>
+                <Link key={`${l.href}-${linkIdx}`} className="navLink" href={l.href} onClick={closeMenu}>
                   {l.label}
                 </Link>
               );
             }
             return (
-              <div key={l.href} className="navDropdown">
+              <div key={`${l.href}-${linkIdx}`} className="navDropdown">
                 <div className="navDropdownRow">
                   <Link
                     className="navLink navDropdownTrigger"
@@ -146,9 +146,9 @@ export default function Navbar({
                   </Link>
                   {services
                     .filter((s) => s.display)
-                    .map((s) => (
+                    .map((s, serviceIdx) => (
                       <Link
-                        key={s.slug}
+                        key={`${s.slug}-${serviceIdx}`}
                         className={`navDropdownItem${pathname === `/service/${s.slug}` ? " active" : ""}`}
                         href={`/service/${s.slug}`}
                         onClick={closeMenu}
@@ -165,13 +165,13 @@ export default function Navbar({
           if (isLocations) {
             if (!locationsDynamic) {
               return (
-                <Link key={l.href} className="navLink" href={l.href} onClick={closeMenu}>
+                <Link key={`${l.href}-${linkIdx}`} className="navLink" href={l.href} onClick={closeMenu}>
                   {l.label}
                 </Link>
               );
             }
             return (
-              <div key={l.href} className="navDropdown">
+              <div key={`${l.href}-${linkIdx}`} className="navDropdown">
                 <div className="navDropdownRow">
                   <Link
                     className="navLink navDropdownTrigger"
@@ -191,9 +191,9 @@ export default function Navbar({
                   <Link className="navDropdownItem" href="/locations" onClick={closeMenu} role="menuitem">
                     All locations
                   </Link>
-                  {locations.map((loc) => (
+                  {locations.map((loc, locationIdx) => (
                     <Link
-                      key={loc.slug}
+                      key={`${loc.slug}-${locationIdx}`}
                       className="navDropdownItem"
                       href={`/location/${loc.slug}`}
                       onClick={closeMenu}
@@ -208,7 +208,7 @@ export default function Navbar({
           }
 
           return (
-            <Link key={l.href} className="navLink" href={l.href} onClick={closeMenu}>
+            <Link key={`${l.href}-${linkIdx}`} className="navLink" href={l.href} onClick={closeMenu}>
               {l.label}
             </Link>
           );
