@@ -1,4 +1,5 @@
 import "./ContactUsPage.css";
+import Link from "next/link";
 import { MdEmail, MdPhone, MdPlace } from "react-icons/md";
 import { getCmsContent } from "@/lib/content";
 import Form from "@/components/ui/Form";
@@ -16,7 +17,11 @@ export default async function ContactUsPage() {
           <div className="headingWrapper">
             <h1 className="h1">Contact Us</h1>
             <p className="afterHeading">
-              Have a question or interested in any of our vending services? Get in touch by filling out the form below or contacting us directly via email or phone. To request service, simply complete one of our Request Service forms available throughout the site.
+              Have a question or interested in any of our vending services? Get in touch by filling out the form below or contacting us directly via email or phone. To request service, simply complete one of our{" "}
+              <Link href="/#request-services-form" className="contactUsRequestLink">
+                Request Service
+              </Link>{" "}
+              forms available throughout the site.
             </p>
           </div>
 

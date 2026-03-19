@@ -73,7 +73,7 @@ export default function Form({
   return (
     <form ref={formRef} className="formWrapper" onSubmit={onSubmit}>
       {isContactUs ? (
-        <>
+        <div className="formFieldsStack">
           <div className="oneInputWrapper">
             <label htmlFor="request-email">Email</label>
             <input id="request-email" type="email" name="email" placeholder="john@company.com" required />
@@ -94,9 +94,9 @@ export default function Form({
             <label htmlFor="request-company">Company Name</label>
             <input id="request-company" type="text" name="company" placeholder="Acme Inc." />
           </div>
-        </>
+        </div>
       ) : (
-        <>
+        <div className="formFieldsStack">
           <div className="twoInputsWrapper">
             <div className="oneInputWrapper">
               <label htmlFor="request-name">Your Name</label>
@@ -143,7 +143,7 @@ export default function Form({
               </select>
             </div>
           </div>
-        </>
+        </div>
       )}
 
       <label htmlFor="request-description">{isContactUs ? "Message" : "Tell us about your needs"}</label>

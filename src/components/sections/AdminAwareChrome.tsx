@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 
 export default function AdminAwareChrome({
   navbar,
@@ -17,12 +17,11 @@ export default function AdminAwareChrome({
 
   if (isAdmin) return <>{children}</>;
 
-  return (
-    <>
-      {navbar}
-      {children}
-      {footer}
-    </>
-  );
+  // Explicit keys: React 19 may warn if multiple dynamic siblings are reconciled like a list.
+  return [
+    <Fragment key="site-navbar">{navbar}</Fragment>,
+    <Fragment key="site-main">{children}</Fragment>,
+    <Fragment key="site-footer">{footer}</Fragment>,
+  ];
 }
 
