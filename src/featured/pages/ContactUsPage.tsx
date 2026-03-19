@@ -1,5 +1,4 @@
 import "./ContactUsPage.css";
-import Link from "next/link";
 import { MdEmail, MdPhone, MdPlace } from "react-icons/md";
 import { getCmsContent } from "@/lib/content";
 import Form from "@/components/ui/Form";
@@ -17,11 +16,7 @@ export default async function ContactUsPage() {
           <div className="headingWrapper">
             <h1 className="h1">Contact Us</h1>
             <p className="afterHeading">
-              Have a question or interested in any of our vending services? Contact GMunchies Vending directly via email or phone using the information below. To place a service request, please complete the{" "}
-              <Link href="/#request-services-form" className="contactUsInlineLink">
-                Request Service
-              </Link>{" "}
-              form at the bottom of our homepage.
+              Have a question or interested in any of our vending services? Get in touch by filling out the form below or contacting us directly via email or phone. To request service, simply complete one of our Request Service forms available throughout the site.
             </p>
           </div>
 
@@ -41,17 +36,17 @@ export default async function ContactUsPage() {
                   <span className="contactUsIcon" aria-hidden="true">
                     <MdEmail size={20} />
                   </span>
-                  <Link href={`mailto:${email}`} className="contactUsLink">
+                  <a href={`mailto:${email}`} className="contactUsLink">
                     {email}
-                  </Link>
+                  </a>
                 </div>
                 <div className="contactUsItem">
                   <span className="contactUsIcon" aria-hidden="true">
                     <MdPhone size={20} />
                   </span>
-                  <Link href={`tel:${phoneHref}`} className="contactUsLink">
+                  <a href={`tel:${phoneHref}`} className="contactUsLink">
                     {phoneDisplay}
-                  </Link>
+                  </a>
                 </div>
                 <div className="contactUsItem">
                   <span className="contactUsIcon" aria-hidden="true">
