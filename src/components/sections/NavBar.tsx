@@ -2,7 +2,7 @@
 import "./NavBar.css";
 
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -30,8 +30,12 @@ export default function Navbar({
 }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const servicesDynamic = dynamicPages?.services ?? true;
   const locationsDynamic = dynamicPages?.locations ?? true;
+
+  // On contact pages there's no form on the page — navigate to the home form instead.
+  const isContactRoute = /^\/contact(?:-us)?(?:\/|$)/.test(pathname ?? "");
 
   useEffect(() => {
     if (open) {
@@ -46,14 +50,21 @@ export default function Navbar({
   }, [open]);
 
   const scrollToForm = () => {
-    setOpen(false); // Close menu when clicking
+    setOpen(false);
+
+    // On contact routes the form doesn't exist on the page — go to the home form.
+    if (isContactRoute) {
+      router.push("/#request-services-form");
+      return;
+    }
+
     const formElement = document.getElementById("request-services-form");
     if (!formElement) return;
 
     const startPosition = window.pageYOffset;
-    const targetPosition = formElement.getBoundingClientRect().top + startPosition - 80; // 80px offset for navbar
+    const targetPosition = formElement.getBoundingClientRect().top + startPosition - 80;
     const distance = targetPosition - startPosition;
-    const duration = 800; // 800ms
+    const duration = 800;
     let start: number | null = null;
 
     const easeInOutCubic = (t: number): number => {
