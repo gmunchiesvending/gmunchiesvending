@@ -64,7 +64,7 @@ export default async function ContactUsPage() {
               <div className="contactUsMapFrame">
                 <iframe
                   title="Rio Grande Valley service area map"
-                  src="https://www.google.com/maps/@26.194706,-98.1440501,10z?output=embed"
+                  src="https://maps.google.com/maps?ll=26.194706,-98.1440501&z=10&output=embed"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 />
