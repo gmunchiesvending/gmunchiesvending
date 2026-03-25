@@ -30,17 +30,17 @@
     {
       "platform": "Facebook",
       "url": "https://facebook.com",
-      "enabled": true
+      "enabled": false
     },
     {
       "platform": "Instagram",
       "url": "https://instagram.com",
-      "enabled": true
+      "enabled": false
     },
     {
       "platform": "LinkedIn",
       "url": "https://linkedin.com",
-      "enabled": true
+      "enabled": false
     },
     {
       "platform": "YouTube",
