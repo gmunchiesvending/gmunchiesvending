@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import "./Hero.css";
 import Image from "next/image";
 
@@ -11,23 +11,18 @@ type HeroProps = {
   imageSrc: string;
 };
 
-export default function Hero({ headline, body, ctaLabel, imageSrc }: HeroProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const imgRef = useRef<HTMLDivElement | null>(null);
+export default function Hero({ headline, body, ctaLabel }: HeroProps) {
+  const mascotRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!isLoaded) return;
-
     const handleScroll = () => {
-      if (!imgRef.current) return;
-
-      const scrollY = window.scrollY;
-      imgRef.current.style.transform = `translateY(${scrollY * 0.55}px)`;
+      if (!mascotRef.current) return;
+      const y = window.scrollY;
+      mascotRef.current.style.transform = `translateY(${y * 0.45}px)`;
     };
-
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isLoaded]);
+  }, []);
 
   const scrollToForm = () => {
     const formElement = document.getElementById("request-services-form");
@@ -63,19 +58,18 @@ export default function Hero({ headline, body, ctaLabel, imageSrc }: HeroProps) 
 
   return (
     <section className="section-full heroWrapper">
-      <div
-        ref={imgRef}
-        className={`parallaxWrapper ${isLoaded ? "loaded" : ""}`}
-      >
-        <Image
-          className="heroImg"
-          src={imageSrc}
-          alt="vending store"
-          fill
-          priority
-          quality={65}
-          onLoadingComplete={() => setIsLoaded(true)}
-        />
+      <div className="heroBg" aria-hidden="true">
+        <div ref={mascotRef} className="heroMascotParallax">
+          <div className="heroMascotCircle" />
+          <Image
+            className="heroMascotImg"
+            src="/uploads/mascot.svg"
+            alt=""
+            width={480}
+            height={480}
+            priority
+          />
+        </div>
       </div>
 
       <div className="CTA_Wrapper">
