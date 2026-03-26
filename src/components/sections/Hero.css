@@ -8,6 +8,17 @@
   background-color: var(--primary-color);
 }
 
+/* ── Dark overlay on top of everything ── */
+.heroWrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: #000;
+  opacity: 0.2;
+  z-index: 4;
+  pointer-events: none;
+}
+
 /* ── Red background layer ── */
 .heroBg {
   position: absolute;
