@@ -17,7 +17,7 @@ export default function ServiceCard({
     <div className="srvCardWrapper">
       <div className="srvImgWrapper">
         <div className="srvImgBg"></div>
-        <Image className="srvImg" src={img} width={230} height={230} alt={headline} />
+        <Image className="srvImg" src={img} width={200} height={200} alt={headline} />
       </div>
      
       <div className="srvTextWrapper">
