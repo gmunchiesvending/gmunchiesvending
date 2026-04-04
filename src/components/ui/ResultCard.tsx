@@ -6,15 +6,14 @@ import type { IconType } from "react-icons";
 import { useEffect, useRef, useState } from "react";
 type ResultCardProps = {
   headline: string;
-  target: number;
-  // Optional display label for non-numeric or formatted values
-  // When provided, this string will be shown instead of the animated counter.
-  targetDisplay?: string;
+  target: number | string;
+  plus?: boolean;
   Icon: IconType;
 };
 
-export default function Counter({ headline, target, targetDisplay, Icon }: ResultCardProps) {
-  const TARGET = target;
+export default function Counter({ headline, target, plus, Icon }: ResultCardProps) {
+  const isNumeric = typeof target === "number";
+  const TARGET = isNumeric ? target : 0;
 
   const countRef = useRef<HTMLSpanElement | null>(null);
   const startedRef = useRef<boolean>(false);
@@ -48,8 +47,7 @@ export default function Counter({ headline, target, targetDisplay, Icon }: Resul
   };
 
   useEffect(() => {
-    // If a custom display value is provided, skip the animated counter logic entirely.
-    if (targetDisplay) return;
+    if (!isNumeric) return;
     if (!countRef.current) return;
     if (typeof window === "undefined") return;
 
@@ -63,14 +61,14 @@ export default function Counter({ headline, target, targetDisplay, Icon }: Resul
     observer.observe(countRef.current);
 
     return () => observer.disconnect();
-  }, [targetDisplay]);
+  }, [isNumeric]);
 
   return (
     <div className="rsCard">
       <Icon className="react-icon" size={140} />
       <p>{headline}</p>
-      <span ref={countRef} onMouseEnter={startCounting} className="counter">
-        {targetDisplay ?? value}
+      <span ref={countRef} onMouseEnter={isNumeric ? startCounting : undefined} className="counter">
+        {isNumeric ? `${value}${plus ? "+" : ""}` : target}
       </span>
     </div>
   );

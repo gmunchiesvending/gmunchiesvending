@@ -730,37 +730,38 @@ export default function Dashboard() {
                         />
                       </div>
                       <div className="adminField">
-                        <label>Number</label>
+                        <label>Value</label>
                         <input
-                          type="number"
-                          min={0}
+                          type="text"
+                          placeholder="e.g. 10 or Weekly-Biweekly"
                           value={s.target}
                           onChange={(e) =>
                             setCms((prev) => {
                               if (!prev) return prev;
                               const next = deepClone(prev);
                               if (!next.home.resultsStats) next.home.resultsStats = [];
-                              if (next.home.resultsStats[idx]) next.home.resultsStats[idx].target = Number(e.target.value || 0);
+                              if (next.home.resultsStats[idx]) {
+                                const v = e.target.value;
+                                const n = Number(v);
+                                next.home.resultsStats[idx].target = v !== "" && !isNaN(n) ? n : v;
+                              }
                               return next;
                             })
                           }
                           disabled={loading}
                         />
                       </div>
-                    </div>
-
-                    <div className="adminRow">
-                      <div className="adminField">
-                        <label>Display value (optional)</label>
+                      <div className="adminField" style={{ justifyContent: "flex-end" }}>
+                        <label>Show +</label>
                         <input
-                          placeholder='Examples: "10+", "Weekly-Biweekly"'
-                          value={s.targetDisplay ?? ""}
+                          type="checkbox"
+                          checked={s.plus ?? false}
                           onChange={(e) =>
                             setCms((prev) => {
                               if (!prev) return prev;
                               const next = deepClone(prev);
                               if (!next.home.resultsStats) next.home.resultsStats = [];
-                              if (next.home.resultsStats[idx]) next.home.resultsStats[idx].targetDisplay = e.target.value || undefined;
+                              if (next.home.resultsStats[idx]) next.home.resultsStats[idx].plus = e.target.checked || undefined;
                               return next;
                             })
                           }
@@ -824,7 +825,7 @@ export default function Dashboard() {
                       const next = deepClone(prev);
                       next.home.resultsStats = [
                         ...(next.home.resultsStats ?? []),
-                        { headline: "New stat", target: 0, iconKey: "BiUser" },
+                        { headline: "New stat", target: 0, iconKey: "BiUser", plus: false },
                       ];
                       return next;
                     })

@@ -13,8 +13,9 @@ type ResultsIntro = {
 
 type ResultStat = {
   headline: string;
-  target: number;
+  target: number | string;
   iconKey: string;
+  plus?: boolean;
 };
 
 export default function Results({
@@ -62,6 +63,7 @@ export default function Results({
               key={`${s.headline}-${idx}`}
               headline={s.headline}
               target={s.target}
+              plus={s.plus}
               Icon={getResultsIconByKey(s.iconKey)}
             />
           ))}

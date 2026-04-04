@@ -79,19 +79,18 @@
         "headline": "Locations Served",
         "target": 10,
         "iconKey": "GoLocation",
-        "targetDisplay": "10+"
+        "plus": true
       },
       {
         "headline": "Snack & Drink Options",
         "target": 75,
         "iconKey": "GiVendingMachine",
-        "targetDisplay": "75+"
+        "plus": true
       },
       {
         "headline": "Restocking and Service",
-        "target": 0,
-        "iconKey": "GrHostMaintenance",
-        "targetDisplay": "Weekly-Biweekly"
+        "target": "Weekly-Biweekly",
+        "iconKey": "GrHostMaintenance"
       }
     ],
     "servicesIntro": {

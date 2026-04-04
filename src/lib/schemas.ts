@@ -104,10 +104,9 @@ export const cmsSchema = z.object({
       .array(
         z.object({
           headline: z.string().min(1),
-          target: z.number().int().nonnegative(),
+          target: z.union([z.number().int().nonnegative(), z.string()]),
           iconKey: z.string().min(1),
-          // Optional display label for non-numeric or formatted values (e.g. "10+", "Weekly-Biweekly")
-          targetDisplay: z.string().optional(),
+          plus: z.boolean().optional(),
         }),
       )
       .optional()
