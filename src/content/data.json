@@ -127,7 +127,7 @@
     {
       "slug": "vending",
       "display": true,
-      "eyebrow": "service",
+      "eyebrow": "",
       "iconSrc": "/uploads/new-icons_vending.svg",
       "title": "Vending",
       "excerpt": "Vending machines stocked with snacks and drinks for every taste. ",
@@ -163,7 +163,7 @@
     {
       "slug": "coffee",
       "display": true,
-      "eyebrow": "service",
+      "eyebrow": "",
       "iconSrc": "/uploads/new-icons_coffee.svg",
       "title": "Coffee",
       "excerpt": "Fresh, great-tasting coffee to help your team conquer the day. ",
@@ -207,7 +207,7 @@
     {
       "slug": "micro-market",
       "display": true,
-      "eyebrow": "service",
+      "eyebrow": "",
       "iconSrc": "/uploads/new-icons_micro.svg",
       "title": "Micro Market",
       "excerpt": " A self-checkout breakroom market with snacks and drinks your team will love. ",
