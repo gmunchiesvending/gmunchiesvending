@@ -112,7 +112,7 @@ export default function SAL({
         )}
 
         <div className="salCTAWrapper">
-          <p className="beforeHeading">{titleCaseEyebrow(eyebrow)}</p>
+          {eyebrow ? <p className="beforeHeading">{titleCaseEyebrow(eyebrow)}</p> : null}
           <h1 className="salHeroHeading">{title}</h1>
           {description ? <p className="salHeroDescription">{description}</p> : null}
         </div>

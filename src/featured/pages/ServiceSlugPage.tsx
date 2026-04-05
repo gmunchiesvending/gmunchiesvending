@@ -12,7 +12,7 @@ export default async function ServiceSlugPage({ slug }: { slug: string }) {
     <SAL
       kind="service"
       slug={slug}
-      eyebrow={service.eyebrow || "service"}
+      eyebrow={service.eyebrow || ""}
       title={service.title}
       description={service.excerpt}
       heroImageSrc={service.heroImageSrc}

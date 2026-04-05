@@ -1475,7 +1475,7 @@ export default function Dashboard() {
                       next.home = {
                         ...next.home,
                         servicesIntro: {
-                          ...(next.home.servicesIntro ?? { eyebrow: "", heading: "Services", body: "" }),
+                          ...(next.home.servicesIntro ?? { eyebrow: "", heading: "Modern Vending Solutions", body: "" }),
                           eyebrow: e.target.value,
                         },
                       };
@@ -1488,7 +1488,7 @@ export default function Dashboard() {
               <div className="adminField">
                 <label>Heading</label>
                 <input
-                  value={cms.home.servicesIntro?.heading ?? "Services"}
+                  value={cms.home.servicesIntro?.heading ?? "Modern Vending Solutions"}
                   onChange={(e) =>
                     setCms((prev) => {
                       if (!prev) return prev;
@@ -1496,7 +1496,7 @@ export default function Dashboard() {
                       next.home = {
                         ...next.home,
                         servicesIntro: {
-                          ...(next.home.servicesIntro ?? { eyebrow: "", heading: "Services", body: "" }),
+                          ...(next.home.servicesIntro ?? { eyebrow: "", heading: "Modern Vending Solutions", body: "" }),
                           heading: e.target.value,
                         },
                       };
@@ -1519,7 +1519,7 @@ export default function Dashboard() {
                     next.home = {
                       ...next.home,
                       servicesIntro: {
-                        ...(next.home.servicesIntro ?? { eyebrow: "", heading: "Services", body: "" }),
+                        ...(next.home.servicesIntro ?? { eyebrow: "", heading: "Modern Vending Solutions", body: "" }),
                         body: e.target.value,
                       },
                     };
