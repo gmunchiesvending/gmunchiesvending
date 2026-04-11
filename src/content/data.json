@@ -60,7 +60,8 @@
   ],
   "dynamicPages": {
     "services": true,
-    "locations": false
+    "locations": false,
+    "testimonials": false
   },
   "home": {
     "hero": {
@@ -106,7 +107,7 @@
     "testimonialsIntro": {
       "eyebrow": "Our Happy Clients",
       "heading": "Testimonials",
-      "body": ":See what people are saying about their experience with us. "
+      "body": "See what people are saying about their experience with us. "
     },
     "formIntro": {
       "eyebrow": "Get Started",

@@ -39,10 +39,12 @@ export default async function HomePage() {
         enableLinks={cms.dynamicPages.locations}
       />
       <Results intro={cms.home.resultsIntro} stats={cms.home.resultsStats} />
-      <Testimonials
-        intro={cms.home.testimonialsIntro}
-        testimonials={homeTestimonials}
-      />
+      {cms.dynamicPages.testimonials && (
+        <Testimonials
+          intro={cms.home.testimonialsIntro}
+          testimonials={homeTestimonials}
+        />
+      )}
     </main>
   );
 }

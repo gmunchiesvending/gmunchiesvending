@@ -16,7 +16,7 @@ type NavbarProps = {
   ctaLabel: string;
   services: ServiceOption[];
   locations: LocationOption[];
-  dynamicPages?: { services: boolean; locations: boolean };
+  dynamicPages?: { services: boolean; locations: boolean; testimonials?: boolean };
 };
 
 export default function Navbar({
@@ -33,6 +33,7 @@ export default function Navbar({
   const router = useRouter();
   const servicesDynamic = dynamicPages?.services ?? true;
   const locationsDynamic = dynamicPages?.locations ?? true;
+  const testimonialsDynamic = dynamicPages?.testimonials ?? true;
 
   // On contact pages there's no form on the page — navigate to the home form instead.
   const isContactRoute = /^\/contact(?:-us)?(?:\/|$)/.test(pathname ?? "");
@@ -121,6 +122,7 @@ export default function Navbar({
         {links
           .filter((l) => !(l.href === "/services" && !servicesDynamic))
           .filter((l) => !(l.href === "/locations" && !locationsDynamic))
+          .filter((l) => !(l.href === "/testimonials" && !testimonialsDynamic))
           .map((l, linkIdx) => {
           const isServices = l.href === "/services";
           const isLocations = l.href === "/locations";

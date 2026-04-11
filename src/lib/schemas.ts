@@ -83,8 +83,9 @@ export const cmsSchema = z.object({
     .object({
       services: z.boolean().default(true),
       locations: z.boolean().default(true),
+      testimonials: z.boolean().default(true),
     })
-    .default({ services: true, locations: true }),
+    .default({ services: true, locations: true, testimonials: true }),
   home: z.object({
     hero: z.object({
       headline: z.string().min(1),

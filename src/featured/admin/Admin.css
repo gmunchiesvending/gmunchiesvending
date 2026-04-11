@@ -167,6 +167,73 @@
   justify-content: flex-start;
 }
 
+/* Toggle switch */
+.adminToggleField {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.adminToggleField label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--black);
+  opacity: 0.75;
+  margin-bottom: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.adminToggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.adminToggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.adminToggleTrack {
+  position: absolute;
+  inset: 0;
+  background: #d1d5db;
+  border-radius: 999px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.adminToggleTrack::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.adminToggle input:checked + .adminToggleTrack {
+  background: #22c55e;
+}
+
+.adminToggle input:checked + .adminToggleTrack::after {
+  transform: translateX(20px);
+}
+
+.adminToggle input:disabled + .adminToggleTrack {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .adminTopbar {
   display: flex;
   flex-wrap: wrap;

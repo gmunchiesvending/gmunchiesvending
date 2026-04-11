@@ -2077,6 +2077,30 @@ export default function Dashboard() {
         </section>
       ) : mode === "testimonials" ? (
         <section className="adminSection">
+          <div className="adminSettingsCard">
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <div>
+                <div style={{ fontWeight: 800 }}>Testimonials section</div>
+                <div style={{ opacity: 0.75, marginTop: 6 }}>
+                  When off, the testimonials section is hidden from the home page, the /testimonials page returns 404, and the nav link is removed.
+                </div>
+              </div>
+              <label className="adminToggle" style={{ flexShrink: 0, marginLeft: 16 }}>
+                <input
+                  type="checkbox"
+                  checked={!!cms.dynamicPages.testimonials}
+                  onChange={(e) =>
+                    setCms((prev) =>
+                      prev ? { ...prev, dynamicPages: { ...prev.dynamicPages, testimonials: e.target.checked } } : prev
+                    )
+                  }
+                  disabled={loading}
+                />
+                <span className="adminToggleTrack" />
+              </label>
+            </div>
+          </div>
+
           {cms.testimonials.map((t, idx) => (
             <details key={`t-${idx}`} className="adminCard">
               <summary className="adminCardHeader">
@@ -2173,63 +2197,69 @@ export default function Dashboard() {
                 </div>
 
                 <div className="adminRow">
-                  <div className="adminField">
-                    <label>Enabled</label>
-                    <select
-                      value={t.enabled ? "yes" : "no"}
-                      onChange={(e) =>
-                        setCms((prev) => {
-                          if (!prev) return prev;
-                          const next = deepClone(prev);
-                          if (next.testimonials[idx]) next.testimonials[idx].enabled = e.target.value === "yes";
-                          return next;
-                        })
-                      }
-                      disabled={loading}
-                    >
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </select>
+                  <div className="adminToggleField">
+                    <label htmlFor={`t-enabled-${idx}`}>Enabled</label>
+                    <label className="adminToggle">
+                      <input
+                        id={`t-enabled-${idx}`}
+                        type="checkbox"
+                        checked={!!t.enabled}
+                        onChange={(e) =>
+                          setCms((prev) => {
+                            if (!prev) return prev;
+                            const next = deepClone(prev);
+                            if (next.testimonials[idx]) next.testimonials[idx].enabled = e.target.checked;
+                            return next;
+                          })
+                        }
+                        disabled={loading}
+                      />
+                      <span className="adminToggleTrack" />
+                    </label>
                   </div>
-                  <div className="adminField">
-                    <label>Show on home</label>
-                    <select
-                      value={t.showOnHome ? "yes" : "no"}
-                      onChange={(e) =>
-                        setCms((prev) => {
-                          if (!prev) return prev;
-                          const next = deepClone(prev);
-                          if (next.testimonials[idx]) next.testimonials[idx].showOnHome = e.target.value === "yes";
-                          return next;
-                        })
-                      }
-                      disabled={loading}
-                    >
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </select>
+                  <div className="adminToggleField">
+                    <label htmlFor={`t-showOnHome-${idx}`}>Show on home</label>
+                    <label className="adminToggle">
+                      <input
+                        id={`t-showOnHome-${idx}`}
+                        type="checkbox"
+                        checked={!!t.showOnHome}
+                        onChange={(e) =>
+                          setCms((prev) => {
+                            if (!prev) return prev;
+                            const next = deepClone(prev);
+                            if (next.testimonials[idx]) next.testimonials[idx].showOnHome = e.target.checked;
+                            return next;
+                          })
+                        }
+                        disabled={loading}
+                      />
+                      <span className="adminToggleTrack" />
+                    </label>
+                  </div>
+                  <div className="adminToggleField">
+                    <label htmlFor={`t-showOnTestimonialsPage-${idx}`}>Show on /testimonials</label>
+                    <label className="adminToggle">
+                      <input
+                        id={`t-showOnTestimonialsPage-${idx}`}
+                        type="checkbox"
+                        checked={!!t.showOnTestimonialsPage}
+                        onChange={(e) =>
+                          setCms((prev) => {
+                            if (!prev) return prev;
+                            const next = deepClone(prev);
+                            if (next.testimonials[idx]) next.testimonials[idx].showOnTestimonialsPage = e.target.checked;
+                            return next;
+                          })
+                        }
+                        disabled={loading}
+                      />
+                      <span className="adminToggleTrack" />
+                    </label>
                   </div>
                 </div>
 
                 <div className="adminRow">
-                  <div className="adminField">
-                    <label>Show on /testimonials</label>
-                    <select
-                      value={t.showOnTestimonialsPage ? "yes" : "no"}
-                      onChange={(e) =>
-                        setCms((prev) => {
-                          if (!prev) return prev;
-                          const next = deepClone(prev);
-                          if (next.testimonials[idx]) next.testimonials[idx].showOnTestimonialsPage = e.target.value === "yes";
-                          return next;
-                        })
-                      }
-                      disabled={loading}
-                    >
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </select>
-                  </div>
                   <div className="adminField">
                     <label>Rating (optional)</label>
                     <input

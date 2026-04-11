@@ -1,9 +1,15 @@
+import { notFound } from "next/navigation";
 import { getCmsContent } from "@/lib/content";
 import TestimonialCard from "@/components/ui/TestimonialCard";
 import styles from "@/app/testimonials/page.module.css";
 
 export default async function TestimonialsPage() {
   const cms = await getCmsContent();
+
+  if (!cms.dynamicPages.testimonials) {
+    notFound();
+  }
+
   const testimonials = cms.testimonials.filter((t) => t.enabled && t.showOnTestimonialsPage);
 
   return (
