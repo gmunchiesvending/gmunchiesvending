@@ -202,46 +202,27 @@ input {
   position: relative;
   cursor: pointer;
   font-style: italic;
-  transition: 0.3s letter-spacing ;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.35s ease;
 }
 .view-more:hover{
-  font-weight: 500;
-  letter-spacing: 0.2rem;
-}
-.view-more:hover::before{
-  width: 100%;
-}
-.view-more:hover::after{
-  width: 35%;
-}
-.view-more::before{
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: -1rem;
-  bottom: -0.5rem;
-  border-left: 2px  solid rgb(246, 82, 82);
-  border-bottom: 2px solid red;
-  border-radius: 0 0 0 0.5rem;
-  transition: 0.3s width;
+  color: red;
 }
 .view-more::after{
-  content: ">";
+  content: "→";
   font-style: normal;
-  font-weight: 300;
-  font-size: 1.5rem;
-  position: absolute;
-  display: block;
+  font-weight: 400;
+  font-size: 1.1rem;
   color: red;
-  width: 0%;
-  left: 65%;
-  bottom: -0.36rem;
-  bottom: -0.33rem;
-  border-radius: 10%;
-  line-height: 0;
-  transition: 0.3s width;
+  margin-left: 0.45rem;
+  line-height: 1;
+  display: inline-block;
+  transform: translateX(0);
+  transition: transform 0.35s ease;
+}
+.view-more:hover::after{
+  transform: translateX(6px);
 }
 
 @keyframes shine{

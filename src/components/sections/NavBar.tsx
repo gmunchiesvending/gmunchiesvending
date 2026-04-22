@@ -130,7 +130,7 @@ export default function Navbar({
           if (isServices) {
             if (!servicesDynamic) {
               return (
-                <Link key={`${l.href}-${linkIdx}`} className="navLink" href={l.href} onClick={closeMenu}>
+                <Link key={`${l.href}-${linkIdx}`} className={`navLink${pathname === l.href ? " active" : ""}`} href={l.href} onClick={closeMenu}>
                   {l.label}
                 </Link>
               );
@@ -178,7 +178,7 @@ export default function Navbar({
           if (isLocations) {
             if (!locationsDynamic) {
               return (
-                <Link key={`${l.href}-${linkIdx}`} className="navLink" href={l.href} onClick={closeMenu}>
+                <Link key={`${l.href}-${linkIdx}`} className={`navLink${pathname === l.href ? " active" : ""}`} href={l.href} onClick={closeMenu}>
                   {l.label}
                 </Link>
               );
@@ -221,7 +221,7 @@ export default function Navbar({
           }
 
           return (
-            <Link key={`${l.href}-${linkIdx}`} className="navLink" href={l.href} onClick={closeMenu}>
+            <Link key={`${l.href}-${linkIdx}`} className={`navLink${pathname === l.href ? " active" : ""}`} href={l.href} onClick={closeMenu}>
               {l.label}
             </Link>
           );

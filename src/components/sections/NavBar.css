@@ -11,7 +11,7 @@
   z-index: 2;
   background-color: rgb(255, 255, 255, 0.8);
   backdrop-filter: blur(4px);
-  
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
 }
 
 .nav-top {
@@ -164,24 +164,31 @@
   .burger {
     display: block;
   }
-.logo{
-  width: 140px;
-}
+
+  .logo {
+    width: 140px;
+  }
+
   .nav {
     display: block;
+  }
+
+  body.menu-open .nav {
+    background-color: white;
+    backdrop-filter: none;
   }
 
   .nav-menu {
     position: fixed;
     top: 80px;
     left: 0;
-    width: 80vw;
+    width: 100%;
     height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 5%;
-    align-items: start;
+    padding: 2rem 8% 5%;
+    align-items: flex-end;
     background-color: white;
 
     transform: translateX(-100%);
@@ -191,8 +198,6 @@
       transform 0.35s ease,
       opacity 0.25s ease;
 
-    box-shadow: 18px 0 40px rgba(0, 0, 0, 0.25);
-
     pointer-events: none;
   }
 
@@ -200,12 +205,21 @@
     transform: translateX(0);
     opacity: 1;
     pointer-events: auto;
-    
   }
 
   .navLink {
     width: 100%;
-    text-align: left;
+    text-align: right;
+  }
+
+  .navLink.active {
+    background-color: #f0e4d0;
+    color: #1a1a1a;
+    border-radius: 6px;
+  }
+
+  .navLink.active::after {
+    display: none;
   }
 
   .navLink::before {
@@ -228,7 +242,7 @@
 
   .navDropdownRow {
     width: 100%;
-    justify-content: flex-start;
+    justify-content: flex-end;
   }
 
   /* Mobile: menus open by default */
@@ -254,8 +268,9 @@
 
   .navDropdownItem {
     color: var(--black);
-    padding: 10px 0 10px 18px;
+    padding: 10px 18px 10px 0;
     border-radius: 0;
+    text-align: right;
   }
 
   .navDropdownItem:hover,
@@ -264,13 +279,14 @@
   }
 
   .navDropdownItem:active {
-    color: #fff;
-    background: var(--primary-color);
+    color: #1a1a1a;
+    background: #f0e4d0;
   }
 
   .navDropdownItem.active {
-    color: #fff;
-    background: var(--primary-color);
+    color: #1a1a1a;
+    background: #f0e4d0;
+    border-radius: 6px;
   }
 }
 
