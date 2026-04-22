@@ -133,6 +133,9 @@
 }
 
 @media (max-width: 768px) {
+  .heroDescription{
+    font-size: 14px;
+  }
   .heroWrapper {
     height: 50vh;
   }

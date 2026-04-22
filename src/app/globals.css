@@ -29,7 +29,7 @@
   --secondary-dark: #CB832A;
   --black: #232121;
   --dark-gray: #90857B;
-  --light-tan: #FCE9D4;
+  --light-tan: #fff4e8;
   --green-success: #4AA5A2;
   --white: #ffffff;
   /* === Spacing (match Tailwind p-*, m-*, gap-*) === */
@@ -41,6 +41,7 @@
   --space-10: 1.5rem; /* 24px */
   --space-12: 2rem; /* 32px */
   --space-16: 3rem; /* 48px */
+   --space-18: 4rem; /* 64px */
   --space-25: 11rem; /* 176px */
   
   /* Section Padding */
